@@ -11,19 +11,15 @@ public class Indicadores {
     String mVentasActual;
     String mPromedioVenta3M;
     String mCantidadItems3M;
-    String mCredito;
-    String mLimite;
     String mNombre;
 
-    public Indicadores(String mCliente, String mVendedor, String mMetas, String mVentasActual, String mPromedioVenta3M, String mCantidadItems3M, String mCredito, String mLimite, String mNombre) {
+    public Indicadores(String mCliente, String mVendedor, String mMetas, String mVentasActual, String mPromedioVenta3M, String mCantidadItems3M,String mNombre) {
         this.mCliente = mCliente;
         this.mVendedor = mVendedor;
         this.mMetas = mMetas;
         this.mVentasActual = mVentasActual;
         this.mPromedioVenta3M = mPromedioVenta3M;
         this.mCantidadItems3M = mCantidadItems3M;
-        this.mCredito = mCredito;
-        this.mLimite = mLimite;
         this.mNombre = mNombre;
     }
     public Indicadores(){
@@ -76,22 +72,6 @@ public class Indicadores {
 
     public void setmCantidadItems3M(String mCantidadItems3M) {
         this.mCantidadItems3M = mCantidadItems3M;
-    }
-
-    public String getmCredito() {
-        return mCredito;
-    }
-
-    public void setmCredito(String mCredito) {
-        this.mCredito = mCredito;
-    }
-
-    public String getmLimite() {
-        return mLimite;
-    }
-
-    public void setmLimite(String mLimite) {
-        this.mLimite = mLimite;
     }
 
     public String getmNombre() {

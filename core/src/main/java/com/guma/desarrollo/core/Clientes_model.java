@@ -33,8 +33,6 @@ public class Clientes_model {
                 contentValues.put("D90" , a.getmD90());
                 contentValues.put("D120" , a.getmD120());
                 contentValues.put("MD120" , a.getmMd120());
-                contentValues.put("SALDO" , a.getmSaldo());
-                contentValues.put("LIMITE" , a.getmLimite());
                 myDataBase.insert("CLIENTES_MORA", null, contentValues );
             }
 
@@ -70,8 +68,6 @@ public class Clientes_model {
                     tmp.setmD90(cursor.getString(cursor.getColumnIndex("D90")));
                     tmp.setmD120(cursor.getString(cursor.getColumnIndex("D120")));
                     tmp.setmMd120(cursor.getString(cursor.getColumnIndex("MD120")));
-                    tmp.setmSaldo(cursor.getString(cursor.getColumnIndex("SALDO")));
-                    tmp.setmLimite(cursor.getString(cursor.getColumnIndex("LIMITE")));
                     lista.add(tmp);
                     cursor.moveToNext();
                 }
@@ -103,8 +99,6 @@ public class Clientes_model {
                 contentValues.put("VENTAACTUAL" , a.getmVentasActual());
                 contentValues.put("VENTAS3M" , a.getmPromedioVenta3M());
                 contentValues.put("ITEM3M" , a.getmCantidadItems3M());
-                contentValues.put("CREDITO" , a.getmCredito());
-                contentValues.put("LIMITE" , a.getmLimite());
                 myDataBase.insert("CLIENTES_INDICADORES", null, contentValues );
             }
 
@@ -125,7 +119,7 @@ public class Clientes_model {
         {
             myDbHelper = new SQLiteHelper(ManagerURI.getDirDb(), context);
             myDataBase = myDbHelper.getWritableDatabase();
-            SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM CLIENTES_INDICADORES");
+            SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM CLIENTES");
             for(int i=0;i<Indica.size();i++){
                 Clientes a = Indica.get(i);
                 ContentValues contentValues = new ContentValues();
@@ -135,6 +129,9 @@ public class Clientes_model {
                 contentValues.put("RUC" , a.getmRuc());
                 contentValues.put("PUNTOS" , a.getmPuntos());
                 contentValues.put("MOROSO" , a.getmMoroso());
+                contentValues.put("CREDITO" , a.getmCredito());
+                contentValues.put("SALDO" , a.getmSaldo());
+                contentValues.put("DISPONIBLE" , a.getmDisponible());
                 myDataBase.insert("CLIENTES", null, contentValues );
             }
 
@@ -231,8 +228,42 @@ public class Clientes_model {
                     tmp.setmVentasActual(cursor.getString(cursor.getColumnIndex("VENTAACTUAL")));
                     tmp.setmPromedioVenta3M(cursor.getString(cursor.getColumnIndex("VENTAS3M")));
                     tmp.setmCantidadItems3M(cursor.getString(cursor.getColumnIndex("ITEM3M")));
+                    lista.add(tmp);
+                    cursor.moveToNext();
+                }
+            }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+        return lista;
+    }
+    public static List<Clientes> getInfoCliente(String basedir, Context context, String IdCliente) {
+        List<Clientes> lista = new ArrayList<>();
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+            myDbHelper = new SQLiteHelper(basedir, context);
+            myDataBase = myDbHelper.getReadableDatabase();
+            Cursor cursor = myDataBase.query(true, "CLIENTES", null, "CLIENTE"+ "=?", new String[] { IdCliente }, null, null, null, null);
+            if(cursor.getCount() > 0) {
+
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast()) {
+                    Clientes tmp = new Clientes();
+                    tmp.setmCliente(cursor.getString(cursor.getColumnIndex("CLIENTE")));
+                    tmp.setmNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
+                    tmp.setmDireccion(cursor.getString(cursor.getColumnIndex("DIRECCION")));
+                    tmp.setmRuc(cursor.getString(cursor.getColumnIndex("RUC")));
+                    tmp.setmPuntos(cursor.getString(cursor.getColumnIndex("PUNTOS")));
+                    tmp.setmMoroso(cursor.getString(cursor.getColumnIndex("MOROSO")));
                     tmp.setmCredito(cursor.getString(cursor.getColumnIndex("CREDITO")));
-                    tmp.setmLimite(cursor.getString(cursor.getColumnIndex("LIMITE")));
+                    tmp.setmSaldo(cursor.getString(cursor.getColumnIndex("SALDO")));
+                    tmp.setmDisponible(cursor.getString(cursor.getColumnIndex("DISPONIBLE")));
                     lista.add(tmp);
                     cursor.moveToNext();
                 }

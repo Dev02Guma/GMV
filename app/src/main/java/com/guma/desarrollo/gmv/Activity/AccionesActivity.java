@@ -53,7 +53,7 @@ public class AccionesActivity extends AppCompatActivity {
         findViewById(R.id.btnCV).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AccionesActivity.this,AgendaActivity.class));
+                //startActivity(new Intent(AccionesActivity.this,AgendaActivity.class));
                 finish();
             }
         });
