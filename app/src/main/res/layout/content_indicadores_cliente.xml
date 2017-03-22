@@ -134,7 +134,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="C$ 12,000.00" />
+                    android:text="C$ 0.00" />
             </TableRow>
             <TableRow
                 android:layout_width="fill_parent"
@@ -152,7 +152,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="C$ 4,000.00" />
+                    android:text="C$ 0.00" />
             </TableRow>
             <TableRow
                 android:layout_width="fill_parent"
@@ -171,7 +171,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="C$ 4,000.00" />
+                    android:text="C$ 0.00" />
             </TableRow>
 
 

@@ -13,10 +13,8 @@ public class Mora {
     String mD90;
     String mD120;
     String mMd120;
-    String mSaldo;
-    String mLimite;
 
-    public Mora(String mCliente, String mNombre, String mVencidos, String mD30, String mD60, String mD90, String mD120, String mMd120, String mSaldo, String mLimite) {
+    public Mora(String mCliente, String mNombre, String mVencidos, String mD30, String mD60, String mD90, String mD120, String mMd120) {
         this.mCliente = mCliente;
         this.mNombre = mNombre;
         this.mVencidos = mVencidos;
@@ -25,8 +23,6 @@ public class Mora {
         this.mD90 = mD90;
         this.mD120 = mD120;
         this.mMd120 = mMd120;
-        this.mSaldo = mSaldo;
-        this.mLimite = mLimite;
     }
     public Mora(){
 
@@ -96,19 +92,4 @@ public class Mora {
         this.mMd120 = mMd120;
     }
 
-    public String getmSaldo() {
-        return mSaldo;
-    }
-
-    public void setmSaldo(String mSaldo) {
-        this.mSaldo = mSaldo;
-    }
-
-    public String getmLimite() {
-        return mLimite;
-    }
-
-    public void setmLimite(String mLimite) {
-        this.mLimite = mLimite;
-    }
 }

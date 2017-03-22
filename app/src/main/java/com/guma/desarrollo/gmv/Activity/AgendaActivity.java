@@ -34,6 +34,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.guma.desarrollo.core.Articulos_model;
 import com.guma.desarrollo.core.Clientes;
+import com.guma.desarrollo.core.Clientes_model;
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.Cobros;
 import com.guma.desarrollo.core.Cobros_model;
@@ -221,38 +222,23 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                                             public void onResponse(Call<Respuesta_pedidos> call, Response<Respuesta_pedidos> response) {
                                                 if(response.isSuccessful()){
                                                     Respuesta_pedidos pedidoRespuesta = response.body();
-                                                    new Notificaciones().Alert(AgendaActivity.this,"EXITO","PEDIDOS ENVIADOS...")
-                                                            .setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                                        }
-                                                    }).show();
+                                                    new Notificaciones().Alert(AgendaActivity.this,"EXITO","PEDIDOS ENVIADOS...").setCancelable(false).setPositiveButton("OK", null).show();
                                                 }else{
                                                     Toast.makeText(AgendaActivity.this, "ERROR AL ENVIAR RESPUESTA: "+response.body(), Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                             @Override
                                             public void onFailure(Call<Respuesta_pedidos> call, Throwable t) {
-                                                new Notificaciones().Alert(AgendaActivity.this,"ERROR",t.getMessage().toString())
-                                                        .setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                    }
-                                                }).show();
+                                                new Notificaciones().Alert(AgendaActivity.this,"ERROR",t.getMessage()).setCancelable(false).setPositiveButton("OK", null).show();
                                             }
                                         });
                                     }else{
-                                        new Notificaciones().Alert(AgendaActivity.this,"ERROR","NO HAY PEDIDOS...")
-                                                .setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                            }
-                                        }).show();
+                                        new Notificaciones().Alert(AgendaActivity.this,"ERROR","NO HAY PEDIDOS...").setCancelable(false).setPositiveButton("OK", null).show();
                                     }
 
-                                    new TaskUnload(AgendaActivity.this).execute();
+                                   // new TaskUnload(AgendaActivity.this).execute();
                                     //new Calendario().show(getSupportFragmentManager(), "datePicker");
-                                    //new TaskUnload(AgendaActivity.this).execute();
+
                                 } else {
                                     if (items[which].equals(items[3])){
                                             if (ManagerURI.isOnlinea(AgendaActivity.this)==true){
@@ -328,14 +314,24 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     }
     private void loadData(){
 
+        /*
         String[] strDias = getResources().getStringArray(R.array.dias);
-
         addProduct(strDias[0],"FARMACIA SAN MARTIN","01006","S");
         addProduct(strDias[1],"FARMACIA FARMA CENTER","01338","N");
         addProduct(strDias[1],"FARMACIA GUADALUPE","0062","N");
         addProduct(strDias[2],"VACIO","","N");
         addProduct(strDias[3],"VACIO","","N");
         addProduct(strDias[4],"VACIO","","N");
+        */
+        for(Clientes obj : Clientes_model.getClientes(ManagerURI.getDirDb(), AgendaActivity.this)) {
+           /* if (obj.getmNombre().substring(0,1).equals("F")){
+                addProduct(obj.getmNombre().replace("FARMACIA","").trim().substring(0,1),obj.getmNombre(),obj.getmCliente(),"N");
+            }else{
+                addProduct(obj.getmNombre().trim().substring(0,1),obj.getmNombre(),obj.getmCliente(),"N");
+            }*/
+            addProduct("CLIENTES",obj.getmNombre(),obj.getmCliente(),"N");
+
+        }
     }
     private int addProduct(String department, String product,String Codigo,String Cumple){
         int groupPosition = 0;

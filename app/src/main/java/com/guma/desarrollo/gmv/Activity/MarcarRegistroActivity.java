@@ -93,6 +93,7 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MarcarRegistroActivity.this, AccionesActivity.class));
+                finish();
             }
         });
 
@@ -100,6 +101,7 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(MarcarRegistroActivity.this, QrActivity.class), 0);
+
             }
         });
         RadioButton rb = (RadioButton) findViewById(R.id.inLocal);

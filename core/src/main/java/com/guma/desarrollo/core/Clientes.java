@@ -5,23 +5,46 @@ package com.guma.desarrollo.core;
  */
 
 public class Clientes {
-    String mCliente;
-    String mNombre;
-    String mDireccion;
-    String mRuc;
-    String mPuntos;
-    String mMoroso;
+    String mCliente,mNombre,mDireccion,mRuc,mPuntos,mMoroso,mCredito,mSaldo,mDisponible;
 
-    public Clientes(String mCliente, String mNombre, String mDireccion, String mRuc, String mPuntos, String mMoroso) {
+    public Clientes(String mCliente, String mNombre, String mDireccion, String mRuc, String mPuntos, String mMoroso, String mCredito, String mSaldo, String mDisponible) {
         this.mCliente = mCliente;
         this.mNombre = mNombre;
         this.mDireccion = mDireccion;
         this.mRuc = mRuc;
         this.mPuntos = mPuntos;
         this.mMoroso = mMoroso;
+        this.mCredito = mCredito;
+        this.mSaldo = mSaldo;
+        this.mDisponible = mDisponible;
     }
+
     public Clientes(){
 
+    }
+
+    public String getmCredito() {
+        return mCredito;
+    }
+
+    public void setmCredito(String mCredito) {
+        this.mCredito = mCredito;
+    }
+
+    public String getmSaldo() {
+        return mSaldo;
+    }
+
+    public void setmSaldo(String mSaldo) {
+        this.mSaldo = mSaldo;
+    }
+
+    public String getmDisponible() {
+        return mDisponible;
+    }
+
+    public void setmDisponible(String mDisponible) {
+        this.mDisponible = mDisponible;
     }
 
     public String getmCliente() {

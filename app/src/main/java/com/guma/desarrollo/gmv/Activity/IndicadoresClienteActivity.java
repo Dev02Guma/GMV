@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -16,6 +17,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Facturas;
 import com.guma.desarrollo.core.Indicadores;
 import com.guma.desarrollo.core.Clientes_model;
@@ -52,20 +54,51 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
 
         mpVenta = (TextView) findViewById(R.id.txtPromedio);
         mItemFact = (TextView) findViewById(R.id.txtCantItem);
+        final Button btnOK = (Button) findViewById(R.id.btnIndicadores);
+
         mLimite = (TextView) findViewById(R.id.txtLimite);
         mCredito = (TextView) findViewById(R.id.txtCredito);
         mNombre = (TextView) findViewById(R.id.txtIdNombre);
         mPuntos = (TextView) findViewById(R.id.txtPuntos);
+
         List<Indicadores> obj = Clientes_model.getIndicadores(ManagerURI.getDirDb(), IndicadoresClienteActivity.this,preferences.getString("ClsSelected"," --ERROR--"));
         setTitle("PASO 3 [ Pedido ] ");
+        if (obj.size()>0) {
+            mNombre.setText(obj.get(0).getmNombre() );
+            mpVenta.setText(obj.get(0).getmPromedioVenta3M());
+            mItemFact.setText(obj.get(0).getmCantidadItems3M());
+            Log.d("", "mMetas: " + obj.get(0).getmMetas() + " > " + obj.get(0).getmVentasActual());
+        }
 
-        mNombre.setText(obj.get(0).getmNombre());
-        mpVenta.setText(obj.get(0).getmPromedioVenta3M());
-        mItemFact.setText(obj.get(0).getmCantidadItems3M());
-        mLimite.setText(obj.get(0).getmLimite());
-        mCredito.setText(obj.get(0).getmCredito());
+        final List<Clientes> obClientes = Clientes_model.getInfoCliente(ManagerURI.getDirDb(), IndicadoresClienteActivity.this,preferences.getString("ClsSelected","0"));
+        if (obClientes.size()>0){
+            //setTitle("PASO 2 [ Cobro ] - " + obClientes.get(0).getmNombre());
+            mCredito.setText("C$ " + obClientes.get(0).getmCredito());
+            mLimite.setText("C$ " + obClientes.get(0).getmDisponible());
+        }
 
-        Log.d("", "mMetas: " + obj.get(0).getmMetas() + " > " + obj.get(0).getmVentasActual());
+
+
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (obClientes.get(0).getmMoroso().equals("S")){
+                    btnOK.setText("CLIENTE MOROSO");
+                    btnOK.setBackgroundResource(R.drawable.button_danger_rounded);
+                }else{
+                    startActivity(new Intent(IndicadoresClienteActivity.this,PedidoActivity.class));
+                    finish();
+                }
+            }
+        });
+
+
+
+
+
+        //mLimite.setText(obj.get(0).getmLimite());
+        //mCredito.setText(obj.get(0).getmCredito());
+
 
         pieChart = (PieChart) findViewById(R.id.chart);
         pieChart.getDescription().setEnabled(false);
@@ -74,13 +107,6 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
         pieChart.setDrawEntryLabels(true);
         addDataSet();
 
-        findViewById(R.id.btnIndicadores).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(IndicadoresClienteActivity.this,PedidoActivity.class));
-                finish();
-            }
-        });
 
         for(Facturas objFactura: Clientes_model.getFacturas(ManagerURI.getDirDb(),IndicadoresClienteActivity.this,preferences.getString("ClsSelected"," --ERROR--"))){
             TotalPuntos += Float.parseFloat(objFactura.getmRemanente());

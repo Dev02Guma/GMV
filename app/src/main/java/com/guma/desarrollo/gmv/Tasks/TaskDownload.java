@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.guma.desarrollo.core.Articulos_model;
 import com.guma.desarrollo.core.Clientes_model;
 import com.guma.desarrollo.core.Clock;
+import com.guma.desarrollo.core.ManagerURI;
+import com.guma.desarrollo.core.SQLiteHelper;
 import com.guma.desarrollo.gmv.api.Class_retrofit;
 import com.guma.desarrollo.gmv.api.Servicio;
 import com.guma.desarrollo.gmv.models.Respuesta_articulos;
@@ -68,12 +70,13 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             Articulos_model.SaveArticulos(cnxt,articuloRespuesta.getResults());
                         }else{
                             pdialog.dismiss();
-                            Log.d(TAG, "onResponse: Articulos" + response.errorBody() );
+                            Log.d(TAG, "onResponse: noSuccessful Articulos" + response.errorBody() );
                             Toast.makeText(cnxt, ""+response.errorBody(), Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
                     public void onFailure(Call<Respuesta_articulos> call, Throwable t) {
+                        Log.d(TAG, "onResponse: Failure Articulos" + t.getMessage() );
                         pdialog.dismiss();
                     }
                 });
@@ -93,14 +96,14 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             Clientes_model.SaveMora(cnxt,moraRespuesta.getResults());
                         }else{
                             pdialog.dismiss();
-                            Log.d(TAG, "onResponse: " + response.errorBody() );
+                            Log.d(TAG, "onResponse: noSuccessful Mora " + response.errorBody() );
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Respuesta_mora> call, Throwable t) {
                         pdialog.dismiss();
-                        Log.d(TAG, "onResponse: " + t.getMessage() );
+                        Log.d(TAG, "onResponse: Failure Mora " + t.getMessage() );
                     }
                 });
 
@@ -120,23 +123,17 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             Clientes_model.SaveIndicadores(cnxt,IndicadorRespuesta.getResults());
                         }else{
                             pdialog.dismiss();
-                            Log.d(TAG, "onResponse: " + response.errorBody() );
+                            Log.d(TAG, "onResponse: noSuccessful Indicadores " + response.errorBody() );
                         }
                     }
-
                     @Override
                     public void onFailure(Call<Respuesta_indicadores> call, Throwable t) {
                         pdialog.dismiss();
-                        Log.d(TAG, "onResponse: " + t.getMessage() );
+                        Log.d(TAG, "onResponse: Failure Indicadores " + t.getMessage() );
 
                     }
                 });
-
-
-
-
-
-        Class_retrofit.Objfit().
+       Class_retrofit.Objfit().
                 create(Servicio.class).
                 obtenerListaClientes(Usuario).
                 enqueue(new Callback<Respuesta_clientes>() {
@@ -149,20 +146,20 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             Clientes_model.SaveClientes(cnxt,clRespuesta .getResults());
                         }else{
                             pdialog.dismiss();
-                            Log.d(TAG, "onResponse: " + response.errorBody() );
+                            Log.d(TAG, "onResponse: noSuccessful Clientes " + response.errorBody() );
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Respuesta_clientes> call, Throwable t) {
                         pdialog.dismiss();
-                        Log.d(TAG, "onResponse: " + t.getMessage() );
+                        Log.d(TAG, "onResponse: Failure Clientes " + t.getMessage() );
 
                     }
                 });
 
 
-        Class_retrofit.Objfit().create(Servicio.class)
+       Class_retrofit.Objfit().create(Servicio.class)
                 .obtenerFacturasPuntos(Usuario)
                 .enqueue(new Callback<Respuesta_puntos>() {
                     @Override
@@ -176,19 +173,19 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             pdialog.dismiss();
                         }else{
                             pdialog.dismiss();
-                            Log.d(TAG, "onResponse: " + response.errorBody() );
+                            Log.d(TAG, "onResponse: noSuccessful Facturas " + response.errorBody() );
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Respuesta_puntos> call, Throwable t) {
                         pdialog.dismiss();
-                        Log.d(TAG, "onResponse: " + t.getMessage() );
+                        Log.d(TAG, "onResponse: Failure Facturas " + t.getMessage() );
                     }
                 });
-        editor.putString("lstDownload", Clock.getTimeStamp());
-        editor.apply();
-        return null;
+       editor.putString("lstDownload", Clock.getTimeStamp());
+       editor.apply();
+       return null;
     }
 
     @Override

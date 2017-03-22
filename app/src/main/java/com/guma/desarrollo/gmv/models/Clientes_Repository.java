@@ -28,7 +28,7 @@ public class Clientes_Repository {
 
     private Clientes_Repository() {
         for(Clientes obj : Clientes_model.getClientes(ManagerURI.getDirDb(), ReferenciasContexto.getContextArticulo())) {
-            saveLead(new Clientes(obj.getmCliente(), obj.getmNombre(), "","","",""));
+            saveLead(new Clientes(obj.getmCliente(), obj.getmNombre(), "","","","","","",""));
             Log.d("", "Clientes_Repository: " + obj.getmCliente());
         }
     }
