@@ -19,24 +19,36 @@ import java.util.Map;
 
 public class Razon_model {
 
-    public static void SaveRazon(Context context,ArrayList<Razon> RAZON){
+    //public static void SaveRazon(Context context,ArrayList<Razon> RAZON){
+    public static void SaveRazon(Context context,Razon r){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
         try
         {
             myDbHelper = new SQLiteHelper(ManagerURI.getDirDb(),context);
             myDataBase = myDbHelper.getReadableDatabase();
-            for (int i=0;i<RAZON.size();i++)
+            /*for (int i=0;i<RAZON.size();i++)
             {
-                Razon r = RAZON.get(i);
+                Razon r = RAZON.get(i);*/
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("IdRazon",r.getmIdRazon());
                 contentValues.put("Vendedor",r.getmVendedor());
                 contentValues.put("Cliente",r.getmCliente());
+                contentValues.put("Nombre",r.getmNombre());
                 contentValues.put("Fecha",r.getmFecha());
-
+                /*Guradar el Encabezado del Registro*/
                 myDataBase.insert("RAZON",null,contentValues);
-            }
+                /*Guardar el Detalle del Registro*/
+                for (int i=0;i<r.rdet.size();i++)
+                {
+                    ContentValues contentValuesDet = new ContentValues();
+                    contentValuesDet.put("IdRazon",r.rdet.get(i).toString());
+                    contentValuesDet.put("IdAE",r.rdet.get(i).toString());
+                    contentValuesDet.put("Actividad",r.rdet.get(i).toString());
+                    contentValuesDet.put("Categoria",r.rdet.get(i).toString());
+                    myDataBase.insert("RAZON_DETALL",null,contentValuesDet);
+                }
+            /*}*/
         }
         catch (Exception e) { e.printStackTrace(); }
         finally

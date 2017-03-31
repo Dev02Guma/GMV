@@ -14,7 +14,13 @@ import java.util.HashMap;
 
 public class Razon {
 
-    String mIdRazon, mVendedor, mCliente, mFecha, mObservacion;
+    String mIdRazon;
+    String mVendedor;
+    String mCliente;
+
+    String mNombre;
+    String mFecha;
+    String mObservacion;
     ArrayList<RazonDetalle> rdet;
 
     JSONObject detalles = new JSONObject();
@@ -62,6 +68,14 @@ public class Razon {
 
     public void setmCliente(String mCliente) {
         this.mCliente = mCliente;
+    }
+
+    public String getmNombre() {
+        return mNombre;
+    }
+
+    public void setmNombre(String mNombre) {
+        this.mNombre = mNombre;
     }
 
     public String getmFecha() {

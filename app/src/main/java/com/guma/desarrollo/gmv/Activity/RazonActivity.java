@@ -3,12 +3,16 @@ package com.guma.desarrollo.gmv.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ExpandableListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +25,8 @@ import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.Pedidos;
 import com.guma.desarrollo.core.Pedidos_model;
 import com.guma.desarrollo.core.Razon;
+import com.guma.desarrollo.core.RazonDetalle;
+import com.guma.desarrollo.core.Razon_model;
 import com.guma.desarrollo.core.SQLiteHelper;
 import com.guma.desarrollo.gmv.ActividadInfo;
 import com.guma.desarrollo.gmv.Adapters.ActividadesAdapter;
@@ -42,6 +48,7 @@ public class RazonActivity extends AppCompatActivity {
     private ActividadesAdapter listAdapter;
     private ExpandableListView simpleExpandableListView;
 
+    private TextView tvCategoriaItem;
     private TextView tvActividadItem;
     private TextView tvIdAEItem;
     private CheckBox cbActividad;
@@ -88,6 +95,8 @@ public class RazonActivity extends AppCompatActivity {
         editor = preferences.edit();
         setTitle(preferences.getString("NameClsSelected"," --ERROR--"));
 
+        CodCls =  preferences.getString("ClsSelected","");
+
         loadActividades();
         simpleExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListViewRazon);
         listAdapter = new ActividadesAdapter(RazonActivity.this,deptList);
@@ -101,25 +110,50 @@ public class RazonActivity extends AppCompatActivity {
             }
         });
 
+        cbActividad = (CheckBox) findViewById(R.id.ActividadChk);
+
         findViewById(R.id.btnSaveRazon).setOnClickListener(new View.OnClickListener(){
             private String strIdAE="";
             private String strActividad="";
             private boolean strValor=false;
             @Override
             public void onClick(View v) {
+                Razon ra = new Razon();
+                ArrayList<RazonDetalle> rd = new ArrayList<RazonDetalle>();
+                int key = SQLiteHelper.getId(ManagerURI.getDirDb(), RazonActivity.this, "RAZON");
+                IdRazon = preferences.getString("VENDEDOR", "00") + "P" + Clock.getIdDate() + String.valueOf(key);
+                ra.setmIdRazon(IdRazon);
+                ra.setmVendedor("F09");
+                ra.setmCliente(preferences.getString("ClsSelected",""));
+                ra.setmNombre(preferences.getString("NameClsSelected"," --ERROR--"));
+                ra.setmFecha(Clock.getNow());
+                ra.setmObservacion("Observacion");
                 for (int i=0;i<simpleExpandableListView.getCount();i++)
                 {
+                    tvCategoriaItem = (TextView) simpleExpandableListView.getChildAt(i).findViewById(R.id.headingCategoria);
                     tvActividadItem = (TextView) simpleExpandableListView.getChildAt(i).findViewById(R.id.ActividadItem);
                     tvIdAEItem = (TextView) simpleExpandableListView.getChildAt(i).findViewById(R.id.IdAEItem);
                     cbActividad = (CheckBox) simpleExpandableListView.getChildAt(i).findViewById(R.id.ActividadChk);
+                    //Agregar los detalles
+                    if (tvActividadItem !=null)
+                    {
+                        if (cbActividad.isChecked())
+                        {
+                            rd.add(new RazonDetalle(IdRazon,tvIdAEItem.getText().toString(), tvActividadItem.getText().toString(),""));
+                            ra.setRdet(rd);
+                        };
+                    }
+                    /*
                     if (tvActividadItem !=null)
                     {
                         //Toast.makeText(RazonActivity.this,tvActividadItem.getText().toString(), Toast.LENGTH_LONG);
                         strActividad=tvActividadItem.getText().toString();
                         strIdAE=tvIdAEItem.getText().toString();
                         strValor=cbActividad.isChecked();
-                    }
+
+                    }*/
                 }
+                Razon_model.SaveRazon(RazonActivity.this,ra);
             }
 
         });
