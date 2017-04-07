@@ -1,12 +1,16 @@
 package com.guma.desarrollo.gmv.Activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,6 +29,7 @@ import com.guma.desarrollo.gmv.Adapters.CustomArrayAdapter;
 import com.guma.desarrollo.gmv.Adapters.RazonesAdapter;
 import com.guma.desarrollo.gmv.CategoriaInfo;
 import com.guma.desarrollo.gmv.R;
+import com.guma.desarrollo.gmv.api.Notificaciones;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +43,7 @@ public class RazonesActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private String CodCls,IdRazon;
+    EditText etObservacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,22 +65,7 @@ public class RazonesActivity extends AppCompatActivity {
 
         //listAdapter = new RazonesAdapter(RazonesActivity.this,deptList);
         datos = Actividades_model.getActividades(ManagerURI.getDirDb(), RazonesActivity.this);
-        /*
-        rows = new ArrayList<Row>(30);
-        Row row = null;
-        for (int i = 1; i<31; i++)
-        {
-            row = new Row();
-            row.setTitle("Title "+i);
-            row.setSubtitle("Subtitle " + i);
-            rows.add(row);
-        }
-        rows.get(3).setChecked(true);
-        rows.get(6).setChecked(true);
-        rows.get(9).setChecked(true);
 
-        listView.setAdapter(new CustomArrayAdapter(this,rows));
-        */
         rows = new ArrayList<Row>(datos.size());
         Row row = null;
         for (int i = 0; i < datos.size(); i++) {
@@ -86,40 +77,74 @@ public class RazonesActivity extends AppCompatActivity {
             rows.add(row);
         }
         listView.setAdapter(new CustomArrayAdapter(this, rows));
+
         findViewById(R.id.btnSaveRazones).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                //ListView lv = (ListView)findViewById(R.id.listaProductos);
-                ListView lv = (ListView)findViewById(R.id.list);
-                int count = lv.getAdapter().getCount();
-
-                Razon ra = new Razon();
-                ArrayList<RazonDetalle> rd = new ArrayList<RazonDetalle>();
-                int key = SQLiteHelper.getId(ManagerURI.getDirDb(), RazonesActivity.this, "RAZON");
-                IdRazon = preferences.getString("VENDEDOR", "00") + "R" + Clock.getIdDate() + String.valueOf(key);
-                ra.setmIdRazon(IdRazon);
-                ra.setmVendedor("F09");
-                ra.setmCliente(preferences.getString("ClsSelected",""));
-                ra.setmNombre(preferences.getString("NameClsSelected"," --ERROR--"));
-                ra.setmFecha(Clock.getNow());
-                ra.setmObservacion("Observacion");
-
-                for (int i = 0; i < lv.getAdapter().getCount(); i++)
-                {
-                    TextView tvActividad = (TextView) lv.getAdapter().getView(i,null,null).findViewById(R.id.textViewTitle);
-                    TextView tvCategoria = (TextView) lv.getAdapter().getView(i,null,null).findViewById(R.id.textViewSubtitle);
-                    TextView tvIdAE = (TextView) lv.getAdapter().getView(i,null,null).findViewById(R.id.textViewSubSubtitle);
-                    CheckBox tvTest  = (CheckBox) lv.getAdapter().getView(i,null,null).findViewById(R.id.checkBox);
-
-                    if (tvTest.isChecked())
+                /*verificar si hay al menos marcado uno para guardar*/
+                ListView lvv = (ListView)findViewById(R.id.list);
+                int CantReg=0;
+                for (int j=0;j<lvv.getAdapter().getCount();j++){
+                    CheckBox tvvTest  = (CheckBox) lvv.getAdapter().getView(j,null,null).findViewById(R.id.checkBox);
+                    if (tvvTest.isChecked())
                     {
-                        rd.add(new RazonDetalle(IdRazon.toString(),tvIdAE.getText().toString(),tvActividad.getText().toString(),tvCategoria.getText().toString()));
-                        ra.setRdet(rd);
+                        CantReg++;
                     }
-
                 }
-                Razon_model.SaveRazon(RazonesActivity.this,ra);
+                if (CantReg>0)
+                {
+                /*preguntar si desea guardar*/
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RazonesActivity.this);
+                    builder.setMessage("Desea Guardar la Visita?")
+                            .setPositiveButton("Si",new DialogInterface.OnClickListener(){
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        /*INICIO GUARDAR*/
+                                            ListView lv = (ListView)findViewById(R.id.list);
+                                            int count = lv.getAdapter().getCount();
+                                            etObservacion = (EditText) findViewById(R.id.etObservacion);
+
+                                            Razon ra = new Razon();
+                                            ArrayList<RazonDetalle> rd = new ArrayList<RazonDetalle>();
+                                            int key = SQLiteHelper.getId(ManagerURI.getDirDb(), RazonesActivity.this, "RAZON");
+                                            IdRazon = preferences.getString("VENDEDOR", "00") + "R" + Clock.getIdDate() + String.valueOf(key);
+                                            ra.setmIdRazon(IdRazon);
+                                            ra.setmVendedor("F09");
+                                            ra.setmCliente(preferences.getString("ClsSelected",""));
+                                            ra.setmNombre(preferences.getString("NameClsSelected"," --ERROR--"));
+                                            ra.setmFecha(Clock.getNow());
+                                            ra.setmObservacion(etObservacion.getText().toString());
+
+                                            for (int i = 0; i < lv.getAdapter().getCount(); i++)
+                                            {
+                                                TextView tvActividad = (TextView) lv.getAdapter().getView(i,null,null).findViewById(R.id.textViewTitle);
+                                                TextView tvCategoria = (TextView) lv.getAdapter().getView(i,null,null).findViewById(R.id.textViewSubtitle);
+                                                TextView tvIdAE = (TextView) lv.getAdapter().getView(i,null,null).findViewById(R.id.textViewSubSubtitle);
+                                                CheckBox tvTest  = (CheckBox) lv.getAdapter().getView(i,null,null).findViewById(R.id.checkBox);
+
+                                                if (tvTest.isChecked())
+                                                {
+                                                    rd.add(new RazonDetalle(IdRazon.toString(),tvIdAE.getText().toString(),tvActividad.getText().toString(),tvCategoria.getText().toString()));
+                                                    ra.setRdet(rd);
+                                                }
+
+                                            }
+                                            Razon_model.SaveRazon(RazonesActivity.this,ra);
+
+                                        /*FIN GUARDAR*/
+                                            Intent send = new Intent(RazonesActivity.this,AgendaActivity.class);
+                                            startActivity(send);
+                                            finish();
+                                        }
+                                    }
+                            ).create().show();
+                }
+                else
+                {
+                    new Notificaciones().Alert(RazonesActivity.this,"Sin Actividades","Favor Seleccione al menos una Actividad como Razón de Visita...").setCancelable(false).setPositiveButton("OK", null).show();
+                }
+
             }
         });
 
