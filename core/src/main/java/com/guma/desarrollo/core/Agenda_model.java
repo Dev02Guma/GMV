@@ -4,11 +4,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by maryan.espinoza on 23/03/2017.
@@ -72,6 +75,47 @@ public class Agenda_model {
                     cursor.moveToNext();
                 }
             }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+        return lista;
+    }
+    public static List<Agenda> UnloadAgenda(String basedir, Context context) {
+        //List<String> lista = new ArrayList<>();
+        List<Agenda> lista = new ArrayList<>();
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+            myDbHelper = new SQLiteHelper(basedir, context);
+            myDataBase = myDbHelper.getReadableDatabase();
+            //Cursor cursor = myDataBase.query(true, "VCLIENTES", null, null, null, null, null, null, null);
+            //Cursor cursor = myDataBase.rawQuery("SELECT T0.*,T1.Lunes,T1.Martes,T1.Miercoles,T1.Jueves,T1.Viernes FROM AGENDA T0 INNER JOIN VCLIENTES T1 ON T0.IdPlan = T1.IdPlan",null);
+            Cursor cursor = myDataBase.rawQuery("SELECT T0.*,T1.Lunes,T1.Martes,T1.Miercoles,T1.Jueves,T1.Viernes FROM AGENDA T0 INNER JOIN VCLIENTES T1 ON T0.IdPlan = T1.IdPlan",null);
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast()) {
+                    Agenda tmp = new Agenda();
+                    tmp.setmIdPlan(cursor.getString(cursor.getColumnIndex("IdPlan")));
+                    tmp.setmVendedor(cursor.getString(cursor.getColumnIndex("Vendedor")));
+                    tmp.setmRuta(cursor.getString(cursor.getColumnIndex("Ruta")));
+                    tmp.setmInicia(cursor.getString(cursor.getColumnIndex("Inicia")));
+                    tmp.setmTermina(cursor.getString(cursor.getColumnIndex("Termina")));
+                    tmp.setmZona(cursor.getString(cursor.getColumnIndex("Zona")));
+                    tmp.setmLunes(cursor.getString(cursor.getColumnIndex("Lunes")));
+                    tmp.setmMartes(cursor.getString(cursor.getColumnIndex("Martes")));
+                    tmp.setmMiercoles(cursor.getString(cursor.getColumnIndex("Miercoles")));
+                    tmp.setmJueves(cursor.getString(cursor.getColumnIndex("Jueves")));
+                    tmp.setmViernes(cursor.getString(cursor.getColumnIndex("Viernes")));
+                    lista.add(tmp);
+                    cursor.moveToNext();
+                }
+            }
+
         }
         catch (Exception e) { e.printStackTrace(); }
         finally

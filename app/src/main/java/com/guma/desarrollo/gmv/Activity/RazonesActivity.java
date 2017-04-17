@@ -66,10 +66,9 @@ public class RazonesActivity extends AppCompatActivity {
         //listAdapter = new RazonesAdapter(RazonesActivity.this,deptList);
         datos = Actividades_model.getActividades(ManagerURI.getDirDb(), RazonesActivity.this);
 
-        rows = new ArrayList<Row>(datos.size());
-        Row row = null;
+        rows = new ArrayList<>(datos.size());
         for (int i = 0; i < datos.size(); i++) {
-            row = new Row();
+            Row row = new Row();
             row.setTitle(datos.get(i).getmActividad());
             row.setSubtitle(datos.get(i).getmCategoria());
             row.setSubsubtitle(datos.get(i).getmIdAE());
@@ -125,7 +124,7 @@ public class RazonesActivity extends AppCompatActivity {
 
                                                 if (tvTest.isChecked())
                                                 {
-                                                    rd.add(new RazonDetalle(IdRazon.toString(),tvIdAE.getText().toString(),tvActividad.getText().toString(),tvCategoria.getText().toString()));
+                                                    rd.add(new RazonDetalle(IdRazon,tvIdAE.getText().toString(),tvActividad.getText().toString(),tvCategoria.getText().toString()));
                                                     ra.setRdet(rd);
                                                 }
 
@@ -133,8 +132,7 @@ public class RazonesActivity extends AppCompatActivity {
                                             Razon_model.SaveRazon(RazonesActivity.this,ra);
 
                                         /*FIN GUARDAR*/
-                                            Intent send = new Intent(RazonesActivity.this,AgendaActivity.class);
-                                            startActivity(send);
+                                            startActivity(new Intent(RazonesActivity.this,AgendaActivity.class));
                                             finish();
                                         }
                                     }

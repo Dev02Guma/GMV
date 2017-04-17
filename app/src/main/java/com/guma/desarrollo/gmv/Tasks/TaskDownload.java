@@ -143,7 +143,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
         Gson gson = new Gson();
         //Log.d("TaskPedidos","el gson-> "+gson.toJson(listPedidos));
 
-        if (listPedidos.size()>0) {
+      /*  if (listPedidos.size()>0) {
             Class_retrofit.Objfit()
                     .create(Servicio.class)
                     .actualizarPedidos(gson.toJson(listPedidos))
@@ -167,7 +167,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             Log.d(TAG, "onResponse: Failure update pedidos" + t.getMessage());
                         }
                     });
-        }
+        }*/
 
        Class_retrofit.Objfit()
                 .create(Servicio.class)
@@ -226,7 +226,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                         if(response.isSuccessful()){
                             pdialog.setMessage("Cargado Puntos.... ");
                             Respuesta_puntos clpuntos = response.body();
-                            Log.d(TAG, "onResponse: Facturas "  + clpuntos.getCount());
+                            Log.d(TAG, "umaagro.FACTURA_LINEA Facturas "  + clpuntos.getCount());
                             Clientes_model.SaveFacturas(cnxt,clpuntos.getResults());
                             Alerta();
                             pdialog.dismiss();

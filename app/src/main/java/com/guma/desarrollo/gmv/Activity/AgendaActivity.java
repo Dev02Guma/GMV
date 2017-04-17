@@ -2,77 +2,39 @@ package com.guma.desarrollo.gmv.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ScrollingTabContainerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import android.content.DialogInterface;
 
 import android.support.v7.app.AlertDialog;
 
-import com.google.gson.Gson;
-
-import com.google.gson.JsonObject;
-import com.guma.desarrollo.core.Actividad;
-import com.guma.desarrollo.core.Actividades_model;
-import com.guma.desarrollo.core.Agenda_model;
-import com.guma.desarrollo.core.Articulos_model;
 import com.guma.desarrollo.core.Clientes;
-import com.guma.desarrollo.core.Clientes_model;
 import com.guma.desarrollo.core.Clock;
-import com.guma.desarrollo.core.Cobros;
-import com.guma.desarrollo.core.Cobros_model;
 import com.guma.desarrollo.core.ManagerURI;
-import com.guma.desarrollo.core.Pedidos;
-import com.guma.desarrollo.core.Pedidos_model;
 import com.guma.desarrollo.gmv.Adapters.Clientes_Leads;
-import com.guma.desarrollo.gmv.CategoriaInfo;
 import com.guma.desarrollo.gmv.ChildInfo;
 import com.guma.desarrollo.gmv.Tasks.TaskDownload;
 import com.guma.desarrollo.gmv.Tasks.TaskUnload;
-import com.guma.desarrollo.gmv.api.Calendario;
-import com.guma.desarrollo.gmv.api.Class_retrofit;
 import com.guma.desarrollo.gmv.api.ConnectivityReceiver;
 import com.guma.desarrollo.gmv.Adapters.CustomAdapter;
 import com.guma.desarrollo.gmv.GroupInfo;
 import com.guma.desarrollo.gmv.MyApplication;
 import com.guma.desarrollo.gmv.R;
-import com.guma.desarrollo.gmv.api.Notificaciones;
-import com.guma.desarrollo.gmv.api.Servicio;
 import com.guma.desarrollo.gmv.models.Clientes_Repository;
-
-import com.guma.desarrollo.gmv.models.Respuesta_pedidos;
-import com.guma.desarrollo.gmv.models.Respuesta_articulos;
-import com.guma.desarrollo.gmv.models.Respuesta_indicadores;
-import com.guma.desarrollo.gmv.models.Respuesta_mora;
-import com.guma.desarrollo.gmv.models.Respuesta_clientes;
-import com.guma.desarrollo.gmv.models.Respuesta_puntos;
-import com.guma.desarrollo.gmv.models.Respuesta_usuario;
-
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AgendaActivity extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener {
 
@@ -208,6 +170,8 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
 
     private void checkConnection() {
         boolean isConnected = ConnectivityReceiver.isConnected();
+
+        Log.d("", "checkConnection: " + isConnected);
         showSnack(isConnected);
     }
     private void showSnack(boolean isConnected) {
@@ -271,9 +235,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     }
 
     private void loadData(){
-
-
-        List<Map<String, Object>> lista = Agenda_model.getAgenda(ManagerURI.getDirDb(), AgendaActivity.this);
+     /*  List<Map<String, Object>> lista = Agenda_model.getAgenda(ManagerURI.getDirDb(), AgendaActivity.this);
         if (lista.size()>0){
             //deptList.clear();
             String[] strDias = getResources().getStringArray(R.array.dias);
@@ -282,15 +244,13 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                 for (int d=0;d<mD.length;d++){
                     addProduct(strDias[i],mD[d],"","N");
                 }
-            }
+            }*/
 
-        }else{
-            blankAgenda();
-        }
-
-
-
-
+        addProduct("LUNES","FARMACIA SAN MARTIN","01006","S");
+        addProduct("MARTES","FARMACIA FARMA CENTER","01338","N");
+        addProduct("MIERCOLES","VACIO","","N");
+        addProduct("JUEVES","VACIO","","N");
+        addProduct("VIERNES","VACIO","","N");
     }
 
     private int addProduct(String department, String product,String Codigo,String Cumple){

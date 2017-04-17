@@ -68,7 +68,7 @@ public class ResumenActivity extends AppCompatActivity {
         lblNombreClliente.setText(ints.getStringExtra("NombreCliente"));
         countArti = (TextView) findViewById(R.id.txtCountArti);
 
-        Toast.makeText(ResumenActivity.this, preferences.getString("ClsSelected",""), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ResumenActivity.this, preferences.getString("ClsSelected",""), Toast.LENGTH_SHORT).show();
         idPedido = preferences.getString("IDPEDIDO", "");
         if (!idPedido.equals("")){
             //Toast.makeText(this, "La edidion del pedido: "+preferences.getString("IDPEDIDO", ""), Toast.LENGTH_SHORT).show();
