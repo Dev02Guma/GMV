@@ -67,8 +67,8 @@ public class CrearAgendaActivity extends AppCompatActivity{
         mTopAgenda= new ArrayList<>();
 
 
-        mSemanaIni.setText(Clock.getTMD());
-        mSemanaEnd.setText(Clock.getTMD());
+        //mSemanaIni.setText(Clock.getTMD());
+        //mSemanaEnd.setText(Clock.getTMD());
 
 
         final Calendario Cld1 = new Calendario();
@@ -76,7 +76,9 @@ public class CrearAgendaActivity extends AppCompatActivity{
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (TextUtils.isEmpty(mZONA.getText())){
+                //Log.d("", "onDateSet: SemanaIni " + mSemanaIni.getText() + " mSemanaEnd: " + mSemanaEnd.getText());
+                //Log.d("", "Diferencia en Dias: " + Clock.getDiferencia(Clock.StringToDate(mSemanaIni.getText().toString()),Clock.StringToDate(mSemanaEnd.getText().toString()),"Dias"));
+                     if (TextUtils.isEmpty(mZONA.getText())){
                     mZONA.setError("Campo Requerido");
                 }else{
                     if (TextUtils.isEmpty(mSemanaIni.getText())){
@@ -86,7 +88,11 @@ public class CrearAgendaActivity extends AppCompatActivity{
                             mSemanaEnd.setError("Campo Requerido");
                         }else{
                             if (listSave.size()>0){
-                                SaveAgenda();
+                                if ((Integer.parseInt(Clock.getDiferencia(Clock.StringToDate(mSemanaIni.getText().toString(),"yyyy-mm-dd"),Clock.StringToDate(mSemanaEnd.getText().toString(),"yyyy-mm-dd"),"Dias"))+1) > 5 ){
+                                    new Notificaciones().Alert(CrearAgendaActivity.this,"ERROR!!!","No se permite un rago de mas de 5 dias...").setCancelable(false).setPositiveButton("OK", null).show();
+                                }else{
+                                    SaveAgenda();
+                                }
                             }else{
                                 Toast.makeText(CrearAgendaActivity.this, "Agenda Vacia.", Toast.LENGTH_SHORT).show();
                             }
@@ -95,18 +101,30 @@ public class CrearAgendaActivity extends AppCompatActivity{
                 }
             }
         });
+
+
         findViewById(R.id.startPlan).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                Cld1.show(getSupportFragmentManager(), "datePicker");
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    Cld1.show(getSupportFragmentManager(), "datePicker");
+                    Cld1.setFrm(1);
+                    v.clearFocus();
+                }
+
             }
         });
         findViewById(R.id.endPlan).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                Cld2.show(getSupportFragmentManager(), "datePicker");
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    Cld2.show(getSupportFragmentManager(), "datePicker");
+                    Cld2.setFrm(2);
+                    v.clearFocus();
+                }
             }
         });
+
 
         simpleExpandableListView = (ExpandableListView) findViewById(R.id.ExpListDias);
         listAdapter = new CustomAdapter(CrearAgendaActivity.this, deptList);

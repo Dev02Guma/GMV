@@ -127,7 +127,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 }
             });
         }
-
+*/
         List<Agenda> objAgenda = Agenda_model.UnloadAgenda(ManagerURI.getDirDb(), cnxt);
         Log.d(TAG, "doInBackground: " + objAgenda.size());
         if (objAgenda.size()>0){
@@ -147,7 +147,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 }
             });
         }
-*/
+
 
         pdialog.dismiss();
         editor.putString("lstUnload", Clock.getTimeStamp()).apply();

@@ -35,7 +35,7 @@ public class Clock {
         String sTime = now.format("%d%m%y");
         return sTime;
     }
-    public static String getDiferencia(Date fechaInicial, Date fechaFinal){
+    public static String getDiferencia(Date fechaInicial, Date fechaFinal, String parametro){
 
         long diferencia = fechaFinal.getTime() - fechaInicial.getTime();
 
@@ -56,17 +56,27 @@ public class Clock {
         long segsTranscurridos = diferencia / segsMilli;
 
         //return "diasTranscurridos: " + diasTranscurridos + " , horasTranscurridos: " + horasTranscurridos +" , minutosTranscurridos: " + minutosTranscurridos + " , segsTranscurridos: " + segsTranscurridos;
-        return String.valueOf(horasTranscurridos);
+
+        if (parametro.equals("Hrs")){
+            return String.valueOf(horasTranscurridos);
+        }else {
+            if (parametro.equals("Dias")){
+                return String.valueOf(diasTranscurridos);
+            }
+        }
+        return "";
+
     }
-    public static Date StringToDate(String dateInString){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+    public static Date StringToDate(String dateInString,String Formato){
+        SimpleDateFormat formatter = new SimpleDateFormat(Formato);
         Date date = null;
         try {
             date = formatter.parse(dateInString);
         } catch (Exception e) {
-            Log.d("", "StringToDate: " + e.getMessage());
             e.printStackTrace();
         }
         return date;
     }
+
+
 }
