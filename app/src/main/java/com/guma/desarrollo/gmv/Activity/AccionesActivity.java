@@ -26,8 +26,12 @@ public class AccionesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
-
+        //editor.putString("BANDERA","1").apply();
+        String bandera = preferences.getString("BANDERA", "0");
         setTitle("PASO 2 [ Acciones ]");
+        if (bandera.equals("1")){
+            findViewById(R.id.btnRZ).setVisibility(View.GONE);
+        }
 
         mName = (TextView) findViewById(R.id.txtNameCliente);
         mName.setText(preferences.getString("NameClsSelected"," --ERROR--"));
@@ -79,6 +83,7 @@ public class AccionesActivity extends AppCompatActivity {
         editor.putString("LATITUD", "0.0");
         editor.putString("LONGITUD", "0.0");
         editor.putString("LUGAR_VISITA", "");
+        editor.putString("BANDERA","0");
         editor.apply();
     }
 }
