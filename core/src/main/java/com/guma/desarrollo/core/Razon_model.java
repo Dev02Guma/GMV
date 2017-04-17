@@ -31,24 +31,28 @@ public class Razon_model {
             {
                 Razon r = RAZON.get(i);*/
                 ContentValues contentValues = new ContentValues();
+                ContentValues contentValuesDet = new ContentValues();
+
                 contentValues.put("IdRazon",r.getmIdRazon());
                 contentValues.put("Vendedor",r.getmVendedor());
                 contentValues.put("Cliente",r.getmCliente());
                 contentValues.put("Nombre",r.getmNombre());
                 contentValues.put("Fecha",r.getmFecha());
+                contentValues.put("Observacion",r.getmObservacion());
                 /*Guradar el Encabezado del Registro*/
                 myDataBase.insert("RAZON",null,contentValues);
                 /*Guardar el Detalle del Registro*/
                 for (int i=0;i<r.rdet.size();i++)
                 {
-                    ContentValues contentValuesDet = new ContentValues();
-                    contentValuesDet.put("IdRazon",r.rdet.get(i).toString());
-                    contentValuesDet.put("IdAE",r.rdet.get(i).toString());
-                    contentValuesDet.put("Actividad",r.rdet.get(i).toString());
-                    contentValuesDet.put("Categoria",r.rdet.get(i).toString());
-                    myDataBase.insert("RAZON_DETALL",null,contentValuesDet);
+                    contentValuesDet.put("IdRazon",r.rdet.get(i).mIdRazon.toString());
+                    contentValuesDet.put("IdAE",r.rdet.get(i).mIdAE.toString());
+                    contentValuesDet.put("Actividad",r.rdet.get(i).mActividad.toString());
+                    contentValuesDet.put("Categoria",r.rdet.get(i).mCategoria.toString());
+                    myDataBase.insert("RAZON_DETALLE",null,contentValuesDet);
                 }
+                contentValuesDet=null;
             /*}*/
+            contentValues = null;
         }
         catch (Exception e) { e.printStackTrace(); }
         finally

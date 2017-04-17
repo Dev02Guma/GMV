@@ -128,7 +128,7 @@ public class RazonActivity extends AppCompatActivity {
                 ra.setmNombre(preferences.getString("NameClsSelected"," --ERROR--"));
                 ra.setmFecha(Clock.getNow());
                 ra.setmObservacion("Observacion");
-                for (int i=0;i<simpleExpandableListView.getCount();i++)
+                for (int i=0;i<simpleExpandableListView.getCount()-1;i++)
                 {
                     tvCategoriaItem = (TextView) simpleExpandableListView.getChildAt(i).findViewById(R.id.headingCategoria);
                     tvActividadItem = (TextView) simpleExpandableListView.getChildAt(i).findViewById(R.id.ActividadItem);

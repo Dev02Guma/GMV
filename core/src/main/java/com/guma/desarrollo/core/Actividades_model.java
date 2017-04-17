@@ -28,6 +28,7 @@ public class Actividades_model {
                 contentValues.put("IdAE" , a.getmIdAE());
                 contentValues.put("Categoria" , a.getmCategoria());
                 contentValues.put("Actividad" , a.getmActividad());
+                //contentValues.put("X", a.getChecked()? 1 : 0);
                 myDataBase.insert("ACTIVIDAD", null, contentValues );
             }
         }
@@ -57,6 +58,8 @@ public class Actividades_model {
                     tmp.setmIdAE(cursor.getString(cursor.getColumnIndex("IdAE")));
                     tmp.setmCategoria(cursor.getString(cursor.getColumnIndex("Categoria")));
                     tmp.setmActividad(cursor.getString(cursor.getColumnIndex("Actividad")));
+                    //tmp.setChecked(cursor.getString(cursor.getColumnIndex("X")));
+                    //tmp.setChecked(cursor.getInt(cursor.getColumnIndex("X"))!=0);
                     lista.add(tmp);
                     cursor.moveToNext();
                 }

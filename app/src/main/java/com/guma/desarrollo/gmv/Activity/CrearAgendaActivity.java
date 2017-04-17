@@ -6,24 +6,30 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.utils.Utils;
+import com.guma.desarrollo.core.Agenda_model;
 import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Clientes_model;
+import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.gmv.Adapters.CustomAdapter;
 import com.guma.desarrollo.gmv.ChildInfo;
 import com.guma.desarrollo.gmv.GroupInfo;
 import com.guma.desarrollo.gmv.R;
 import com.guma.desarrollo.gmv.api.Calendario;
-
+import com.guma.desarrollo.gmv.api.Notificaciones;
 
 
 import java.io.Serializable;
@@ -38,7 +44,9 @@ public class CrearAgendaActivity extends AppCompatActivity{
     private CustomAdapter listAdapter;
     private ArrayList<GroupInfo> deptList = new ArrayList<>();
     private LinkedHashMap<String, GroupInfo> subjects = new LinkedHashMap<>();
-    List<Map<String, Object>> list;
+    List<Map<String, Object>> list,listSave,mDetalleAgenda,mTopAgenda;
+    EditText mtVendedor,mRuta,mZONA,mSemanaIni,mSemanaEnd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +55,44 @@ public class CrearAgendaActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){ getSupportActionBar().setDisplayHomeAsUpEnabled(true); }
         setTitle("PLAN DE TRABAJO");
+        mtVendedor = (EditText) findViewById(R.id.txtIdVendedor);
+        mRuta = (EditText) findViewById(R.id.txtRuta);
+        mZONA= (EditText) findViewById(R.id.txtZona);
+        mSemanaIni= (EditText) findViewById(R.id.startPlan);
+        mSemanaEnd = (EditText) findViewById(R.id.endPlan);
 
         list = new ArrayList<>();
+        listSave = new ArrayList<>();
+        mDetalleAgenda= new ArrayList<>();
+        mTopAgenda= new ArrayList<>();
+
+
+        mSemanaIni.setText(Clock.getTMD());
+        mSemanaEnd.setText(Clock.getTMD());
+
+
         final Calendario Cld1 = new Calendario();
         final Calendario Cld2 = new Calendario();
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SaveAgenda();
+                if (TextUtils.isEmpty(mZONA.getText())){
+                    mZONA.setError("Campo Requerido");
+                }else{
+                    if (TextUtils.isEmpty(mSemanaIni.getText())){
+                        mSemanaIni.setError("Campo Requerido");
+                    }else{
+                        if (TextUtils.isEmpty(mSemanaEnd.getText())){
+                            mSemanaEnd.setError("Campo Requerido");
+                        }else{
+                            if (listSave.size()>0){
+                                SaveAgenda();
+                            }else{
+                                Toast.makeText(CrearAgendaActivity.this, "Agenda Vacia.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                }
             }
         });
         findViewById(R.id.startPlan).setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -94,35 +132,64 @@ public class CrearAgendaActivity extends AppCompatActivity{
             map.put("ITEMNAME", data.getStringArrayListExtra("myCliente").get(1));
             map.put("ITEMCODIGO", data.getStringArrayListExtra("myCliente").get(2));
             list.add(map);
+            listSave.add(map);
             Refresh();
         }
     }
 
+
     private void Refresh() {
-       // simpleExpandableListView.setAdapter(new CustomAdapter(CrearAgendaActivity.this, new ArrayList<GroupInfo>()));
-        for (Map<String, Object> obj : list){
-            addProduct(obj.get("ITEMDIA").toString(),obj.get("ITEMNAME").toString(),obj.get("ITEMCODIGO").toString(),"N");
+        for (int i=0;i < list.size();i++){
+            addProduct(list.get(i).get("ITEMDIA").toString(),list.get(i).get("ITEMNAME").toString(),list.get(i).get("ITEMCODIGO").toString(),"N");
         }
-        /*for (int i = 0; i < listAdapter.getGroupCount(); i++){
-            for (int s=0;s<deptList.get(i).getCount();s++){
-                deptList.get(i).getName();
-                deptList.get(i).getProductList().get(s).getName();
-                deptList.get(i).getProductList().get(s).getCodigo();
-                //Log.d("", "Refresh: " + deptList.get(i).getProductList().get(s).getName());
-                //deptList.get(i).getProductList().get(s);
-
-            }
-
-            //ChildInfo detailInfo =  headerInfo.getProductList().get(childPosition);
-        }*/
-        //expandAll();
+        list.clear();
+        expandAll();
     }
     private void SaveAgenda(){
-        for (Map<String, Object> obj : list){
-
-            Log.d("", "SaveAgenda: " + obj.get("ITEMDIA").toString() + " " + obj.get("ITEMNAME").toString()+ " " +obj.get("ITEMCODIGO").toString());
+        String mLUN ="",mMAR="",mMIE="",mJUE="",mVIE="";
+        String[] strDias = getResources().getStringArray(R.array.dias);
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> mapTop = new HashMap<>();
+        for (Map<String, Object> obj : listSave){
+            String mDia = obj.get("ITEMDIA").toString();
+            switch (mDia){
+                case "LUNES":
+                    mLUN += obj.get("ITEMCODIGO").toString()+"-";
+                break;
+                case "MARTES":
+                    mMAR += obj.get("ITEMCODIGO").toString()+"-";
+                    break;
+                case "MIERCOLES":
+                    mMIE += obj.get("ITEMCODIGO").toString()+"-";
+                    break;
+                case "JUEVES":
+                    mJUE += obj.get("ITEMCODIGO").toString()+"-";
+                    break;
+                case "VIERNES":
+                    mVIE += obj.get("ITEMCODIGO").toString()+"-";
+                    break;
+            }
 
         }
+        ;
+        map.put(strDias[0], (mLUN.equals("")  ? "" : mLUN.substring(0,mLUN.length()-1)));
+        map.put(strDias[1], (mMAR.equals("")  ? "" : mMAR.substring(0,mMAR.length()-1)));
+        map.put(strDias[2], (mMIE.equals("")  ? "" : mMIE.substring(0,mMIE.length()-1)));
+        map.put(strDias[3], (mJUE.equals("")  ? "" : mJUE.substring(0,mJUE.length()-1)));
+        map.put(strDias[4], (mVIE.equals("")  ? "" : mVIE.substring(0,mVIE.length()-1)));
+        mDetalleAgenda.add(map);
+
+        mapTop.put("Vendedor",mtVendedor.getText());
+        mapTop.put("mRuta",mRuta.getText());
+        mapTop.put("mZona",mZONA.getText());
+        mapTop.put("mSemanaIni",mSemanaIni.getText());
+        mapTop.put("mSemanaEnd",mSemanaEnd.getText());
+        mTopAgenda.add(mapTop);
+
+        Log.d("", "SaveAgenda: Top " + mTopAgenda);
+        Log.d("", "SaveAgenda: Detalles " + mDetalleAgenda);
+        Agenda_model.SaveAgenda(CrearAgendaActivity.this,mTopAgenda,mDetalleAgenda);
+        finish();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item)    {
@@ -137,30 +204,18 @@ public class CrearAgendaActivity extends AppCompatActivity{
     }
     private void loadData(){
         String[] strDias = getResources().getStringArray(R.array.dias);
-        addProduct(strDias[0],"","","S");
-        addProduct(strDias[1],"","","N");
-        addProduct(strDias[2],"","","N");
-        addProduct(strDias[3],"","","N");
-        addProduct(strDias[4],"","","N");
-
-        /*for(Clientes obj : Clientes_model.getClientes(ManagerURI.getDirDb(), CrearAgendaActivity.this)) {
-           /* if (obj.getmNombre().substring(0,1).equals("F")){
-                addProduct(obj.getmNombre().replace("FARMACIA","").trim().substring(0,1),obj.getmNombre(),obj.getmCliente(),"N");
-            }else{
-                addProduct(obj.getmNombre().trim().substring(0,1),obj.getmNombre(),obj.getmCliente(),"N");
-            }
-            addProduct("CLIENTES",obj.getmNombre(),obj.getmCliente(),"N");
-
-        }*/
+        for (int i=0;i<strDias.length;i++){
+            initTabbla(strDias[i]);
+        }
     }
-    private int addProduct(String department, String product,String Codigo,String Cumple){
+    private int addProduct(String Grupo, String product,String Codigo,String Cumple){
         int groupPosition = 0;
-        GroupInfo headerInfo = subjects.get(department);
+        GroupInfo headerInfo = subjects.get(Grupo);
 
         if(headerInfo == null){
             headerInfo = new GroupInfo();
-            headerInfo.setName(department);
-            subjects.put(department, headerInfo);
+            headerInfo.setName(Grupo);
+            subjects.put(Grupo, headerInfo);
             deptList.add(headerInfo);
         }
         ArrayList<ChildInfo> productList = headerInfo.getProductList();
@@ -177,6 +232,22 @@ public class CrearAgendaActivity extends AppCompatActivity{
         headerInfo.setProductList(productList);
         groupPosition = deptList.indexOf(headerInfo);
         return groupPosition;
+    }
+
+    private int initTabbla(String Grupo){
+        int groupPosition = 0;
+        GroupInfo headerInfo = subjects.get(Grupo);
+        if(headerInfo == null){
+            headerInfo = new GroupInfo();
+            headerInfo.setName(Grupo);
+            subjects.put(Grupo, headerInfo);
+            deptList.add(headerInfo);
+        }
+        headerInfo.setProductList(headerInfo.getProductList());
+        groupPosition = deptList.indexOf(headerInfo);
+        return groupPosition;
+
+
     }
 
 }
