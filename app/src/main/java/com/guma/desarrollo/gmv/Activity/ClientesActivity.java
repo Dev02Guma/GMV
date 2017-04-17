@@ -42,14 +42,9 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){ getSupportActionBar().setDisplayHomeAsUpEnabled(true); }
+        setTitle("Clientes");
 
-        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         listView = (ListView) findViewById(R.id.lstClientes);
         //objects = Articulo_Repository.getInstance().getArticulos();
         objects = Clientes_Repository.getInstance().getArticulos();

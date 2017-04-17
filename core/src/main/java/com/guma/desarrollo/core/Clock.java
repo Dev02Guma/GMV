@@ -17,6 +17,12 @@ public class Clock {
         String sTime = now.format("%Y-%m-%d %T");
         return sTime;
     }
+    public static String getTMD() {
+        Time now = new Time();
+        now.setToNow();
+        String sTime = now.format("%Y-%m-%d");
+        return sTime;
+    }
     public static String getTimeStamp() {
         Time now = new Time();
         now.setToNow();

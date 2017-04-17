@@ -130,7 +130,7 @@
             android:text="Paso 2"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:enabled="true"
+            android:enabled="false"
 
             android:id="@+id/btnGoToStep2"
             android:layout_gravity="center" />

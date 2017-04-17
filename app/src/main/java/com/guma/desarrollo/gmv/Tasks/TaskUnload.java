@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.guma.desarrollo.core.Agenda;
 import com.guma.desarrollo.core.Agenda_model;
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.Cobros;
@@ -58,7 +59,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
     protected String doInBackground(Integer... para) {
 
 
-
+/*
 
         List<Cobros> obj = Cobros_model.getCobros(ManagerURI.getDirDb(), cnxt);
         if (obj.size()>0){
@@ -127,6 +128,26 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
             });
         }
 
+        List<Agenda> objAgenda = Agenda_model.UnloadAgenda(ManagerURI.getDirDb(), cnxt);
+        Log.d(TAG, "doInBackground: " + objAgenda.size());
+        if (objAgenda.size()>0){
+            Class_retrofit.Objfit().create(Servicio.class).unAgenda(new Gson().toJson(objAgenda)).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.isSuccessful()){
+                        if (Boolean.valueOf(response.body())){
+                            Log.d(TAG, "doInBackground: se fue");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.d(TAG, "doInBackground: Nose fue");
+                }
+            });
+        }
+*/
 
         pdialog.dismiss();
         editor.putString("lstUnload", Clock.getTimeStamp()).apply();

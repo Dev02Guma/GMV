@@ -1,0 +1,58 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.guma.desarrollo.gmv.Activity.RazonesActivity">
+    <include layout="@layout/content_razones"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3" />
+    <LinearLayout
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end">
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <TableRow>
+                    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="fill_parent"
+                        android:background="@color/thumbnail_background"
+                        card_view:cardCornerRadius="5dp"
+                        card_view:cardElevation="4dp"
+                        card_view:cardUseCompatPadding="true">
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal">
+                            <EditText
+                                android:textColorLink="#000"
+                                android:gravity="start"
+                                android:id="@+id/etObservacion"
+                                android:layout_height="50dp"
+                                android:layout_width="0dp"
+                                android:textColor="#000"
+                                android:hint="Observaciones"
+                                android:inputType="text"
+                                />
+                        </TableLayout>
+                    </android.support.v7.widget.CardView>
+                </TableRow>
+
+                <TableRow
+                    android:gravity="center_horizontal">
+                    <ImageView
+                        android:id="@+id/btnSaveRazones"
+                        android:layout_gravity="center"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:src="@drawable/ic_send_white_24dp"/>
+                </TableRow>
+            </TableLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
