@@ -8,7 +8,10 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -23,10 +26,21 @@ import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.guma.desarrollo.gmv.R;
+
 import java.util.Calendar;
 
-public class Calendario extends DialogFragment
-        implements DatePickerDialog.OnDateSetListener {
+public class Calendario extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+
+    int frm;
+    public int getFrm() {
+        return frm;
+    }
+
+    public void setFrm(int frm) {
+        this.frm = frm;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -39,8 +53,8 @@ public class Calendario extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-
-        //TextView tv1= (TextView) getActivity().findViewById(R.id.txtDateR);
+        EditText tv1 = (EditText) getActivity().findViewById(R.id.startPlan);
+        EditText tv2 = (EditText) getActivity().findViewById(R.id.endPlan);
         String mes,dia;
         if (view.getDayOfMonth()<=9){
             dia = "0" + String.valueOf(view.getDayOfMonth());
@@ -53,7 +67,13 @@ public class Calendario extends DialogFragment
         }else{
             mes = String.valueOf(view.getMonth());
         }
-        //tv1.setText(dia+"/"+mes+"/"+view.getYear());
+        String Fecha = view.getYear()+"-"+mes+"-"+dia;
 
+        if (getFrm()==1){
+            tv1.setText(Fecha);
+        }else{
+            tv2.setText(Fecha);
+        }
     }
+
 }

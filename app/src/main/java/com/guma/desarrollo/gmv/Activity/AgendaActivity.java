@@ -17,12 +17,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.DialogInterface;
 
 import android.support.v7.app.AlertDialog;
 
+import com.guma.desarrollo.core.Agenda_model;
 import com.guma.desarrollo.core.Clientes;
+import com.guma.desarrollo.core.Clientes_model;
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.gmv.Adapters.Clientes_Leads;
@@ -49,10 +52,6 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private boolean checked;
-    private ListView lstClientes;
-    private List<Clientes> objects;
-    private Clientes_Leads lbs;
-
 
 
     SearchView sv;
@@ -74,8 +73,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         simpleExpandableListView.setAdapter(listAdapter);
         ReferenciasContexto.setContextArticulo(AgendaActivity.this);
 
-        objects = Clientes_Repository.getInstance().getArticulos();
-        lbs = new Clientes_Leads(this, objects);
+
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
 
@@ -112,7 +110,8 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                     public void onClick(DialogInterface dialog, int which) {
 
                         if (items[which].equals(items[0])){
-                                startActivity(new Intent(AgendaActivity.this,CrearAgendaActivity.class));
+                                //startActivity(new Intent(AgendaActivity.this,CrearAgendaActivity.class));
+                                startActivityForResult(new Intent(AgendaActivity.this,CrearAgendaActivity.class),0);
                         }else{
                             if (items[which].equals(items[1])){
                                 startActivity(new Intent(AgendaActivity.this,BandejaPedidosActivity.class));
@@ -169,6 +168,17 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
        // AutoTask();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==0 && resultCode==RESULT_OK){
+
+            loadData();
+
+            Toast.makeText(this, "E", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void checkConnection() {
         boolean isConnected = ConnectivityReceiver.isConnected();
 
@@ -183,8 +193,6 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     protected void onResume() {
         super.onResume();
         setTitle("Ultm. Actualizacion: " + preferences.getString("lstDownload","00/00/0000"));
-
-
         expandAll();
        // AutoTask();
         MyApplication.getInstance().setConnectivityListener(this);
@@ -236,22 +244,35 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     }
 
     private void loadData(){
-     /*  List<Map<String, Object>> lista = Agenda_model.getAgenda(ManagerURI.getDirDb(), AgendaActivity.this);
+        List<Map<String, Object>> lista = Agenda_model.getAgenda(ManagerURI.getDirDb(), AgendaActivity.this);
+        int C=0;
         if (lista.size()>0){
             //deptList.clear();
             String[] strDias = getResources().getStringArray(R.array.dias);
             for (int i=0;i<strDias.length;i++){
                 String[] mD = lista.get(0).get(strDias[i]).toString().split("-");
                 for (int d=0;d<mD.length;d++){
-                    addProduct(strDias[i],mD[d],"","N");
-                }
-            }*/
+                    if (mD[d].equals("")){
+                        addProduct(strDias[i],"VACIO","","N");
+                    }else{
+                        for (Clientes obj :Clientes_model.getInfoCliente(ManagerURI.getDirDb(), AgendaActivity.this,mD[d])) {
+                            addProduct(strDias[i],obj.getmNombre(),mD[d],"N");
+                        }
 
+
+                    }
+
+                }
+            }
+        }
+
+        /*
         addProduct("LUNES","FARMACIA SAN MARTIN","01006","S");
         addProduct("MARTES","FARMACIA FARMA CENTER","01338","N");
         addProduct("MIERCOLES","VACIO","","N");
         addProduct("JUEVES","VACIO","","N");
         addProduct("VIERNES","VACIO","","N");
+*/
     }
 
     private int addProduct(String department, String product,String Codigo,String Cumple){
@@ -280,10 +301,12 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         return groupPosition;
     }
     private void AutoTask(){
-        if (Integer.parseInt(Clock.getDiferencia(Clock.StringToDate(Clock.getNow()),Clock.StringToDate(preferences.getString("lstDownload","00/00/0000")))) >= 6){
+        if (Integer.parseInt(Clock.getDiferencia(Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(preferences.getString("lstDownload","00/00/0000"),"yyyy-mm-dd HH:mm:ss"),"Hrs")) >= 6){
             new TaskDownload(AgendaActivity.this).execute(0);
         }
-        if (Integer.parseInt(Clock.getDiferencia(Clock.StringToDate(Clock.getNow()),Clock.StringToDate(preferences.getString("lstUnload","00/00/0000")))) >= 3){
+
+        if (Integer.parseInt(Clock.getDiferencia(Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(preferences.getString("lstUnload","00/00/0000"),"yyyy-mm-dd HH:mm:ss"),"Hrs")) >= 3){
+
             new TaskUnload(AgendaActivity.this).execute(0);
         }
     }
