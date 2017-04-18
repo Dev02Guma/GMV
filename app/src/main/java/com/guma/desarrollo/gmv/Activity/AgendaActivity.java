@@ -52,10 +52,6 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private boolean checked;
-    private ListView lstClientes;
-    private List<Clientes> objects;
-    private Clientes_Leads lbs;
-
 
 
     SearchView sv;
@@ -77,8 +73,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         simpleExpandableListView.setAdapter(listAdapter);
         ReferenciasContexto.setContextArticulo(AgendaActivity.this);
 
-        objects = Clientes_Repository.getInstance().getArticulos();
-        lbs = new Clientes_Leads(this, objects);
+
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
 
@@ -114,7 +109,8 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                     public void onClick(DialogInterface dialog, int which) {
 
                         if (items[which].equals(items[0])){
-                                startActivity(new Intent(AgendaActivity.this,CrearAgendaActivity.class));
+                                //startActivity(new Intent(AgendaActivity.this,CrearAgendaActivity.class));
+                                startActivityForResult(new Intent(AgendaActivity.this,CrearAgendaActivity.class),0);
                         }else{
                             if (items[which].equals(items[1])){
                                 startActivity(new Intent(AgendaActivity.this,BandejaPedidosActivity.class));
@@ -171,6 +167,17 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
        // AutoTask();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==0 && resultCode==RESULT_OK){
+
+            loadData();
+
+            Toast.makeText(this, "E", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void checkConnection() {
         boolean isConnected = ConnectivityReceiver.isConnected();
 
@@ -185,8 +192,6 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     protected void onResume() {
         super.onResume();
         setTitle("Ultm. Actualizacion: " + preferences.getString("lstDownload","00/00/0000"));
-
-
         expandAll();
        // AutoTask();
         MyApplication.getInstance().setConnectivityListener(this);

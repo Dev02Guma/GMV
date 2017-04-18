@@ -189,7 +189,7 @@ public class CrearAgendaActivity extends AppCompatActivity{
             }
 
         }
-        ;
+
         map.put(strDias[0], (mLUN.equals("")  ? "" : mLUN.substring(0,mLUN.length()-1)));
         map.put(strDias[1], (mMAR.equals("")  ? "" : mMAR.substring(0,mMAR.length()-1)));
         map.put(strDias[2], (mMIE.equals("")  ? "" : mMIE.substring(0,mMIE.length()-1)));
@@ -207,6 +207,7 @@ public class CrearAgendaActivity extends AppCompatActivity{
         Log.d("", "SaveAgenda: Top " + mTopAgenda);
         Log.d("", "SaveAgenda: Detalles " + mDetalleAgenda);
         Agenda_model.SaveAgenda(CrearAgendaActivity.this,mTopAgenda,mDetalleAgenda);
+        setResult(RESULT_OK, getIntent());
         finish();
     }
     @Override
