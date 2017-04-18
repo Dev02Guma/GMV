@@ -154,7 +154,6 @@ public class RazonActivity extends AppCompatActivity {
                     }*/
                 }
                 Razon_model.SaveRazon(RazonActivity.this,ra);
-                editor.putString("BANDERA","1").apply();
             }
 
         });

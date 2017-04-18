@@ -21,6 +21,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -84,7 +85,7 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
         mLatitude = (TextView) findViewById(R.id.txtlati);
         mLongitude = (TextView) findViewById(R.id.txtlongi);
         btn_step_2 = (Button) findViewById(R.id.btnGoToStep2);
-
+        btn_step_2.setEnabled(true);
         btn_step_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,6 +145,17 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
             }
         }, 0, 5000);*/
 
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if(keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            startActivity(new Intent(MarcarRegistroActivity.this,AgendaActivity.class));
+            finish();
+            return true;
+        }
+        return false;
     }
 
     public void onRadioButtonClicked(View view) {

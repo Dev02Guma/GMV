@@ -89,6 +89,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                 editor.putString("ClsSelected",detailInfo.getCodigo());
                 editor.putString("NameClsSelected",detailInfo.getName());
                 editor.apply();
+                editor.putString("BANDERA", "0").apply();
                 startActivity(new Intent(AgendaActivity.this,MarcarRegistroActivity.class));
                 return false;
             }
@@ -191,7 +192,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         //boolean isConnected = ;
-       // showSnack(ConnectivityReceiver.isConnected());
+        //showSnack(ConnectivityReceiver.isConnected());
         checkConnection();
     }
     private void blankAgenda(){
@@ -282,10 +283,8 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         if (Integer.parseInt(Clock.getDiferencia(Clock.StringToDate(Clock.getNow()),Clock.StringToDate(preferences.getString("lstDownload","00/00/0000")))) >= 6){
             new TaskDownload(AgendaActivity.this).execute(0);
         }
-
         if (Integer.parseInt(Clock.getDiferencia(Clock.StringToDate(Clock.getNow()),Clock.StringToDate(preferences.getString("lstUnload","00/00/0000")))) >= 3){
             new TaskUnload(AgendaActivity.this).execute(0);
-
         }
     }
 }

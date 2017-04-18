@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.guma.desarrollo.core.Actividad;
 import com.guma.desarrollo.core.Actividades_model;
@@ -132,7 +133,8 @@ public class RazonesActivity extends AppCompatActivity {
                                             Razon_model.SaveRazon(RazonesActivity.this,ra);
 
                                         /*FIN GUARDAR*/
-                                            startActivity(new Intent(RazonesActivity.this,AgendaActivity.class));
+                                            startActivity(new Intent(RazonesActivity.this,AccionesActivity.class));
+                                            editor.putString("BANDERA","1").apply();
                                             finish();
                                         }
                                     }

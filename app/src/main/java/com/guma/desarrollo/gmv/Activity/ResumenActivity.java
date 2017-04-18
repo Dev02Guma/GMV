@@ -98,7 +98,7 @@ public class ResumenActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (CodCls!="") {
-                                        Toast.makeText(ResumenActivity.this, "GUARDANDO CASO: "+bandera, Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(ResumenActivity.this, "GUARDANDO CASO: "+bandera, Toast.LENGTH_SHORT).show();
                                         guardar(list);
                                 }else {
                                     Toast.makeText(ResumenActivity.this, "ERROR AL GUARDAR PEDIDO, INTENTELO MAS TARDE", Toast.LENGTH_SHORT).show();
@@ -145,7 +145,7 @@ public class ResumenActivity extends AppCompatActivity {
             tmp.setmPrecio(String.valueOf(nTotal));
             tmp.setmEstado("0");
             mPedido.add(tmp);
-            //Log.d("guardado",String.valueOf(nTotal));
+
             Pedidos_model.SavePedido(ResumenActivity.this, mPedido);
             for (Map<String, Object> obj2 : list) {
                 Pedidos tmpDetalle = new Pedidos();
@@ -159,7 +159,8 @@ public class ResumenActivity extends AppCompatActivity {
                 //Log.d("guardado",obj2.get("ITEMNAME").toString());
             }
             Pedidos_model.SaveDetallePedido(ResumenActivity.this, mDetallePedido);
-            //startActivity(new Intent(ResumenActivity.this,BandejaPedidosActivity.class));
+            editor.putString("BANDERA", "2").apply();
+            startActivity(new Intent(ResumenActivity.this,AccionesActivity.class));
             finish();
         }
     }
