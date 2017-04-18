@@ -108,7 +108,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                     }
                     @Override
                     public void onFailure(Call<Respuesta_actividades> call, Throwable t) {
-                        Log.d(TAG, "onResponse: Failure Actividades" + t.getMessage() );
+                        Log.d(TAG, "onResponse: Failure Actividades " + t.getMessage() );
                         pdialog.dismiss();
                     }
                 });
@@ -143,7 +143,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
         Gson gson = new Gson();
         //Log.d("TaskPedidos","el gson-> "+gson.toJson(listPedidos));
 
-      /*  if (listPedidos.size()>0) {
+       if (listPedidos.size()>0) {
             Class_retrofit.Objfit()
                     .create(Servicio.class)
                     .actualizarPedidos(gson.toJson(listPedidos))
@@ -152,22 +152,21 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                         public void onResponse(Call<Respuesta_pedidos> call, Response<Respuesta_pedidos> response) {
                             if (response.isSuccessful()) {
                                 pdialog.setMessage("Actualizando pedidos....");
+                                Log.d("alder",response.body().toString());
                                 Respuesta_pedidos pedidosRespuesta = response.body();
-                                Log.d("", "onResponse: PEDIDOS " + response.body().getResults().get(0).getmEstado());
+                                Log.d("alder", "onResponse: PEDIDOS " + response.body().getResults().get(0).getmEstado());
                                 Pedidos_model.actualizarPedidos(cnxt, pedidosRespuesta.getResults());
                             } else {
-                                pdialog.dismiss();
-                                Log.d(TAG, "onResponse: noSuccessful PEDIDOS " + response.errorBody());
+                                Log.d("alder", "onResponse: noSuccessful PEDIDOS " + response.errorBody());
                             }
                         }
 
                         @Override
                         public void onFailure(Call<Respuesta_pedidos> call, Throwable t) {
-                            pdialog.dismiss();
-                            Log.d(TAG, "onResponse: Failure update pedidos" + t.getMessage());
+                            Log.d("alder", "onResponse: Failure pedidos, NO HAY PEDIDOS" + t.getMessage());
                         }
                     });
-        }*/
+        }
 
        Class_retrofit.Objfit()
                 .create(Servicio.class)
@@ -181,7 +180,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             Log.d(TAG, "onResponse: Indicadores " + IndicadorRespuesta.getCount() );
                             Clientes_model.SaveIndicadores(cnxt,IndicadorRespuesta.getResults());
                         }else{
-                            pdialog.dismiss();
+                            //pdialog.dismiss();
                             Log.d(TAG, "onResponse: noSuccessful Indicadores " + response.errorBody() );
                         }
                     }

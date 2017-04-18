@@ -59,8 +59,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
     protected String doInBackground(Integer... para) {
 
 
-/*
-
+        //pdialog.setMessage("Enviando Cobros.... ");
         List<Cobros> obj = Cobros_model.getCobros(ManagerURI.getDirDb(), cnxt);
         if (obj.size()>0){
             Class_retrofit.Objfit().create(Servicio.class).InserCorbos(new Gson().toJson(obj)).enqueue(new Callback<String>() {
@@ -68,6 +67,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.isSuccessful()){
                         if (Boolean.valueOf(response.body())){
+                            pdialog.setMessage("Iniciando.... ");
                             SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),cnxt,"DELETE FROM COBROS");
                         }
                     }
@@ -76,7 +76,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 public void onFailure(Call<String> call, Throwable t) {}
             });
         }else {
-            pdialog.dismiss();
+            //pdialog.dismiss();
         }
 
 
@@ -90,7 +90,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 public void onResponse(Call<Respuesta_pedidos> call, Response<Respuesta_pedidos> response) {
                     if(response.isSuccessful()){
                         Respuesta_pedidos pedidoRespuesta = response.body();
-
+                        pdialog.setMessage("Enviando Pedidos.... ");
                         //new Notificaciones().Alert(cnxt,"EXITO","PEDIDOS ENVIADOS...").setCancelable(false).setPositiveButton("OK", null}).show();
                         Toast.makeText(cnxt, "PEDIDOS ENVIADOS CORRECTAMENTE", Toast.LENGTH_SHORT).show();
                     }else{
@@ -99,6 +99,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 }
                 @Override
                 public void onFailure(Call<Respuesta_pedidos> call, Throwable t) {
+
                     Toast.makeText(cnxt, "ERROR EN ENVIO DE PEDIDOS", Toast.LENGTH_SHORT).show();
                     //new Notificaciones().Alert(cnxt,"ERROR",t.getMessage().toString()).setCancelable(false).setPositiveButton("OK", null}).show();
                 }
@@ -116,6 +117,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.isSuccessful()){
                         if (Boolean.valueOf(response.body())){
+                            pdialog.setMessage("Enviando Visitas.... ");
                             Log.d(TAG, "doInBackground: Se fue");
                             SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),cnxt,"UPDATE VISITAS SET Send=1;");
                         }

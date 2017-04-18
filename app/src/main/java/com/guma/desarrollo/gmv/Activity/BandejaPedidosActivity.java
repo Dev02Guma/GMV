@@ -73,12 +73,16 @@ public class BandejaPedidosActivity extends AppCompatActivity {
                 String idPedido = ((Pedidos) adapterView.getItemAtPosition(i)).getmIdPedido();
                 String Cliente = ((Pedidos) adapterView.getItemAtPosition(i)).getmNombre();
                 String idCliente = ((Pedidos) adapterView.getItemAtPosition(i)).getmCliente();
+                String ESTADO= ((Pedidos) adapterView.getItemAtPosition(i)).getmEstado();
+
                 editor.putString("IDPEDIDO",idPedido);
                 editor.putString("CLIENTE",Cliente);
                 editor.putString("ClsSelected",idCliente);
                 editor.apply();
-                startActivity(new Intent(BandejaPedidosActivity.this,PedidoActivity.class));
-                finish();
+                if (ESTADO.equals("0")) {
+                    startActivity(new Intent(BandejaPedidosActivity.this, PedidoActivity.class));
+                    finish();
+                }
             }
         });
     }
