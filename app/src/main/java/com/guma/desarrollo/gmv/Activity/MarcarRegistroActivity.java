@@ -388,11 +388,11 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(
+        /*Toast.makeText(
                 this,
                 "Error de conexión con el código:" + connectionResult.getErrorCode(),
                 Toast.LENGTH_LONG)
-                .show();
+                .show();*/
 
     }
 
