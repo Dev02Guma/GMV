@@ -1,6 +1,7 @@
 package com.guma.desarrollo.gmv.Activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -34,6 +36,7 @@ public class CobroInActivity extends AppCompatActivity {
     EditText mImporte,mObservacion;
     TextView mSaldo,mLimite,m30,m60,m90,m120,md120,mTotal;
     private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
     ArrayList<Cobros> mCobro = new ArrayList<>();
     String Usuario,mCliente;
     @Override
@@ -42,12 +45,12 @@ public class CobroInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cobro_in);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
         Usuario = preferences.getString("USUARIO","0");
         mCliente= preferences.getString("ClsSelected","0");
 
-
+        
         mImporte = (EditText) findViewById(R.id.crbImporte);
         mObservacion = (EditText) findViewById(R.id.crbObservacion);
 
@@ -89,6 +92,8 @@ public class CobroInActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),CobroInActivity.this,"INSERT INTO VISITAS VALUES ('1','"+mCliente+"','" + Clock.getNow() + "', 'lati', 'Longi','S','','COBRO','0')");
+                            editor.putString("BANDERA", "2").apply();
+                            startActivity(new Intent(CobroInActivity.this,AccionesActivity.class));
                             finish();
                         }
                     }).show();
@@ -111,6 +116,15 @@ public class CobroInActivity extends AppCompatActivity {
             String Final= String.valueOf(Float.parseFloat(obj.get(0).getmD30()) + Float.parseFloat(obj.get(0).getmD60()) + Float.parseFloat(obj.get(0).getmD90()) + Float.parseFloat(obj.get(0).getmD120())+Float.parseFloat(obj.get(0).getmMd120()));
             mTotal.setText("C$ " + Final);
         }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            startActivity(new Intent(CobroInActivity.this,AccionesActivity.class));
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
 

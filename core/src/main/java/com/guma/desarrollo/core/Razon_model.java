@@ -105,7 +105,7 @@ public class Razon_model {
                     tmp.setmCliente(cursor.getString(cursor.getColumnIndex("Cliente")));
                     tmp.setmFecha(cursor.getString(cursor.getColumnIndex("Fecha")));
                     tmp.setmObservacion(cursor.getString(cursor.getColumnIndex("Observacion")));
-                    Cursor cursor2 = myDataBase.query(true, "RAZON_DETALLE", null, "IdRazon"+ "=?", new String[] { cursor.getString(cursor.getColumnIndex("IdRazon")) }, null, null, null, null);
+                    /*Cursor cursor2 = myDataBase.query(true, "RAZON_DETALLE", null, "IdRazon"+ "=?", new String[] { cursor.getString(cursor.getColumnIndex("IdRazon")) }, null, null, null, null);
                     cursor2.moveToFirst();
                     while (!cursor2.isAfterLast()){
                         tmp.getDetalles().put("IdRazon"+i,cursor2.getString(cursor2.getColumnIndex("IdRazon")));
@@ -115,7 +115,7 @@ public class Razon_model {
                         i++;
                         lista.add(tmp);
                         cursor2.moveToNext();
-                    }
+                    }*/
                     lista.add(tmp);
                     cursor.moveToNext();
                 }

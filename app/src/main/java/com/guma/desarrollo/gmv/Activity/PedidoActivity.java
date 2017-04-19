@@ -65,7 +65,8 @@ public class PedidoActivity extends AppCompatActivity {
         setTitle(preferences.getString("NameClsSelected"," --ERROR--"));
         Total = (TextView) findViewById(R.id.Total);
         txtCount= (TextView) findViewById(R.id.txtCountArti);
-
+        String bandera = preferences.getString("BANDERA", "0");
+        Toast.makeText(this, "aqui es"+bandera, Toast.LENGTH_SHORT).show();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
@@ -102,7 +103,7 @@ public class PedidoActivity extends AppCompatActivity {
                                     send.putExtra("LIST", (Serializable) list);
                                     //send.putExtra("NombreCliente",getIntent().getStringExtra("NombreCliente"));
                                     startActivity(send);
-                                    finish();
+                                    //finish();
                                 }
                             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -264,7 +265,7 @@ public class PedidoActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            startActivity(new Intent(PedidoActivity.this,BandejaPedidosActivity.class));
+            //startActivity(new Intent(PedidoActivity.this,BandejaPedidosActivity.class));
             finish();
             return true;
         }

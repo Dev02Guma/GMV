@@ -30,7 +30,7 @@ public class AccionesActivity extends AppCompatActivity {
         String bandera = preferences.getString("BANDERA", "0");
         setTitle("PASO 2 [ Acciones ]");
         findViewById(R.id.btnCV).setVisibility(View.GONE);
-        Toast.makeText(this, "BANDERA->> "+bandera.toString(), Toast.LENGTH_SHORT).show();
+
         if (bandera.equals("1")){
             findViewById(R.id.btnRZ).setVisibility(View.GONE);
         }if (bandera.equals("1")|| bandera.equals("2")){
@@ -45,24 +45,23 @@ public class AccionesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AccionesActivity.this,CobroInActivity.class));
+                finish();
             }
         });
 
         findViewById(R.id.btnPD).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putString("IDPEDIDO","");
-                editor.apply();
+                editor.putString("IDPEDIDO","").apply();
                 startActivity(new Intent(AccionesActivity.this,IndicadoresClienteActivity.class));
+                //finish();
             }
         });
         findViewById(R.id.btnRZ).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(AccionesActivity.this,IndicadoresClienteActivity.class));
-                //startActivity(new Intent(AccionesActivity.this,RazonActivity.class));
                 startActivity(new Intent(AccionesActivity.this,RazonesActivity.class));
-
+                finish();
             }
         });
         findViewById(R.id.btnCV).setOnClickListener(new View.OnClickListener() {
