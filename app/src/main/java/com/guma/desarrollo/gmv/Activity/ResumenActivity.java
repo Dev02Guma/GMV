@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ResumenActivity extends AppCompatActivity {
     TextView lblNombreClliente,lblNombreVendedor,countArti,SubTotal,ivaTotal,Total,Atendio,txtidPedido;
@@ -39,6 +43,10 @@ public class ResumenActivity extends AppCompatActivity {
     public SharedPreferences preferences;
     public SharedPreferences.Editor editor;
     String CodCls,idPedido,bandera = "0";
+
+    TextView textView;
+    Timer timer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +66,9 @@ public class ResumenActivity extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         CodCls =  preferences.getString("ClsSelected","");
+
+        timer = new Timer();
+        textView = (TextView) findViewById(R.id.idTimer);
 
         Total = (TextView) findViewById(R.id.Total);
         Atendio = (TextView) findViewById(R.id.NombreVendedor);
@@ -108,7 +119,17 @@ public class ResumenActivity extends AppCompatActivity {
                         }).show();
             }
         });
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                mHandler.obtainMessage(1).sendToTarget();
+            }
+        }, 0, 1000);
     }
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            textView.setText(Clock.getDiferencia(Clock.StringToDate(preferences.getString("iniTimer","0000-00-00 00:00:00"),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),"Timer"));
+        }
+    };
     public void guardar(List<Map<String, Object>> list){
         Float total;
         Total = (TextView) findViewById(R.id.Total);
@@ -162,6 +183,7 @@ public class ResumenActivity extends AppCompatActivity {
             Pedidos_model.SaveDetallePedido(ResumenActivity.this, mDetallePedido);
             editor.putString("BANDERA", "2").apply();
             startActivity(new Intent(ResumenActivity.this,AccionesActivity.class));
+            timer.cancel();
             finish();
         }
     }

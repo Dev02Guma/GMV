@@ -17,6 +17,7 @@ import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.Pedidos;
 import com.guma.desarrollo.core.Pedidos_model;
+import com.guma.desarrollo.gmv.Activity.ReferenciasContexto;
 import com.guma.desarrollo.gmv.api.Class_retrofit;
 import com.guma.desarrollo.gmv.api.Servicio;
 import com.guma.desarrollo.gmv.models.Respuesta_actividades;
@@ -100,6 +101,8 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             Respuesta_actividades actividadRespuesta = response.body();
                             Log.d(TAG, "onResponse: Actividades " + actividadRespuesta.getCount());
                             Actividades_model.SaveActividades(cnxt,actividadRespuesta.getResults());
+
+
                         }else{
                             pdialog.dismiss();
                             Log.d(TAG, "onResponse: noSuccessful Actividades" + response.errorBody() );
@@ -225,7 +228,6 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                         if(response.isSuccessful()){
                             pdialog.setMessage("Cargado Puntos.... ");
                             Respuesta_puntos clpuntos = response.body();
-                            Log.d(TAG, "umaagro.FACTURA_LINEA Facturas "  + clpuntos.getCount());
                             Clientes_model.SaveFacturas(cnxt,clpuntos.getResults());
                             Alerta();
                             pdialog.dismiss();

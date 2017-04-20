@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -28,7 +27,6 @@ import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Clientes_model;
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.ManagerURI;
-import com.guma.desarrollo.gmv.Adapters.Clientes_Leads;
 import com.guma.desarrollo.gmv.ChildInfo;
 import com.guma.desarrollo.gmv.Tasks.TaskDownload;
 import com.guma.desarrollo.gmv.Tasks.TaskUnload;
@@ -37,7 +35,6 @@ import com.guma.desarrollo.gmv.Adapters.CustomAdapter;
 import com.guma.desarrollo.gmv.GroupInfo;
 import com.guma.desarrollo.gmv.MyApplication;
 import com.guma.desarrollo.gmv.R;
-//import com.guma.desarrollo.gmv.models.Clientes_Repository;
 
 public class AgendaActivity extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener {
 
@@ -167,6 +164,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
 
 
        // AutoTask();
+
     }
 
     @Override
@@ -176,7 +174,6 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
 
             loadData();
 
-            Toast.makeText(this, "E", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -256,11 +253,9 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                     if (mD[d].equals("")){
                         addProduct(strDias[i],"VACIO","","N");
                     }else{
-                        for (Clientes obj :Clientes_model.getInfoCliente(ManagerURI.getDirDb(), AgendaActivity.this,mD[d])) {
+                        for (Clientes obj : Clientes_model.getInfoCliente(ManagerURI.getDirDb(), AgendaActivity.this,mD[d])) {
                             addProduct(strDias[i],obj.getmNombre(),mD[d],"N");
                         }
-
-
                     }
 
                 }
@@ -272,8 +267,8 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         addProduct("MARTES","FARMACIA FARMA CENTER","01338","N");
         addProduct("MIERCOLES","VACIO","","N");
         addProduct("JUEVES","VACIO","","N");
-        addProduct("VIERNES","VACIO","","N");
-*/
+        addProduct("VIERNES","VACIO","","N");*/
+
     }
 
     private int addProduct(String department, String product,String Codigo,String Cumple){

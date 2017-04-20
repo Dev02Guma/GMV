@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +22,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.guma.desarrollo.core.Clientes;
+import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.Facturas;
 import com.guma.desarrollo.core.Indicadores;
 import com.guma.desarrollo.core.Clientes_model;
@@ -28,6 +31,8 @@ import com.guma.desarrollo.gmv.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class IndicadoresClienteActivity extends AppCompatActivity {
@@ -44,6 +49,9 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
 
     TextView mpVenta,mItemFact,mLimite,mCredito,mNombre,mPuntos;
 
+    TextView textView;
+
+    Timer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +61,11 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
-
+        textView = (TextView) findViewById(R.id.idTimer);
         mpVenta = (TextView) findViewById(R.id.txtPromedio);
         mItemFact = (TextView) findViewById(R.id.txtCantItem);
         final Button btnOK = (Button) findViewById(R.id.btnIndicadores);
+        timer = new Timer();
 
         mLimite = (TextView) findViewById(R.id.txtLimite);
         mCredito = (TextView) findViewById(R.id.txtCredito);
@@ -64,7 +73,7 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
         mPuntos = (TextView) findViewById(R.id.txtPuntos);
 
         List<Indicadores> obj = Clientes_model.getIndicadores(ManagerURI.getDirDb(), IndicadoresClienteActivity.this,preferences.getString("ClsSelected"," --ERROR--"));
-        setTitle("PASO 3 [ Pedido ] ");
+        setTitle(" [ PASO 3 - Pedido ] " + preferences.getString("NameClsSelected"," --ERROR--"));
         if (obj.size()>0) {
             mNombre.setText(obj.get(0).getmNombre() );
             mpVenta.setText(obj.get(0).getmPromedioVenta3M());
@@ -90,6 +99,7 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
                 }else{
 
                     startActivity(new Intent(IndicadoresClienteActivity.this,PedidoActivity.class));
+                    timer.cancel();
                     finish();
                 }
             }
@@ -115,8 +125,18 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
                 startActivity(new Intent(IndicadoresClienteActivity.this,FacturasActivity.class));
             }
         });
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                mHandler.obtainMessage(1).sendToTarget();
+            }
+        }, 0, 1000);
 
     }
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            textView.setText(Clock.getDiferencia(Clock.StringToDate(preferences.getString("iniTimer","0000-00-00 00:00:00"),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),"Timer"));
+        }
+    };
     private void addDataSet() {
         ArrayList<PieEntry> yEntrys = new ArrayList<>();
         ArrayList<String> xEntrys = new ArrayList<>();

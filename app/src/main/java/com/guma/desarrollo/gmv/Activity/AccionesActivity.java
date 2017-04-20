@@ -3,21 +3,27 @@ package com.guma.desarrollo.gmv.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.gmv.R;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AccionesActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     TextView mName;
+    TextView textView;
+    Timer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +34,7 @@ public class AccionesActivity extends AppCompatActivity {
         editor = preferences.edit();
         //editor.putString("BANDERA","1").apply();
         String bandera = preferences.getString("BANDERA", "0");
-        setTitle("PASO 2 [ Acciones ]");
+        setTitle(" [ PASO 2 - Acciones ] " +  preferences.getString("NameClsSelected"," --ERROR--"));
         findViewById(R.id.btnCV).setVisibility(View.GONE);
         Toast.makeText(this, preferences.getString("NOMBRE","").toString(), Toast.LENGTH_SHORT).show();
         if (bandera.equals("1")){
@@ -36,10 +42,10 @@ public class AccionesActivity extends AppCompatActivity {
         }if (bandera.equals("1")|| bandera.equals("2")){
             findViewById(R.id.btnCV).setVisibility(View.VISIBLE);
         }
+        textView = (TextView) findViewById(R.id.idTimer);
+        timer = new Timer();
 
 
-        mName = (TextView) findViewById(R.id.txtNameCliente);
-        mName.setText(preferences.getString("NameClsSelected"," --ERROR--"));
 
         findViewById(R.id.btnCBR).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,10 +75,23 @@ public class AccionesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 limpiarPref();
                 startActivity(new Intent(AccionesActivity.this,AgendaActivity.class));
+                timer.cancel();
                 finish();
             }
         });
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                mHandler.obtainMessage(1).sendToTarget();
+            }
+        }, 0, 1000);
+
     }
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            textView.setText(Clock.getDiferencia(Clock.StringToDate(preferences.getString("iniTimer","0000-00-00 00:00:00"),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),"Timer"));
+        }
+    };
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
@@ -80,6 +99,7 @@ public class AccionesActivity extends AppCompatActivity {
         {
             limpiarPref();
             startActivity(new Intent(AccionesActivity.this,AgendaActivity.class));
+            timer.cancel();
             finish();
             return true;
         }

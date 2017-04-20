@@ -5,9 +5,9 @@ package com.guma.desarrollo.core;
  */
 
 public class Clientes {
-    String mCliente,mNombre,mDireccion,mRuc,mPuntos,mMoroso,mCredito,mSaldo,mDisponible;
+    String mCliente,mNombre,mDireccion,mRuc,mPuntos,mMoroso,mCredito,mSaldo,mDisponible,mCumple;
 
-    public Clientes(String mCliente, String mNombre, String mDireccion, String mRuc, String mPuntos, String mMoroso, String mCredito, String mSaldo, String mDisponible) {
+    public Clientes(String mCliente, String mNombre, String mDireccion, String mRuc, String mPuntos, String mMoroso, String mCredito, String mSaldo, String mDisponible, String mCumple) {
         this.mCliente = mCliente;
         this.mNombre = mNombre;
         this.mDireccion = mDireccion;
@@ -17,6 +17,7 @@ public class Clientes {
         this.mCredito = mCredito;
         this.mSaldo = mSaldo;
         this.mDisponible = mDisponible;
+        this.mCumple = mCumple;
     }
 
     public Clientes(){
@@ -25,6 +26,14 @@ public class Clientes {
 
     public String getmCredito() {
         return mCredito;
+    }
+
+    public String getmCumple() {
+        return mCumple;
+    }
+
+    public void setmCumple(String mCumple) {
+        this.mCumple = mCumple;
     }
 
     public void setmCredito(String mCredito) {

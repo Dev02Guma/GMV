@@ -132,6 +132,7 @@ public class Clientes_model {
                 contentValues.put("CREDITO" , a.getmCredito());
                 contentValues.put("SALDO" , a.getmSaldo());
                 contentValues.put("DISPONIBLE" , a.getmDisponible());
+                contentValues.put("CUMPLE" , a.getmCumple());
                 myDataBase.insert("CLIENTES", null, contentValues );
             }
         }
@@ -263,6 +264,7 @@ public class Clientes_model {
                     tmp.setmCredito(cursor.getString(cursor.getColumnIndex("CREDITO")));
                     tmp.setmSaldo(cursor.getString(cursor.getColumnIndex("SALDO")));
                     tmp.setmDisponible(cursor.getString(cursor.getColumnIndex("DISPONIBLE")));
+                    tmp.setmCumple(cursor.getString(cursor.getColumnIndex("CUMPLE")));
                     lista.add(tmp);
                     cursor.moveToNext();
                 }
@@ -284,13 +286,14 @@ public class Clientes_model {
         {
             myDbHelper = new SQLiteHelper(basedir, context);
             myDataBase = myDbHelper.getReadableDatabase();
-            Cursor cursor = myDataBase.query(true, "CLIENTES", null, null, null, null, null, null, null);
+            Cursor cursor = myDataBase.query(true, "CLIENTES", null, null, null, null, null, "NOMBRE", null);
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast()) {
                     Clientes tmp = new Clientes();
                     tmp.setmCliente(cursor.getString(cursor.getColumnIndex("CLIENTE")));
                     tmp.setmNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
+                    tmp.setmCumple(cursor.getString(cursor.getColumnIndex("CUMPLE")));
                     lista.add(tmp);
                     cursor.moveToNext();
                 }

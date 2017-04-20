@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -16,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Clock;
@@ -31,6 +31,8 @@ import com.guma.desarrollo.gmv.api.Notificaciones;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CobroInActivity extends AppCompatActivity {
     EditText mImporte,mObservacion;
@@ -39,6 +41,8 @@ public class CobroInActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     ArrayList<Cobros> mCobro = new ArrayList<>();
     String Usuario,mCliente;
+    TextView textView;
+    Timer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,10 @@ public class CobroInActivity extends AppCompatActivity {
         editor = preferences.edit();
         Usuario = preferences.getString("USUARIO","0");
         mCliente= preferences.getString("ClsSelected","0");
+
+        textView = (TextView) findViewById(R.id.idTimer);
+        timer = new Timer();
+
 
         
         mImporte = (EditText) findViewById(R.id.crbImporte);
@@ -92,6 +100,7 @@ public class CobroInActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),CobroInActivity.this,"INSERT INTO VISITAS VALUES ('1','"+mCliente+"','" + Clock.getNow() + "', 'lati', 'Longi','S','','COBRO','0')");
+                            timer.cancel();
                             editor.putString("BANDERA", "2").apply();
                             startActivity(new Intent(CobroInActivity.this,AccionesActivity.class));
                             finish();
@@ -102,7 +111,7 @@ public class CobroInActivity extends AppCompatActivity {
         });
         List<Clientes> obClientes = Clientes_model.getInfoCliente(ManagerURI.getDirDb(), CobroInActivity.this,preferences.getString("ClsSelected","0"));
         if (obClientes.size()>0){
-            setTitle("PASO 2 [ Cobro ] - " + obClientes.get(0).getmNombre());
+            setTitle("[  PASO 3 - Cobro ]  " + obClientes.get(0).getmNombre());
             mSaldo.setText("C$ " + obClientes.get(0).getmSaldo());
             mLimite.setText("C$ " + obClientes.get(0).getmCredito());
         }
@@ -116,7 +125,19 @@ public class CobroInActivity extends AppCompatActivity {
             String Final= String.valueOf(Float.parseFloat(obj.get(0).getmD30()) + Float.parseFloat(obj.get(0).getmD60()) + Float.parseFloat(obj.get(0).getmD90()) + Float.parseFloat(obj.get(0).getmD120())+Float.parseFloat(obj.get(0).getmMd120()));
             mTotal.setText("C$ " + Final);
         }
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                mHandler.obtainMessage(1).sendToTarget();
+            }
+        }, 0, 1000);
     }
+
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            textView.setText(Clock.getDiferencia(Clock.StringToDate(preferences.getString("iniTimer","0000-00-00 00:00:00"),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),"Timer"));
+        }
+    };
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -126,6 +147,7 @@ public class CobroInActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }
 
 

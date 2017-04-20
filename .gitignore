@@ -9,3 +9,4 @@
 .externalNativeBuild
 *.db
 *.db
+app/src/main/assets/dbgmv.db
