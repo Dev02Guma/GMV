@@ -19,6 +19,7 @@ import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.gmv.Adapters.Clientes_Leads;
 import com.guma.desarrollo.gmv.R;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -43,6 +44,7 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
 
 
         listView = (ListView) findViewById(R.id.lstClientes);
+
 
         objects = Clientes_model.getClientes(ManagerURI.getDirDb(), ClientesActivity.this);
         lbs = new Clientes_Leads(this, objects);
