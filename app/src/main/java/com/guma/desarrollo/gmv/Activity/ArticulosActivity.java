@@ -32,7 +32,7 @@ import com.guma.desarrollo.core.Articulos_model;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.gmv.Adapters.Articulo_Leads;
 import com.guma.desarrollo.gmv.api.Notificaciones;
-import com.guma.desarrollo.gmv.models.Articulo_Repository;
+//import com.guma.desarrollo.gmv.models.Articulo_Repository;
 import com.guma.desarrollo.gmv.R;
 
 import org.json.JSONArray;
@@ -65,7 +65,7 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
         if (getSupportActionBar() != null){ getSupportActionBar().setDisplayHomeAsUpEnabled(true); }
         ReferenciasContexto.setContextArticulo(ArticulosActivity.this);
 
-        objects = Articulo_Repository.getInstance().getArticulos();
+        //objects = Articulo_Repository.getInstance().getArticulos();
         lbs = new Articulo_Leads(this, objects);
         listView.setAdapter(lbs);
 

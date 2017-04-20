@@ -21,8 +21,8 @@ import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.gmv.Adapters.Articulo_Leads;
 import com.guma.desarrollo.gmv.Adapters.Clientes_Leads;
 import com.guma.desarrollo.gmv.R;
-import com.guma.desarrollo.gmv.models.Articulo_Repository;
-import com.guma.desarrollo.gmv.models.Clientes_Repository;
+//import com.guma.desarrollo.gmv.models.Articulo_Repository;
+//import com.guma.desarrollo.gmv.models.Clientes_Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
 
         listView = (ListView) findViewById(R.id.lstClientes);
         //objects = Articulo_Repository.getInstance().getArticulos();
-        objects = Clientes_Repository.getInstance().getArticulos();
+        //objects = Clientes_Repository.getInstance().getArticulos();
         lbs = new Clientes_Leads(this, objects);
         listView.setAdapter(lbs);
         searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);

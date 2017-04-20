@@ -73,7 +73,7 @@ public class ResumenActivity extends AppCompatActivity {
         idPedido = preferences.getString("IDPEDIDO", "");
         if (!idPedido.equals("")){
             //Toast.makeText(this, "La edidion del pedido: "+preferences.getString("IDPEDIDO", ""), Toast.LENGTH_SHORT).show();
-            Atendio.setText(preferences.getString("NOMBRE","").toString());
+            Atendio.setText("LE ATENDIO: "+preferences.getString("USUARIO","").toString());
             txtidPedido.setText(idPedido.toString());
             bandera = "1";
         }else{

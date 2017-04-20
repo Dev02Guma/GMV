@@ -37,7 +37,7 @@ import com.guma.desarrollo.gmv.Adapters.CustomAdapter;
 import com.guma.desarrollo.gmv.GroupInfo;
 import com.guma.desarrollo.gmv.MyApplication;
 import com.guma.desarrollo.gmv.R;
-import com.guma.desarrollo.gmv.models.Clientes_Repository;
+//import com.guma.desarrollo.gmv.models.Clientes_Repository;
 
 public class AgendaActivity extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener {
 
