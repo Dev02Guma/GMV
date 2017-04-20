@@ -10,9 +10,11 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -95,20 +97,13 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
                     btnOK.setText("CLIENTE MOROSO");
                     btnOK.setBackgroundResource(R.drawable.button_danger_rounded);
                 }else{
+
                     startActivity(new Intent(IndicadoresClienteActivity.this,PedidoActivity.class));
                     timer.cancel();
                     finish();
                 }
             }
         });
-
-
-
-
-
-        //mLimite.setText(obj.get(0).getmLimite());
-        //mCredito.setText(obj.get(0).getmCredito());
-
 
         pieChart = (PieChart) findViewById(R.id.chart);
         pieChart.getDescription().setEnabled(false);
@@ -162,5 +157,15 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
         pieChart.setData(new PieData(pieDataSet));
         pieChart.invalidate();
     }
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if(keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            startActivity(new Intent(IndicadoresClienteActivity.this,AccionesActivity.class));
+            finish();
+            return true;
+        }
+        return false;
+    }
 }

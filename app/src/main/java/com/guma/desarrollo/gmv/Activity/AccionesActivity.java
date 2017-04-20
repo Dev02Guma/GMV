@@ -51,24 +51,23 @@ public class AccionesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AccionesActivity.this,CobroInActivity.class));
+                finish();
             }
         });
 
         findViewById(R.id.btnPD).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putString("IDPEDIDO","");
-                editor.apply();
+                editor.putString("IDPEDIDO","").apply();
                 startActivity(new Intent(AccionesActivity.this,IndicadoresClienteActivity.class));
+                //finish();
             }
         });
         findViewById(R.id.btnRZ).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(AccionesActivity.this,IndicadoresClienteActivity.class));
-                //startActivity(new Intent(AccionesActivity.this,RazonActivity.class));
                 startActivity(new Intent(AccionesActivity.this,RazonesActivity.class));
-
+                finish();
             }
         });
         findViewById(R.id.btnCV).setOnClickListener(new View.OnClickListener() {

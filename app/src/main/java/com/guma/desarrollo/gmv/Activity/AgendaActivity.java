@@ -86,6 +86,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                 editor.apply();
                 editor.putString("BANDERA", "0").apply();
                 startActivity(new Intent(AgendaActivity.this,MarcarRegistroActivity.class));
+                finish();
                 return false;
             }
         });

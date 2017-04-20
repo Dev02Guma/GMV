@@ -57,9 +57,6 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
 
     @Override
     protected String doInBackground(Integer... para) {
-
-
-        //pdialog.setMessage("Enviando Cobros.... ");
         List<Cobros> obj = Cobros_model.getCobros(ManagerURI.getDirDb(), cnxt);
         if (obj.size()>0){
             Class_retrofit.Objfit().create(Servicio.class).InserCorbos(new Gson().toJson(obj)).enqueue(new Callback<String>() {
@@ -76,13 +73,12 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 public void onFailure(Call<String> call, Throwable t) {}
             });
         }else {
-            //pdialog.dismiss();
+            Log.d(TAG, "doInBackground: ERROR EN ENVIO DE COBROS");
         }
 
 
         List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt);
         Gson gson = new Gson();
-
         if (listPedidos.size()>0) {
             Log.d("json",gson.toJson(listPedidos));
             Class_retrofit.Objfit().create(Servicio.class).enviarPedidos(gson.toJson(listPedidos)).enqueue(new Callback<Respuesta_pedidos>() {
@@ -99,14 +95,11 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 }
                 @Override
                 public void onFailure(Call<Respuesta_pedidos> call, Throwable t) {
-
                     Toast.makeText(cnxt, "ERROR EN ENVIO DE PEDIDOS", Toast.LENGTH_SHORT).show();
-                    //new Notificaciones().Alert(cnxt,"ERROR",t.getMessage().toString()).setCancelable(false).setPositiveButton("OK", null}).show();
                 }
             });
         }else{
-            Log.d("ENVIO", "ERROR EN ENVIO DE PEDIDOS");
-            //new Notificaciones().Alert(AgendaActivity.this,"ERROR","NO HAY PEDIDOS...").setCancelable(false).setPositiveButton("OK", null}).show();
+            Log.d(TAG, "doInBackground: ERROR EN ENVIO DE PEDIDOS");
         }
 
         List<Visitas> obVisitas = Agenda_model.getVisitas(ManagerURI.getDirDb(), cnxt);
@@ -125,7 +118,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 }
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    Log.d(TAG, "doInBackground: Nose fue");
+                    Log.d(TAG, "doInBackground: No se fue VISITAS");
                 }
             });
         }
@@ -138,14 +131,14 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.isSuccessful()){
                         if (Boolean.valueOf(response.body())){
-                            Log.d(TAG, "doInBackground: se fue");
+                            Log.d(TAG, "doInBackground: se fue AGENDA");
                         }
                     }
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    Log.d(TAG, "doInBackground: Nose fue");
+                    Log.d(TAG, "doInBackground: Nose fue AGENDA");
                 }
             });
         }
