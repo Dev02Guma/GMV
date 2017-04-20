@@ -328,4 +328,29 @@
             android:background="@drawable/button_primary_rounded"
             android:textColor="@color/white"/>
     </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/button_danger_rounded">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="10dp">
+                <TextView
+                    android:id="@+id/idTimer"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:layout_height="fill_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"/>
+
+            </TableRow>
+        </TableLayout>
+
+    </LinearLayout>
 </LinearLayout>

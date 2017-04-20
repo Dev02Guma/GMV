@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guma.desarrollo.core.Articulos_model;
+import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.Pedidos;
 import com.guma.desarrollo.core.Pedidos_model;
@@ -38,6 +41,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PedidoActivity extends AppCompatActivity {
     private ListView listView;
@@ -49,6 +54,8 @@ public class PedidoActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     Spinner spinner;
 
+    TextView textView;
+    Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +72,10 @@ public class PedidoActivity extends AppCompatActivity {
         setTitle(preferences.getString("NameClsSelected"," --ERROR--"));
         Total = (TextView) findViewById(R.id.Total);
         txtCount= (TextView) findViewById(R.id.txtCountArti);
+
+
+        timer = new Timer();
+        textView = (TextView) findViewById(R.id.idTimer);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -102,6 +113,7 @@ public class PedidoActivity extends AppCompatActivity {
                                     send.putExtra("LIST", (Serializable) list);
                                     //send.putExtra("NombreCliente",getIntent().getStringExtra("NombreCliente"));
                                     startActivity(send);
+                                    timer.cancel();
                                     finish();
                                 }
                             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -134,7 +146,17 @@ public class PedidoActivity extends AppCompatActivity {
                 }
             Refresh();
         }
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                mHandler.obtainMessage(1).sendToTarget();
+            }
+        }, 0, 1000);
     }
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            textView.setText(Clock.getDiferencia(Clock.StringToDate(preferences.getString("iniTimer","0000-00-00 00:00:00"),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),"Timer"));
+        }
+    };
     public void showInputBox(AdapterView<?> parent,final List<Map<String, Object>> list2, final int index){
         final Dialog dialogo = new Dialog(PedidoActivity.this);
         dialogo.setTitle(list2.get(index).get("ITEMNAME").toString());

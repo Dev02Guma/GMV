@@ -13,6 +13,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -40,9 +42,13 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.gmv.Constants;
 import com.guma.desarrollo.gmv.api.DetectedActivitiesIntentService;
 import com.guma.desarrollo.gmv.R;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MarcarRegistroActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
@@ -58,19 +64,19 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
     private LocationRequest mLocationRequest;
     private LocationSettingsRequest mLocationSettingsRequest;
     private Location mLastLocation;
-    private TextView mLatitude;
-    private TextView mLongitude;
+    private TextView mLatitude,mLongitude,textView;
     // Activity Recognition API
     private ActivityDetectionBroadcastReceiver mBroadcastReceiver;
 
     Button btn_step_2;
+    String strgInit;
 
     public static final int REQUEST_LOCATION = 1;
     public static final int REQUEST_CHECK_SETTINGS = 2;
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
-
+    Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +86,18 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
-        setTitle("PASO 1 [ Registrar visita ] - " + preferences.getString("NameClsSelected"," --ERROR--"));
+        setTitle(" [ PASO 1 - Registrar Visita ] - " + preferences.getString("NameClsSelected"," --ERROR--"));
 
         mLatitude = (TextView) findViewById(R.id.txtlati);
         mLongitude = (TextView) findViewById(R.id.txtlongi);
         btn_step_2 = (Button) findViewById(R.id.btnGoToStep2);
         btn_step_2.setEnabled(true);
+        textView = (TextView) findViewById(R.id.idTimer);
+        strgInit = Clock.getNow();
+        editor.putString("iniTimer", strgInit);
+        timer = new Timer();
+
+
         btn_step_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +109,9 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
                 //}else {
                     editor.putString("LATITUD", mLatitude.getText().toString());
                     editor.putString("LONGITUD", mLongitude.getText().toString());
+
+
+
                     RadioButton local = (RadioButton) findViewById(R.id.inLocal);
                     if (local.isChecked()) {
                         editor.putString("LUGAR_VISITA", "LOCAL");
@@ -106,6 +121,7 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
                     }
                     editor.apply();
                     startActivity(new Intent(MarcarRegistroActivity.this, AccionesActivity.class));
+                    timer.cancel();
                     finish();
                     //Toast.makeText(MarcarRegistroActivity.this, "entro exitosamente", Toast.LENGTH_SHORT).show();
                 //}
@@ -145,13 +161,25 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
             }
         }, 0, 5000);*/
 
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                mHandler.obtainMessage(1).sendToTarget();
+            }
+        }, 0, 1000);
+
     }
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            textView.setText(Clock.getDiferencia(Clock.StringToDate(strgInit,"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),"Timer"));
+        }
+    };
 
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if(keyCode == KeyEvent.KEYCODE_BACK)
         {
             startActivity(new Intent(MarcarRegistroActivity.this,AgendaActivity.class));
+            timer.cancel();
             finish();
             return true;
         }
@@ -210,6 +238,7 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
                         startLocationUpdates();
                         break;
                     case Activity.RESULT_CANCELED:
+                        timer.cancel();
                         finish();
                         break;
                 }

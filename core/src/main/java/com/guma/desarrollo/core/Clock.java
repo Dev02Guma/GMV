@@ -62,7 +62,28 @@ public class Clock {
         }else {
             if (parametro.equals("Dias")){
                 return String.valueOf(diasTranscurridos);
+            }else{
+                if (parametro.equals("Timer")){
+                    String hrs,mint,Segu;
+                    if (horasTranscurridos <= 9){
+                        hrs = "0" + String.valueOf(horasTranscurridos);
+                    }else{
+                        hrs = String.valueOf(horasTranscurridos);
+                    }
+                    if (minutosTranscurridos <= 9){
+                        mint = "0" + String.valueOf(minutosTranscurridos);
+                    }else{
+                        mint = String.valueOf(minutosTranscurridos);
+                    }
+                    if (segsTranscurridos <= 9){
+                        Segu = "0" + String.valueOf(segsTranscurridos);
+                    }else{
+                        Segu = String.valueOf(segsTranscurridos);
+                    }
+                    return hrs +":"+ mint + ":" + Segu;
+                }
             }
+
         }
         return "";
 

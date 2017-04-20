@@ -2,10 +2,7 @@ package com.guma.desarrollo.gmv.Activity;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,13 +13,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import com.guma.desarrollo.core.Articulo;
 import com.guma.desarrollo.core.Clientes;
-import com.guma.desarrollo.gmv.Adapters.Articulo_Leads;
+import com.guma.desarrollo.core.Clientes_model;
+import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.gmv.Adapters.Clientes_Leads;
 import com.guma.desarrollo.gmv.R;
-import com.guma.desarrollo.gmv.models.Articulo_Repository;
-import com.guma.desarrollo.gmv.models.Clientes_Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +30,7 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
     private SearchManager searchManager;
     private Clientes_Leads lbs;
     private List<Clientes> objects;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +39,12 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){ getSupportActionBar().setDisplayHomeAsUpEnabled(true); }
         setTitle("Clientes");
+        ReferenciasContexto.setContextArticulo(this);
 
 
         listView = (ListView) findViewById(R.id.lstClientes);
-        //objects = Articulo_Repository.getInstance().getArticulos();
-        objects = Clientes_Repository.getInstance().getArticulos();
+
+        objects = Clientes_model.getClientes(ManagerURI.getDirDb(), ClientesActivity.this);
         lbs = new Clientes_Leads(this, objects);
         listView.setAdapter(lbs);
         searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -67,6 +64,8 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
 
 
 
+
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item)    {
@@ -74,6 +73,7 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
         if (id == 16908332){ finish(); }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
