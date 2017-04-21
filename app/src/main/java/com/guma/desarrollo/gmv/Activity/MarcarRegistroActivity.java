@@ -47,6 +47,10 @@ import com.guma.desarrollo.gmv.Constants;
 import com.guma.desarrollo.gmv.api.DetectedActivitiesIntentService;
 import com.guma.desarrollo.gmv.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -230,6 +234,17 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode==RESULT_OK){
+            try {
+                JSONArray json_array = new JSONObject(data.getStringExtra("myResulte")).optJSONArray("Cliente");
+                updateUIQR(json_array.getJSONObject(0).getString("mLogi"),json_array.getJSONObject(0).getString("mLati"));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
         switch (requestCode) {
             case REQUEST_CHECK_SETTINGS:
                 switch (resultCode) {
@@ -323,7 +338,6 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(LOCATION_KEY)) {
                 mLastLocation = savedInstanceState.getParcelable(LOCATION_KEY);
-
                 updateLocationUI();
             }
         }
@@ -332,6 +346,13 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
     private void updateLocationUI() {
         mLatitude.setText(String.valueOf(mLastLocation.getLatitude()));
         mLongitude.setText(String.valueOf(mLastLocation.getLongitude()));
+        btn_step_2.setEnabled(true);
+        btn_step_2.setBackgroundResource(R.drawable.button_primary);
+        btn_step_2.setTextColor(Color.parseColor("#"+Integer.toHexString(getResources().getColor(R.color.white))));
+    }
+    private void updateUIQR(String Longi,String Lati) {
+        mLatitude.setText(String.valueOf(Lati));
+        mLongitude.setText(String.valueOf(Longi));
         btn_step_2.setEnabled(true);
         btn_step_2.setBackgroundResource(R.drawable.button_primary);
         btn_step_2.setTextColor(Color.parseColor("#"+Integer.toHexString(getResources().getColor(R.color.white))));

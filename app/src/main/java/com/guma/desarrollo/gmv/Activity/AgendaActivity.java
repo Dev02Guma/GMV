@@ -265,9 +265,9 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         /*
         addProduct("LUNES","FARMACIA SAN MARTIN","01006","S");
         addProduct("MARTES","FARMACIA FARMA CENTER","01338","N");
-        addProduct("MIERCOLES","VACIO","","N");
-        addProduct("JUEVES","VACIO","","N");
-        addProduct("VIERNES","VACIO","","N");*/
+        addProduct("MIERCOLES","FARMACIA LA SEGOVIA","00626","N");
+        addProduct("JUEVES","FARMACIA SAN FRANCISCO","00631","N");
+        addProduct("VIERNES","FARMACIA XILONEM","00752","N");*/
 
     }
 
