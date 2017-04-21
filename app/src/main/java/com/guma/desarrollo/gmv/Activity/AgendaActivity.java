@@ -70,6 +70,8 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         simpleExpandableListView.setAdapter(listAdapter);
         ReferenciasContexto.setContextArticulo(AgendaActivity.this);
 
+        /*preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Toast.makeText(this, preferences.getString("VENDEDOR","0"), Toast.LENGTH_SHORT).show();*/
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();

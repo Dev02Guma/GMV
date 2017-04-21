@@ -134,7 +134,7 @@ public class RazonesActivity extends AppCompatActivity {
 
                                         /*FIN GUARDAR*/
                                             startActivity(new Intent(RazonesActivity.this,AccionesActivity.class));
-                                            editor.putString("BANDERA","1").apply();
+                                            editor.putString("BANDERA","2").apply();
                                             finish();
                                         }
                                     }

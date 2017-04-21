@@ -45,15 +45,20 @@ public class Cobros_model {
         }
     }
 
-    public static List<Cobros> getCobros(String basedir, Context context) {
+    public static List<Cobros> getCobros(String basedir, Context context,Boolean hoy) {
         List<Cobros> lista = new ArrayList<>();
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
+        Cursor cursor;
         try
         {
             myDbHelper = new SQLiteHelper(basedir, context);
             myDataBase = myDbHelper.getReadableDatabase();
-            Cursor cursor = myDataBase.query(true, "COBROS", null, null, null, null, null, null, null);
+            if (hoy) {
+                cursor = myDataBase.query(true, "COBROS", null, "FECHA LIKE ?", new String[] {"%"+ Clock.getTMD()+ "%" }, null, null, null, null);
+            }else{
+                cursor = myDataBase.query(true, "COBROS", null, null, null, null, null, null, null);
+            }
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast()) {

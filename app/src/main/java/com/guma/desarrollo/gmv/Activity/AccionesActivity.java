@@ -36,10 +36,12 @@ public class AccionesActivity extends AppCompatActivity {
         String bandera = preferences.getString("BANDERA", "0");
         setTitle(" [ PASO 2 - Acciones ] " +  preferences.getString("NameClsSelected"," --ERROR--"));
         findViewById(R.id.btnCV).setVisibility(View.GONE);
-        Toast.makeText(this, preferences.getString("NOMBRE","").toString(), Toast.LENGTH_SHORT).show();
+
         if (bandera.equals("1")){
+
+            findViewById(R.id.btnCV).setVisibility(View.VISIBLE);
+        }if (bandera.equals("2")){
             findViewById(R.id.btnRZ).setVisibility(View.GONE);
-        }if (bandera.equals("1")|| bandera.equals("2")){
             findViewById(R.id.btnCV).setVisibility(View.VISIBLE);
         }
         textView = (TextView) findViewById(R.id.idTimer);

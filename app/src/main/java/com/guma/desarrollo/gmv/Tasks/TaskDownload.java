@@ -141,7 +141,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                 });
 
 
-        List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt);
+        List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt,false);
 
         Gson gson = new Gson();
         //Log.d("TaskPedidos","el gson-> "+gson.toJson(listPedidos));

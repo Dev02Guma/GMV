@@ -52,7 +52,7 @@ public class BandejaCobrosActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){ getSupportActionBar().setDisplayHomeAsUpEnabled(true); }
         mTotal = (TextView) findViewById(R.id.txtTotalCobros);
 
-        List<Cobros> lstObj = Cobros_model.getCobros(ManagerURI.getDirDb(), BandejaCobrosActivity.this);
+        List<Cobros> lstObj = Cobros_model.getCobros(ManagerURI.getDirDb(), BandejaCobrosActivity.this,false);
 
         if (lstObj.size() == 0){
             findViewById(R.id.imgMoneyOff) .setVisibility(View.VISIBLE);
@@ -63,7 +63,7 @@ public class BandejaCobrosActivity extends AppCompatActivity {
             fList.add(obj);
             mCalTotal += Float.parseFloat(obj.getmImporte());
         }
-        Log.d("", "onListaCobro: " + Cobros_model.getCobros(ManagerURI.getDirDb(), BandejaCobrosActivity.this));
+        Log.d("", "onListaCobro: " + Cobros_model.getCobros(ManagerURI.getDirDb(), BandejaCobrosActivity.this,false));
         mTotal.setText("C$ " + String.valueOf(mCalTotal));
         listView.setAdapter(new Cobros_Leads(this, fList));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
