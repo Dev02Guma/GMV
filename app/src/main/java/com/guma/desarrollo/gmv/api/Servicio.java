@@ -3,6 +3,7 @@ package com.guma.desarrollo.gmv.api;
 import com.google.gson.JsonObject;
 import com.guma.desarrollo.core.Pedidos_model;
 import com.guma.desarrollo.gmv.models.Respuesta_actividades;
+import com.guma.desarrollo.gmv.models.Respuesta_agenda;
 import com.guma.desarrollo.gmv.models.Respuesta_articulos;
 import com.guma.desarrollo.gmv.models.Respuesta_clientes;
 import com.guma.desarrollo.gmv.models.Respuesta_indicadores;
@@ -77,5 +78,7 @@ public interface Servicio {
 
     @FormUrlEncoded
     @POST("unAgenda")
-    Call<String> unAgenda(@Field("mAgenda") String mVisitas);
+    Call<Respuesta_agenda> Agenda(@Field("mVendedor") String mVendedor);
+
+
 }

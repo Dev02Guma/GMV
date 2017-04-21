@@ -21,6 +21,7 @@ import com.guma.desarrollo.gmv.Activity.ReferenciasContexto;
 import com.guma.desarrollo.gmv.api.Class_retrofit;
 import com.guma.desarrollo.gmv.api.Servicio;
 import com.guma.desarrollo.gmv.models.Respuesta_actividades;
+import com.guma.desarrollo.gmv.models.Respuesta_agenda;
 import com.guma.desarrollo.gmv.models.Respuesta_articulos;
 import com.guma.desarrollo.gmv.models.Respuesta_clientes;
 import com.guma.desarrollo.gmv.models.Respuesta_indicadores;
@@ -241,6 +242,34 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
 
                     @Override
                     public void onFailure(Call<Respuesta_puntos> call, Throwable t) {
+                        pdialog.dismiss();
+                        Log.d(TAG, "onResponse: Failure Facturas " + t.getMessage() );
+                    }
+                });
+
+
+
+        Class_retrofit.Objfit().create(Servicio.class)
+                .Agenda(Usuario)
+                .enqueue(new Callback<Respuesta_agenda>() {
+                    @Override
+                    public void onResponse(Call<Respuesta_agenda> call, Response<Respuesta_agenda> response) {
+                        if(response.isSuccessful()){
+                            pdialog.setMessage("Cargado Puntos.... ");
+                            Respuesta_agenda clpuntos = response.body();
+                            //Clientes_model.SaveFacturas(cnxt,clpuntos.getResults());
+                            //Alerta();
+                            pdialog.dismiss();
+                        }else{
+                            pdialog.dismiss();
+                            Log.d(TAG, "onResponse: noSuccessful Facturas " + response.errorBody() );
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onFailure(Call<Respuesta_agenda> call, Throwable t) {
                         pdialog.dismiss();
                         Log.d(TAG, "onResponse: Failure Facturas " + t.getMessage() );
                     }

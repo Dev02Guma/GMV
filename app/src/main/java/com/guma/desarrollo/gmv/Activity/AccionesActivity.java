@@ -37,6 +37,7 @@ public class AccionesActivity extends AppCompatActivity {
         setTitle(" [ PASO 2 - Acciones ] " +  preferences.getString("NameClsSelected"," --ERROR--"));
         findViewById(R.id.btnCV).setVisibility(View.GONE);
 
+        //Toast.makeText(this, preferences.getString("NOMBRE","").toString(), Toast.LENGTH_SHORT).show();
         if (bandera.equals("1")){
 
             findViewById(R.id.btnCV).setVisibility(View.VISIBLE);

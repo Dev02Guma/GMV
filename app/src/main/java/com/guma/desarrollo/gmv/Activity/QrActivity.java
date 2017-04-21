@@ -32,21 +32,10 @@ public class QrActivity extends AppCompatActivity implements ZXingScannerView.Re
     }
     @Override
     public void handleResult(Result rawResult) {
-       //Log.e("handler", rawResult.getText()); // Prints scan results
-       // Log.e("handler", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode)
-        final ArrayList<String> strings = new ArrayList<String>();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Scan Result");
-        builder.setMessage(rawResult.getText());
-        AlertDialog alert1 = builder.create();
-        alert1.show();
-
         if (rawResult.getText()!=""){
-            Toast.makeText(this, "resultados-> "+rawResult.toString(), Toast.LENGTH_SHORT).show();
-            /*strings.add(rawResult.getText());
-            getIntent().putStringArrayListExtra("myResulte",strings);
+            getIntent().putExtra("myResulte",rawResult.getText());
             setResult(RESULT_OK,getIntent());
-            finish();*/
+            finish();
         }
 
 
