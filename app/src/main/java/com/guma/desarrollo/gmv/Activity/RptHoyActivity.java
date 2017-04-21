@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.guma.desarrollo.core.Actividad;
 import com.guma.desarrollo.core.Actividades_model;
+import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.Cobros;
 import com.guma.desarrollo.core.Cobros_model;
 import com.guma.desarrollo.core.ManagerURI;
@@ -18,6 +19,11 @@ import com.guma.desarrollo.core.Razon;
 import com.guma.desarrollo.core.Razon_model;
 import com.guma.desarrollo.gmv.Adapters.RazonesAdapter;
 import com.guma.desarrollo.gmv.R;
+
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class RptHoyActivity extends AppCompatActivity {
     TextView mPedido,mTotalPedido,mCobro,mTotalCobro,mOtros;
@@ -34,11 +40,11 @@ public class RptHoyActivity extends AppCompatActivity {
         setTitle("REPORTE DEL DIA");
 
 
-        for(Cobros obj : Cobros_model.getCobros(ManagerURI.getDirDb(), RptHoyActivity.this)) {
+        for(Cobros obj : Cobros_model.getCobros(ManagerURI.getDirDb(), RptHoyActivity.this,true)) {
             mCobroTotal += Float.parseFloat(obj.getmImporte());
             countCobro++;
         }
-        for(Pedidos obj : Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(), RptHoyActivity.this)) {
+        for(Pedidos obj : Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(), RptHoyActivity.this,true)) {
             mPedidoTotal += Float.parseFloat(obj.getmPrecio());
             countPedido++;
         }

@@ -37,7 +37,7 @@ import java.util.TimerTask;
 public class ResumenActivity extends AppCompatActivity {
     TextView lblNombreClliente,lblNombreVendedor,countArti,SubTotal,ivaTotal,Total,Atendio,txtidPedido;
     private static ListView listView;
-    float vLine = 0,subValor=0,vFinal=0;
+    float vLine = 0;
     ArrayList<Pedidos> mPedido = new ArrayList<>();
     ArrayList<Pedidos> mDetallePedido = new ArrayList<>();
     public SharedPreferences preferences;
@@ -80,18 +80,17 @@ public class ResumenActivity extends AppCompatActivity {
         lblNombreClliente.setText(ints.getStringExtra("NombreCliente"));
         countArti = (TextView) findViewById(R.id.txtCountArti);
 
-        //Toast.makeText(ResumenActivity.this, preferences.getString("ClsSelected",""), Toast.LENGTH_SHORT).show();
         idPedido = preferences.getString("IDPEDIDO", "");
         if (!idPedido.equals("")){
-            //Toast.makeText(this, "La edidion del pedido: "+preferences.getString("IDPEDIDO", ""), Toast.LENGTH_SHORT).show();
-            Atendio.setText("LE ATENDIO: "+preferences.getString("USUARIO","").toString());
-            txtidPedido.setText(idPedido.toString());
+
+            Atendio.setText("LE ATENDIO: "+preferences.getString("VENDEDOR",""));
+            txtidPedido.setText(idPedido);
             bandera = "1";
         }else{
             int key = SQLiteHelper.getIdTemporal(ManagerURI.getDirDb(),ResumenActivity.this,"PEDIDOS");
             idPedido = "F09-" + "P"+ Clock.getIdDate()+String.valueOf(key);
-            txtidPedido.setText(idPedido.toString());
-            Atendio.setText(preferences.getString("NOMBRE","").toString());
+            txtidPedido.setText(idPedido);
+            Atendio.setText("LE ATENDIO: "+preferences.getString("VENDEDOR",""));
         }
         for (Map<String, Object> obj : list){
             vLine     += Float.parseFloat(obj.get("ITEMVALOR").toString());

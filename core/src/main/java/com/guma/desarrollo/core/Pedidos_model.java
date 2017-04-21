@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,9 +82,9 @@ public class Pedidos_model {
             if(myDbHelper != null) { myDbHelper.close(); }
         }
     }
-    public static List<Pedidos> getInfoPedidos(String basedir, Context context) {
+    public static List<Pedidos> getInfoPedidos(String basedir, Context context,Boolean hoy) {
         List<Pedidos> lista = new ArrayList<>();
-
+        Cursor cursor;
         Integer i = 0;
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
@@ -92,8 +93,11 @@ public class Pedidos_model {
             myDbHelper = new SQLiteHelper(basedir, context);
             myDataBase = myDbHelper.getReadableDatabase();
 
-            Cursor cursor = myDataBase.query(true, "PEDIDO",null, "ESTADO IN ("+ TextUtils.join(",", new String[] { "0", "1", "2", "3", "4" } )+")", null, null, null, null, null);
-
+            if (hoy){
+                cursor = myDataBase.query(true, "PEDIDO",null, "FECHA_CREADA LIKE '%"+Clock.getTMD()+"%' AND ESTADO IN ("+ TextUtils.join(",", new String[] { "0", "1", "2", "3", "4" } )+")", null, null, null, null, null);
+            }else {
+                cursor = myDataBase.query(true, "PEDIDO", null, "ESTADO IN (" + TextUtils.join(",", new String[]{"0", "1", "2", "3", "4"}) + ")", null, null, null, null, null);
+            }
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast()) {

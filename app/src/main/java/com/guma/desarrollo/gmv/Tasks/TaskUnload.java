@@ -57,7 +57,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
 
     @Override
     protected String doInBackground(Integer... para) {
-        List<Cobros> obj = Cobros_model.getCobros(ManagerURI.getDirDb(), cnxt);
+        List<Cobros> obj = Cobros_model.getCobros(ManagerURI.getDirDb(), cnxt,false);
         if (obj.size()>0){
             Class_retrofit.Objfit().create(Servicio.class).InserCorbos(new Gson().toJson(obj)).enqueue(new Callback<String>() {
                 @Override
@@ -77,7 +77,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
         }
 
 
-        List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt);
+        List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt,false);
         Gson gson = new Gson();
         if (listPedidos.size()>0) {
             Log.d("json",gson.toJson(listPedidos));

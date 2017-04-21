@@ -53,7 +53,7 @@ public class BandejaPedidosActivity extends AppCompatActivity {
         fList = new ArrayList<>();
         listView = (ListView) findViewById(R.id.listView_pedidos);
 
-        List<Pedidos> lstObj = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(), BandejaPedidosActivity.this);
+        List<Pedidos> lstObj = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(), BandejaPedidosActivity.this,false);
         if (lstObj.size() == 0){
             new Notificaciones().Alert(BandejaPedidosActivity.this,"AVISO","NO HAY PEDIDOS...").setCancelable(false).setPositiveButton("OK", null).show();
         }else{
