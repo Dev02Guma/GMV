@@ -255,8 +255,10 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                     if (mD[d].equals("")){
                         addProduct(strDias[i],"VACIO","","N");
                     }else{
+                        //addProduct(strDias[i],mD[d],mD[d],"N");
                         for (Clientes obj : Clientes_model.getInfoCliente(ManagerURI.getDirDb(), AgendaActivity.this,mD[d])) {
                             addProduct(strDias[i],obj.getmNombre(),mD[d],"N");
+                            Log.d("", "Cumple: "+ obj.getmCliente() + "-->" + obj.getmCumple());
                         }
                     }
 

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.guma.desarrollo.core.Actividades_model;
+import com.guma.desarrollo.core.Agenda_model;
 import com.guma.desarrollo.core.Articulos_model;
 import com.guma.desarrollo.core.Clientes_model;
 import com.guma.desarrollo.core.Clock;
@@ -117,7 +118,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                     }
                 });
 
-        Class_retrofit.Objfit()
+       Class_retrofit.Objfit()
                 .create(Servicio.class)
                 .obtenerListaClienteMora(Usuario)
                 .enqueue(new Callback<Respuesta_mora>() {
@@ -142,7 +143,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                 });
 
 
-        List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt,false);
+       List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt,false);
 
         Gson gson = new Gson();
         //Log.d("TaskPedidos","el gson-> "+gson.toJson(listPedidos));
@@ -230,8 +231,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             pdialog.setMessage("Cargado Puntos.... ");
                             Respuesta_puntos clpuntos = response.body();
                             Clientes_model.SaveFacturas(cnxt,clpuntos.getResults());
-                            Alerta();
-                            pdialog.dismiss();
+
                         }else{
                             pdialog.dismiss();
                             Log.d(TAG, "onResponse: noSuccessful Facturas " + response.errorBody() );
@@ -257,12 +257,13 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                         if(response.isSuccessful()){
                             pdialog.setMessage("Cargado Puntos.... ");
                             Respuesta_agenda clpuntos = response.body();
-                            //Clientes_model.SaveFacturas(cnxt,clpuntos.getResults());
-                            //Alerta();
+                            Log.d(TAG, "onResponse: Agenda " + clpuntos.getCount());
+                            Agenda_model.Save_Agenda(cnxt,clpuntos.getResults());
+                            Alerta();
                             pdialog.dismiss();
                         }else{
                             pdialog.dismiss();
-                            Log.d(TAG, "onResponse: noSuccessful Facturas " + response.errorBody() );
+                            Log.d(TAG, "onResponse: noSuccessful Agenda " + response.errorBody() );
                         }
 
                     }

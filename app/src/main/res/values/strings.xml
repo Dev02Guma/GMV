@@ -48,6 +48,11 @@
         <item>JUEVES</item>
         <item>VIERNES</item>
     </string-array>
+
+
+
+
+
     <string name="title_activity_crear_agenda">CrearAgendaActivity</string>
     <string name="title_activity_clientes">ClientesActivity</string>
 
