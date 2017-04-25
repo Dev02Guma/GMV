@@ -123,7 +123,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
             });
         }
 
-        List<Agenda> objAgenda = Agenda_model.UnloadAgenda(ManagerURI.getDirDb(), cnxt);
+       /* List<Agenda> objAgenda = Agenda_model.UnloadAgenda(ManagerURI.getDirDb(), cnxt);
         Log.d(TAG, "doInBackground: " + objAgenda.size());
         if (objAgenda.size()>0){
             Class_retrofit.Objfit().create(Servicio.class).unAgenda(new Gson().toJson(objAgenda)).enqueue(new Callback<String>() {
@@ -141,7 +141,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                     Log.d(TAG, "doInBackground: Nose fue AGENDA");
                 }
             });
-        }
+        }*/
 
 
         pdialog.dismiss();

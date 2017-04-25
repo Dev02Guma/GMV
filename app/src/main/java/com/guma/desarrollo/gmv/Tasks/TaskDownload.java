@@ -146,7 +146,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
        List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt,false);
 
         Gson gson = new Gson();
-        //Log.d("TaskPedidos","el gson-> "+gson.toJson(listPedidos));
+        //Log.d("TaskPedidos","onResponse: No DE PEDIDOS "+listPedidos.size());
 
        if (listPedidos.size()>0) {
             Class_retrofit.Objfit()
@@ -159,7 +159,6 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                                 pdialog.setMessage("Actualizando pedidos....");
                                 Log.d("alder",response.body().toString());
                                 Respuesta_pedidos pedidosRespuesta = response.body();
-                                Log.d("alder", "onResponse: PEDIDOS " + response.body().getResults().get(0).getmEstado());
                                 Pedidos_model.actualizarPedidos(cnxt, pedidosRespuesta.getResults());
                             } else {
                                 Log.d("alder", "onResponse: noSuccessful PEDIDOS " + response.errorBody());
@@ -168,7 +167,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
 
                         @Override
                         public void onFailure(Call<Respuesta_pedidos> call, Throwable t) {
-                            Log.d("alder", "onResponse: Failure pedidos, NO HAY PEDIDOS" + t.getMessage());
+                            Log.d(TAG, "onResponse: Failure pedidos, NO HAY PEDIDOS" + t.getMessage());
                         }
                     });
         }
@@ -215,7 +214,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
 
                     @Override
                     public void onFailure(Call<Respuesta_clientes> call, Throwable t) {
-                        pdialog.dismiss();
+                        //pdialog.dismiss();
                         Log.d(TAG, "onResponse: Failure Clientes " + t.getMessage() );
 
                     }
@@ -242,7 +241,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
 
                     @Override
                     public void onFailure(Call<Respuesta_puntos> call, Throwable t) {
-                        pdialog.dismiss();
+                        //pdialog.dismiss();
                         Log.d(TAG, "onResponse: Failure Facturas " + t.getMessage() );
                     }
                 });
