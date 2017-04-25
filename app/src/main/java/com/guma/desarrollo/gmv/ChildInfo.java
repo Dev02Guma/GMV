@@ -8,6 +8,15 @@ public class ChildInfo {
     private String name = "";
     private String Codigo="";
     private String Cumple="";
+    private boolean Cake;
+
+    public boolean isCake() {
+        return Cake;
+    }
+
+    public void setCake(boolean cake) {
+        Cake = cake;
+    }
 
     public String getCodigo() {
         return Codigo;

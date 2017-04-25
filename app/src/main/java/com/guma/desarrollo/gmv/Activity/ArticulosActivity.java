@@ -4,7 +4,10 @@ import android.app.DownloadManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.renderscript.ScriptGroup;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
@@ -52,8 +55,9 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
     private SearchManager searchManager;
     private Articulo_Leads lbs;
     private List<Articulo> objects;
-
-
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private boolean checked;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +71,9 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
         objects = Articulos_model.getArticulos(ManagerURI.getDirDb(), ReferenciasContexto.getContextArticulo());
         lbs = new Articulo_Leads(this, objects);
         listView.setAdapter(lbs);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
+        checked = preferences.getBoolean("menu",false);
 
         searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         setTitle("ARTICULOS");
@@ -93,6 +100,17 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                     //spinner.setAdapter(new ArrayAdapter<>(ArticulosActivity.this, android.R.layout.simple_spinner_dropdown_item,  Reglas));
                     InputExiste = (EditText) promptsView.findViewById(R.id.txtFrmExistencia);
                     InputExiste.setText(mnotes.getmExistencia() + " [ " + mnotes.getmUnidad() + " ]");
+
+
+                    if (checked){
+                        List<String> mStrings = new ArrayList<>();
+                        Inputcant.setVisibility(View.GONE);
+                        promptsView.findViewById(R.id.txtInCant).setVisibility(View.GONE);
+                        for (int i = 0; i < Reglas.length; i++) {
+                            mStrings.add(Reglas[i]);
+                        }
+                        spinner.setAdapter(new ArrayAdapter<>(ArticulosActivity.this, android.R.layout.simple_spinner_dropdown_item, mStrings));
+                    }
 
                     Inputcant.addTextChangedListener(new TextWatcher() {
                         @Override
@@ -135,35 +153,44 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                             .setPositiveButton("OK",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
+                                            if (!checked){
 
-                                            Float Precio = Float.parseFloat(mnotes.getmExistencia());
-                                            Float Exist = Float.parseFloat(mnotes.getmExistencia());
+                                                Float Precio = Float.parseFloat(mnotes.getmExistencia());
+                                                Float Exist = Float.parseFloat(mnotes.getmExistencia());
 
-                                            if (Precio !=0.0) {
-                                                if (Inputcant.length()!= 0) {
-                                                    Float cantida = Float.parseFloat(Inputcant.getText().toString());
-                                                    if (cantida <= Exist) {
-                                                        String BONIFICADO = "0";
-                                                        if (spinner.getSelectedItem() != null) {
-                                                            BONIFICADO = spinner.getSelectedItem().toString();
+                                                if (Precio !=0.0) {
+                                                    if (Inputcant.length()!= 0) {
+                                                        Float cantida = Float.parseFloat(Inputcant.getText().toString());
+                                                        if (cantida <= Exist) {
+                                                            String BONIFICADO = "0";
+                                                            if (spinner.getSelectedItem() != null) {
+                                                                BONIFICADO = spinner.getSelectedItem().toString();
+                                                            }
+                                                            InputExiste.setText(mnotes.getmPrecio());
+                                                            vLinea = Float.parseFloat(mnotes.getmPrecio()) * Float.parseFloat(Inputcant.getText().toString());
+                                                            SubTotalLinea = Float.parseFloat(String.valueOf(vLinea * 0.15));
+                                                            TotalFinalLinea = vLinea + SubTotalLinea;
+                                                            strings.add(mnotes.getmName());
+                                                            strings.add(mnotes.getmCodigo());
+                                                            strings.add(Inputcant.getText().toString());
+                                                            strings.add(vLinea.toString());
+                                                            strings.add(SubTotalLinea.toString());
+                                                            strings.add(TotalFinalLinea.toString());
+                                                            strings.add(BONIFICADO);
+                                                            strings.add(InputPrecio.getText().toString());
+                                                            getIntent().putStringArrayListExtra("myItem", strings);
+                                                            setResult(RESULT_OK, getIntent());
+                                                            finish();
+                                                        }else{
+                                                            new Notificaciones().Alert(ArticulosActivity.this,"ERROR","LA EXISTENCIA ACTUAL ES: "+Exist.toString())
+                                                                    .setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                                }
+                                                            }).show();
                                                         }
-                                                        InputExiste.setText(mnotes.getmPrecio());
-                                                        vLinea = Float.parseFloat(mnotes.getmPrecio()) * Float.parseFloat(Inputcant.getText().toString());
-                                                        SubTotalLinea = Float.parseFloat(String.valueOf(vLinea * 0.15));
-                                                        TotalFinalLinea = vLinea + SubTotalLinea;
-                                                        strings.add(mnotes.getmName());
-                                                        strings.add(mnotes.getmCodigo());
-                                                        strings.add(Inputcant.getText().toString());
-                                                        strings.add(vLinea.toString());
-                                                        strings.add(SubTotalLinea.toString());
-                                                        strings.add(TotalFinalLinea.toString());
-                                                        strings.add(BONIFICADO);
-                                                        strings.add(InputPrecio.getText().toString());
-                                                        getIntent().putStringArrayListExtra("myItem", strings);
-                                                        setResult(RESULT_OK, getIntent());
-                                                        finish();
                                                     }else{
-                                                        new Notificaciones().Alert(ArticulosActivity.this,"ERROR","LA EXISTENCIA ACTUAL ES: "+Exist.toString())
+                                                        new Notificaciones().Alert(ArticulosActivity.this,"ERROR","INGRESE UNA CANTIDAD POR FAVOR")
                                                                 .setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                             @Override
                                                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -171,20 +198,17 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                                                         }).show();
                                                     }
                                                 }else{
-                                                    new Notificaciones().Alert(ArticulosActivity.this,"ERROR","INGRESE UNA CANTIDAD POR FAVOR")
+                                                    new Notificaciones().Alert(ArticulosActivity.this,"ERROR","ARTICULO SIN EXISTENCIA, FAVOR ACTUALICE")
                                                             .setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialogInterface, int i) {
                                                         }
                                                     }).show();
+
+
                                                 }
                                             }else{
-                                                new Notificaciones().Alert(ArticulosActivity.this,"ERROR","ARTICULO SIN EXISTENCIA, FAVOR ACTUALICE")
-                                                        .setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                    }
-                                                }).show();
+                                                dialog.cancel();
                                             }
                                         }
                                     })
@@ -196,6 +220,16 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                                     }).create().show();
             }
         });
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            editor.putBoolean("menu", !checked).apply();
+            finish();
+            return true;
+        }
+        return false;
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -212,7 +246,10 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item)    {
         int id = item.getItemId();
-        if (id == 16908332){ finish(); }
+        if (id == 16908332){
+            editor.putBoolean("menu", !checked).apply();
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 

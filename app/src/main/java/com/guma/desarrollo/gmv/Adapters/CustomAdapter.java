@@ -52,6 +52,10 @@ public class CustomAdapter extends BaseExpandableListAdapter {
 
         TextView childItem = (TextView) view.findViewById(R.id.childItem);
         childItem.setText(detailInfo.getName().trim());
+        if (!detailInfo.isCake()){
+            view.findViewById(R.id.iCake).setVisibility(view.GONE);
+        }
+
 
         return view;
     }
