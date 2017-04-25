@@ -21,13 +21,14 @@
                 android:layout_weight="1"
                 android:layout_alignParentTop="true"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-            <ImageView
-                android:id="@+id/iCake"
+            <TextView
+                android:id="@+id/chldFecha"
+                android:text="00-00-0000"
                 android:layout_height="fill_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:src="@drawable/ic_cake_black_24dp"
-                />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
         </TableRow>
 
     </TableLayout>

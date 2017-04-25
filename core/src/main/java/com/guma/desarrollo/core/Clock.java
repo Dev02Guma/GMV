@@ -1,9 +1,12 @@
 package com.guma.desarrollo.core;
 
+import android.content.Context;
 import android.text.format.Time;
 import android.util.Log;
 
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -97,6 +100,15 @@ public class Clock {
             e.printStackTrace();
         }
         return date;
+    }
+    public static String getMonth(Context cnxt, String Date){
+        return cnxt.getResources().getStringArray(R.array.meses)[Integer.parseInt(Date.substring(3,5))];
+    }
+
+    public static String getMes(Date date,String rtn) {
+
+        return (String) android.text.format.DateFormat.format(rtn, date);
+
     }
 
 

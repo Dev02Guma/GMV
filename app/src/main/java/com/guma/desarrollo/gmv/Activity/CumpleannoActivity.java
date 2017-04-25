@@ -3,9 +3,15 @@ package com.guma.desarrollo.gmv.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
 
+import com.guma.desarrollo.core.Clientes;
+import com.guma.desarrollo.core.Clientes_model;
+import com.guma.desarrollo.core.Clock;
+import com.guma.desarrollo.core.ManagerURI;
+import com.guma.desarrollo.gmv.Adapters.CustomCumpleAdapter;
 import com.guma.desarrollo.gmv.ChildInfo;
 import com.guma.desarrollo.gmv.Adapters.CustomAdapter;
 import com.guma.desarrollo.gmv.GroupInfo;
@@ -18,7 +24,7 @@ public class CumpleannoActivity extends AppCompatActivity {
     private LinkedHashMap<String, GroupInfo> subjects = new LinkedHashMap<String, GroupInfo>();
     private ArrayList<GroupInfo> deptList = new ArrayList<GroupInfo>();
 
-    private CustomAdapter listAdapter;
+    private CustomCumpleAdapter listAdapter;
     private ExpandableListView simpleExpandableListView;
 
     @Override
@@ -31,7 +37,8 @@ public class CumpleannoActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){ getSupportActionBar().setDisplayHomeAsUpEnabled(true); }
         loadData();
         simpleExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
-        listAdapter = new CustomAdapter(CumpleannoActivity.this, deptList);
+        listAdapter = new CustomCumpleAdapter(CumpleannoActivity.this, deptList);
+
         simpleExpandableListView.setAdapter(listAdapter);
         expandAll();
     }
@@ -47,10 +54,16 @@ public class CumpleannoActivity extends AppCompatActivity {
         }
     }
     private void loadData(){
-        addProduct("FEBRERO","CLIENTE");
+        for (Clientes obj : Clientes_model.getClientes(ManagerURI.getDirDb(), CumpleannoActivity.this)) {
+            if (obj.getmCumple().equals("00-00-0000")){
 
+            }else{
+                addProduct(Clock.getMonth(CumpleannoActivity.this,obj.getmCumple()),obj.getmNombre(),obj.getmCumple());
+            }
+
+        }
     }
-    private int addProduct(String department, String product){
+    private int addProduct(String department, String product,String Cumple){
 
         int groupPosition = 0;
 
@@ -64,9 +77,12 @@ public class CumpleannoActivity extends AppCompatActivity {
         ArrayList<ChildInfo> productList = headerInfo.getProductList();
         int listSize = productList.size();
         listSize++;
+
         ChildInfo detailInfo = new ChildInfo();
         detailInfo.setSequence(String.valueOf(listSize));
         detailInfo.setName(product);
+        detailInfo.setCumple(Cumple);
+
         productList.add(detailInfo);
         headerInfo.setProductList(productList);
         groupPosition = deptList.indexOf(headerInfo);

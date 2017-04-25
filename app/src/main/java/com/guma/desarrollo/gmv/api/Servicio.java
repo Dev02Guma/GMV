@@ -77,8 +77,13 @@ public interface Servicio {
     Call<String> inVisitas(@Field("mVisitas") String mVisitas);
 
     @FormUrlEncoded
-    @POST("unAgenda")
+    @POST("Agenda")
     Call<Respuesta_agenda> Agenda(@Field("mVendedor") String mVendedor);
+
+    @FormUrlEncoded
+    @POST("unAgenda")
+    Call<String> unAgenda(@Field("mAgenda") String mVisitas);
+
 
 
 }

@@ -14,6 +14,8 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,19 +61,11 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         setContentView(R.layout.activity_agenda);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        /*preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = preferences.edit();
-        String userr = preferences.getString("NOMBRE"," --ERROR--");
-
-        Toast.makeText(this, "EL USUARIO ES->>"+userr.toString(), Toast.LENGTH_SHORT).show();*/
         loadData();
         simpleExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
         listAdapter = new CustomAdapter(AgendaActivity.this, deptList);
         simpleExpandableListView.setAdapter(listAdapter);
         ReferenciasContexto.setContextArticulo(AgendaActivity.this);
-
-        /*preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Toast.makeText(this, preferences.getString("VENDEDOR","0"), Toast.LENGTH_SHORT).show();*/
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
@@ -104,49 +98,47 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
             @Override
             public void onClick(View v) {
 
-                final CharSequence[]items = { "CREAR AGENDA","PEDIDO", "COBRO","ENVIAR","RECIBIR","REPORTE DEL DIA","SALIR"};
+                final CharSequence[]items = { "MIS CLIENTES","INVENTARIO","PEDIDO", "COBRO","ENVIAR","RECIBIR","REPORTE DEL DIA","SALIR"};
                 new AlertDialog.Builder(v.getContext()).setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                         if (items[which].equals(items[0])){
-                                //startActivity(new Intent(AgendaActivity.this,CrearAgendaActivity.class));
-                                startActivityForResult(new Intent(AgendaActivity.this,CrearAgendaActivity.class),0);
+                            startActivityForResult(new Intent(AgendaActivity.this,ClientesActivity.class),0);
                         }else{
                             if (items[which].equals(items[1])){
-                                startActivity(new Intent(AgendaActivity.this,BandejaPedidosActivity.class));
+                                startActivity(new Intent(AgendaActivity.this,ArticulosActivity.class));
+                                editor.putBoolean("menu", true).apply();
                             }else{
                                 if (items[which].equals(items[2])){
-                                    startActivity(new Intent(AgendaActivity.this,BandejaCobrosActivity.class));
+                                    startActivity(new Intent(AgendaActivity.this,BandejaPedidosActivity.class));
                                 }else{
                                     if (items[which].equals(items[3])){
-                                        //new Notificaciones().Alert(AgendaActivity.this,"ERROR","NO HAY PEDIDOS...").setCancelable(false).setPositiveButton("OK", null).show();
-
-                                        // new TaskUnload(AgendaActivity.this).execute();
-
-                                        new TaskUnload(AgendaActivity.this).execute();
-                                        //new Calendario().show(getSupportFragmentManager(), "datePicker");
-
-                                    } else {
+                                        startActivity(new Intent(AgendaActivity.this,BandejaCobrosActivity.class));
+                                    }else{
                                         if (items[which].equals(items[4])){
-                                            if (ManagerURI.isOnlinea(AgendaActivity.this)==true){
-                                                new TaskDownload(AgendaActivity.this).execute(0);
-                                            } else {
-                                                Toast.makeText(AgendaActivity.this, "No Posee Cobertura de datos...", Toast.LENGTH_SHORT).show();
-                                            }
+                                            new TaskUnload(AgendaActivity.this).execute();
                                         } else {
                                             if (items[which].equals(items[5])){
-                                                startActivity(new Intent(AgendaActivity.this,RptHoyActivity.class));
+                                                if (ManagerURI.isOnlinea(AgendaActivity.this)){
+                                                    new TaskDownload(AgendaActivity.this).execute(0);
+                                                } else {
+                                                    Toast.makeText(AgendaActivity.this, "No Posee Cobertura de datos...", Toast.LENGTH_SHORT).show();
+                                                }
                                             } else {
                                                 if (items[which].equals(items[6])){
-                                                    checked = false;
-                                                    editor.putBoolean("pref", false).commit();
-                                                    editor.apply();
-                                                    finish();
-                                                }else{
-                                                    Toast.makeText(AgendaActivity.this, "Se produjo un error", Toast.LENGTH_SHORT).show();
-                                                }
+                                                    startActivity(new Intent(AgendaActivity.this,RptHoyActivity.class));
+                                                } else {
+                                                    if (items[which].equals(items[7])){
+                                                        checked = false;
+                                                        editor.putBoolean("pref", false).commit();
+                                                        editor.apply();
+                                                        finish();
+                                                    }else{
+                                                        Toast.makeText(AgendaActivity.this, "Se produjo un error", Toast.LENGTH_SHORT).show();
+                                                    }
 
+                                                }
                                             }
                                         }
                                     }
@@ -199,8 +191,6 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        //boolean isConnected = ;
-        //showSnack(ConnectivityReceiver.isConnected());
         checkConnection();
     }
     private void blankAgenda(){
@@ -245,35 +235,40 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
 
     private void loadData(){
         List<Map<String, Object>> lista = Agenda_model.getAgenda(ManagerURI.getDirDb(), AgendaActivity.this);
-        int C=0;
         if (lista.size()>0){
-            //deptList.clear();
             String[] strDias = getResources().getStringArray(R.array.dias);
             for (int i=0;i<strDias.length;i++){
                 String[] mD = lista.get(0).get(strDias[i]).toString().split("-");
                 for (int d=0;d<mD.length;d++){
                     if (mD[d].equals("")){
-                        addProduct(strDias[i],"VACIO","","N");
+                        addProduct(strDias[i],"VACIO","",true);
                     }else{
                         for (Clientes obj : Clientes_model.getInfoCliente(ManagerURI.getDirDb(), AgendaActivity.this,mD[d])) {
-                            addProduct(strDias[i],obj.getmNombre(),mD[d],"N");
+                            addProduct(strDias[i],obj.getmNombre(),mD[d],onCake(obj.getmCumple()));
+
                         }
                     }
-
                 }
             }
         }
 
-        /*
-        addProduct("LUNES","FARMACIA SAN MARTIN","01006","S");
-        addProduct("MARTES","FARMACIA FARMA CENTER","01338","N");
-        addProduct("MIERCOLES","FARMACIA LA SEGOVIA","00626","N");
-        addProduct("JUEVES","FARMACIA SAN FRANCISCO","00631","N");
-        addProduct("VIERNES","FARMACIA XILONEM","00752","N");*/
+    }
+    private  boolean onCake(String Fecha_cumple){
+        boolean isVisible= false;
+        if (Fecha_cumple.equals("00-00-0000")){
 
+        }else{
+            Date dte = new Date();
+            String nowMes = Clock.getMes(dte,"M");
+            String cumMes = String.valueOf(Integer.parseInt(Fecha_cumple.substring(3,5)));
+            if (nowMes.equals(cumMes)){
+                isVisible = true;
+            }
+        }
+        return isVisible;
     }
 
-    private int addProduct(String department, String product,String Codigo,String Cumple){
+    private int addProduct(String department, String product,String Codigo,boolean Cumple){
         int groupPosition = 0;
         GroupInfo headerInfo = subjects.get(department);
 
@@ -291,7 +286,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         detailInfo.setSequence(String.valueOf(listSize));
         detailInfo.setName(product);
         detailInfo.setCodigo(Codigo);
-        detailInfo.setCumple(Cumple);
+        detailInfo.setCake(Cumple);
         productList.add(detailInfo);
 
         headerInfo.setProductList(productList);

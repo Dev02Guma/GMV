@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.guma.desarrollo.gmv.ChildInfo;
 import com.guma.desarrollo.gmv.GroupInfo;
@@ -18,12 +17,12 @@ import java.util.ArrayList;
 /**
  * Created by Gourav on 08-03-2016.
  */
-public class CustomAdapter extends BaseExpandableListAdapter {
+public class CustomCumpleAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private ArrayList<GroupInfo> deptList;
 
-    public CustomAdapter(Context context, ArrayList<GroupInfo> deptList) {
+    public CustomCumpleAdapter(Context context, ArrayList<GroupInfo> deptList) {
         this.context = context;
         this.deptList = deptList;
     }
@@ -46,16 +45,15 @@ public class CustomAdapter extends BaseExpandableListAdapter {
         ChildInfo detailInfo = (ChildInfo) getChild(groupPosition, childPosition);
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = infalInflater.inflate(R.layout.child_items, null);
+            view = infalInflater.inflate(R.layout.child_cumpleanno, null);
         }
 
 
         TextView childItem = (TextView) view.findViewById(R.id.childItem);
         childItem.setText(detailInfo.getName().trim());
-        if (!detailInfo.isCake()){
-            view.findViewById(R.id.iCake).setVisibility(view.GONE);
-        }
 
+        TextView chldCumple = (TextView) view.findViewById(R.id.chldFecha);
+        chldCumple.setText(detailInfo.getCumple().trim());
 
         return view;
     }

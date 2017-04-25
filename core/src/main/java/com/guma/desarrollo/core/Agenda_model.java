@@ -125,6 +125,48 @@ public class Agenda_model {
         }
         return lista;
     }
+    public static void  Save_Agenda(Context context, ArrayList<Agenda> Indica){
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+            myDbHelper = new SQLiteHelper(ManagerURI.getDirDb(), context);
+            myDataBase = myDbHelper.getWritableDatabase();
+            SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM FACTURAS_PUNTOS");
+            for(int i=0;i<Indica.size();i++){
+                Agenda a = Indica.get(i);
+                SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM AGENDA");
+                ContentValues cntTop = new ContentValues();
+                cntTop.put("IdPlan" , a.mIdPlan);
+                cntTop.put("Vendedor" , a.mVendedor);
+                cntTop.put("Ruta" , a.mRuta);
+                cntTop.put("Inicia" , a.mInicia);
+                cntTop.put("Termina" , a.mTermina);
+                cntTop.put("Zona" , a.mZona);
+                myDataBase.insert("AGENDA", null, cntTop );
+
+                SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM VCLIENTES");
+                ContentValues cntDetalle = new ContentValues();
+                cntDetalle.put("IdPlan" , a.mIdPlan);
+                cntDetalle.put("Lunes" , a.mLunes);
+                cntDetalle.put("Martes" , a.mMartes);
+                cntDetalle.put("Miercoles" , a.mMiercoles);
+                cntDetalle.put("Jueves" , a.mJueves);
+                cntDetalle.put("Viernes" , a.mViernes);
+                myDataBase.insert("VCLIENTES", null, cntDetalle );
+
+            }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+    }
     public static void  SaveAgenda(Context context, List<Map<String, Object>> mTop,  List<Map<String, Object>> mDetalle){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
