@@ -47,7 +47,7 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
 
     PieChart pieChart;
 
-    TextView mpVenta,mItemFact,mLimite,mCredito,mNombre,mPuntos;
+    TextView mpVenta,mItemFact,mLimite,mCredito,mNombre,mPuntos,mHistorial;
 
     TextView textView;
 
@@ -71,6 +71,7 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
         mCredito = (TextView) findViewById(R.id.txtCredito);
         mNombre = (TextView) findViewById(R.id.txtIdNombre);
         mPuntos = (TextView) findViewById(R.id.txtPuntos);
+        mHistorial = (TextView) findViewById(R.id.txtHistorial);
 
         List<Indicadores> obj = Clientes_model.getIndicadores(ManagerURI.getDirDb(), IndicadoresClienteActivity.this,preferences.getString("ClsSelected"," --ERROR--"));
         setTitle(" [ PASO 3 - Pedido ] " + preferences.getString("NameClsSelected"," --ERROR--"));
@@ -125,6 +126,14 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
                 startActivity(new Intent(IndicadoresClienteActivity.this,FacturasActivity.class));
             }
         });
+
+        mHistorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(IndicadoresClienteActivity.this,ComprasActivity.class));
+            }
+        });
+
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 mHandler.obtainMessage(1).sendToTarget();

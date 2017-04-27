@@ -4,41 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?attr/listPreferredItemHeight"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:paddingBottom="8dp"
     android:paddingTop="8dp">
-        <TableLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:paddingLeft="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
+        <TextView
+            android:id="@+id/lst_Nombre"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true">
-            <TableRow
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-                <TextView
-                    android:id="@+id/lst_fecha"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    tools:text="FECHA" />
-                <TextView
-                    android:id="@+id/lst_factura"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    tools:text="FACTURA" />
-                <TextView
-                    android:gravity="center"
-                    android:id="@+id/lst_puntos"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    tools:text="ARTICULO" />
-            </TableRow>
-        </TableLayout>
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="Nombre: " />
+        <TextView
+            android:id="@+id/lst_Codigo"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="Codigo: " />
+        <TextView
+            android:id="@+id/lst_Cantidad"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="Cantidad: " />
+        <TextView
+            android:id="@+id/lst_Fecha"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="Fecha: " />
+    </LinearLayout>
+
 
 </LinearLayout>
