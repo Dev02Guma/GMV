@@ -145,6 +145,68 @@ public class Clientes_model {
             if(myDbHelper != null) { myDbHelper.close(); }
         }
     }
+    public static void  SaveHistorialCompra(Context context, ArrayList<Historial> Indica){
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+            myDbHelper = new SQLiteHelper(ManagerURI.getDirDb(), context);
+            myDataBase = myDbHelper.getWritableDatabase();
+            SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM HSTCOMPRA");
+            for(int i=0;i<Indica.size();i++){
+                Historial a = Indica.get(i);
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("ARTICULO" , a.getmArticulo());
+                contentValues.put("NOMBRE" , a.getmNombre());
+                contentValues.put("CANTIDAD" , a.getmCantidad());
+                contentValues.put("FECHA" , a.getmFecha());
+                contentValues.put("CLIENTE" , a.getmCliente());
+                contentValues.put("VENDEDOR" , a.getmVendedor());
+                myDataBase.insert("HSTCOMPRA", null, contentValues );
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+    }
+    public static List<Historial> getHistorial(String basedir, Context context, String Cliente) {
+        List<Historial> lista = new ArrayList<>();
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+            myDbHelper = new SQLiteHelper(basedir, context);
+            myDataBase = myDbHelper.getReadableDatabase();
+            Cursor cursor = myDataBase.query(true, "HSTCOMPRA", null, "CLIENTE"+ "=?", new String[] { Cliente }, null, null, null, null);
+            if(cursor.getCount() > 0) {
+
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast()) {
+                    Historial tmp = new Historial();
+                    tmp.setmArticulo(cursor.getString(cursor.getColumnIndex("ARTICULO")));
+                    tmp.setmNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
+                    tmp.setmCantidad(cursor.getString(cursor.getColumnIndex("CANTIDAD")));
+                    tmp.setmFecha(cursor.getString(cursor.getColumnIndex("FECHA")));
+                    tmp.setmCliente(cursor.getString(cursor.getColumnIndex("CLIENTE")));
+                    tmp.setmVendedor(cursor.getString(cursor.getColumnIndex("VENDEDOR")));
+                    lista.add(tmp);
+                    cursor.moveToNext();
+                }
+            }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+        return lista;
+    }
     public static void  SaveFacturas(Context context, ArrayList<Facturas> Indica){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;

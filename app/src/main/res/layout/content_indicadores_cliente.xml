@@ -173,6 +173,20 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="C$ 0.00" />
             </TableRow>
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="10dp">
+                <TextView
+                    android:textAlignment="center"
+                    android:textColor="@color/button_info"
+                    android:id="@+id/txtHistorial"
+                    android:layout_height="fill_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Historial de Compra" />
+            </TableRow>
 
 
         </TableLayout>

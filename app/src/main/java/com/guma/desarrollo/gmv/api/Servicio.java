@@ -6,6 +6,7 @@ import com.guma.desarrollo.gmv.models.Respuesta_actividades;
 import com.guma.desarrollo.gmv.models.Respuesta_agenda;
 import com.guma.desarrollo.gmv.models.Respuesta_articulos;
 import com.guma.desarrollo.gmv.models.Respuesta_clientes;
+import com.guma.desarrollo.gmv.models.Respuesta_historial;
 import com.guma.desarrollo.gmv.models.Respuesta_indicadores;
 import com.guma.desarrollo.gmv.models.Respuesta_mora;
 
@@ -84,6 +85,8 @@ public interface Servicio {
     @POST("unAgenda")
     Call<String> unAgenda(@Field("mAgenda") String mVisitas);
 
-
+    @FormUrlEncoded
+    @POST("Historial")
+    Call<Respuesta_historial> obtHistorial(@Field("mVendedor") String mVendedor);
 
 }

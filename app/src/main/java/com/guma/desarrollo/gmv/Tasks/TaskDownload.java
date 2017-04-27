@@ -25,6 +25,7 @@ import com.guma.desarrollo.gmv.models.Respuesta_actividades;
 import com.guma.desarrollo.gmv.models.Respuesta_agenda;
 import com.guma.desarrollo.gmv.models.Respuesta_articulos;
 import com.guma.desarrollo.gmv.models.Respuesta_clientes;
+import com.guma.desarrollo.gmv.models.Respuesta_historial;
 import com.guma.desarrollo.gmv.models.Respuesta_indicadores;
 import com.guma.desarrollo.gmv.models.Respuesta_mora;
 import com.guma.desarrollo.gmv.models.Respuesta_pedidos;
@@ -258,8 +259,6 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             Respuesta_agenda clpuntos = response.body();
                             Log.d(TAG, "onResponse: Agenda " + clpuntos.getCount());
                             Agenda_model.Save_Agenda(cnxt,clpuntos.getResults());
-                            Alerta();
-                            pdialog.dismiss();
                         }else{
                             pdialog.dismiss();
                             Log.d(TAG, "onResponse: noSuccessful Agenda " + response.errorBody() );
@@ -274,6 +273,34 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                         Log.d(TAG, "onResponse: Failure Facturas " + t.getMessage() );
                     }
                 });
+
+        Class_retrofit.Objfit().create(Servicio.class)
+                .obtHistorial(Usuario)
+                .enqueue(new Callback<Respuesta_historial>() {
+                    @Override
+                    public void onResponse(Call<Respuesta_historial> call, Response<Respuesta_historial> response) {
+                        if(response.isSuccessful()){
+                            pdialog.setMessage("Cargado Historial.... ");
+                            Respuesta_historial clpuntos = response.body();
+                            Log.d(TAG, "onResponse: Historial " + clpuntos.getCount());
+                            Clientes_model.SaveHistorialCompra(cnxt,clpuntos.getResults());
+                            Alerta();
+                            pdialog.dismiss();
+                        }else{
+                            pdialog.dismiss();
+                            Log.d(TAG, "onResponse: noSuccessful Agenda " + response.errorBody() );
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onFailure(Call<Respuesta_historial> call, Throwable t) {
+                        pdialog.dismiss();
+                        Log.d(TAG, "onResponse: Failure Facturas " + t.getMessage() );
+                    }
+                });
+
        editor.putString("lstDownload", Clock.getTimeStamp());
        editor.apply();
 

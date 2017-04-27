@@ -50,11 +50,9 @@
     </string-array>
 
 
-
-
-
     <string name="title_activity_crear_agenda">CrearAgendaActivity</string>
     <string name="title_activity_clientes">ClientesActivity</string>
+    <string name="title_activity_compras">ComprasActivity</string>
 
 </resources>
 

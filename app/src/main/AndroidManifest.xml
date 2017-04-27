@@ -105,7 +105,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.RazonActivity" />
         <activity android:name=".Activity.RazonesActivity" />
-        <activity android:name=".Activity.listview_row"></activity>
+        <activity android:name=".Activity.listview_row" />
         <activity
             android:name=".Activity.CrearAgendaActivity"
             android:label="@string/title_activity_crear_agenda"
@@ -113,6 +113,10 @@
         <activity
             android:name=".Activity.ClientesActivity"
             android:label="@string/title_activity_clientes"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.ComprasActivity"
+            android:label="@string/title_activity_compras"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
