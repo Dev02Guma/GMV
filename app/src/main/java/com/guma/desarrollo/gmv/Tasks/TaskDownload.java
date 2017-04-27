@@ -145,10 +145,8 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
 
 
        List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt,false);
-
+        Log.d(TAG, "alder: "+listPedidos.size());
         Gson gson = new Gson();
-        //Log.d("TaskPedidos","onResponse: No DE PEDIDOS "+listPedidos.size());
-
        if (listPedidos.size()>0) {
             Class_retrofit.Objfit()
                     .create(Servicio.class)
@@ -159,8 +157,12 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             if (response.isSuccessful()) {
                                 pdialog.setMessage("Actualizando pedidos....");
                                 Log.d("alder",response.body().toString());
+                                Pedidos Obj = new Pedidos();
                                 Respuesta_pedidos pedidosRespuesta = response.body();
+
                                 Pedidos_model.actualizarPedidos(cnxt, pedidosRespuesta.getResults());
+                                //Log.d(TAG, "respuesta->: "+pedidosRespuesta.getpedido().getmIdPedido());
+                                //Log.d(TAG, "respuesta->: "+pedidosRespuesta.getpedido().getmEstado());
                             } else {
                                 Log.d("alder", "onResponse: noSuccessful PEDIDOS " + response.errorBody());
                             }
@@ -168,7 +170,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
 
                         @Override
                         public void onFailure(Call<Respuesta_pedidos> call, Throwable t) {
-                            Log.d(TAG, "onResponse: Failure pedidos, NO HAY PEDIDOS" + t.getMessage());
+                            Log.d("alder", "onResponse: Failure pedidos: " + t.getMessage());
                         }
                     });
         }

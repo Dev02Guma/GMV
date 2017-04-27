@@ -9,16 +9,16 @@ import java.util.ArrayList;
  */
 
 public class Respuesta_pedidos {
-    private static int count;
     private ArrayList<Pedidos> results;
-
+    private int count;
+    public  int getCount() {return count = results.size();}
     public ArrayList<Pedidos> getResults() {
         return results;
     }
-    public  int getCount() {
-        return count = results.size();
-    }
+
     public void setResults(ArrayList<Pedidos> results) {
         this.results = results;
     }
+
+    public  Pedidos getpedido() {return results.get(0);}
 }

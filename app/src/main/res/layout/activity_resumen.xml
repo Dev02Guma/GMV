@@ -133,6 +133,7 @@
 
         </LinearLayout>
         <TableLayout
+            android:id="@+id/clockLayout"
             android:background="@drawable/button_danger"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
