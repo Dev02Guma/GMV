@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Clientes_model;
@@ -44,7 +45,7 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
 
 
         listView = (ListView) findViewById(R.id.lstClientes);
-
+        Toast.makeText(this, "ekisdeee", Toast.LENGTH_SHORT).show();
 
         objects = Clientes_model.getClientes(ManagerURI.getDirDb(), ClientesActivity.this);
         lbs = new Clientes_Leads(this, objects);

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.test.ServiceTestCase;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -95,12 +96,18 @@ public class BandejaCobrosActivity extends AppCompatActivity {
                                 }).create().show();
             }
         });
-
-
     }
     public boolean onOptionsItemSelected(MenuItem item)    {
         int id = item.getItemId();
         if (id == 16908332){ finish(); }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

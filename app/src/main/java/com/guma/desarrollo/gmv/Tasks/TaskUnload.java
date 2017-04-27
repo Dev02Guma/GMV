@@ -80,14 +80,13 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
         List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt,false);
         Gson gson = new Gson();
         if (listPedidos.size()>0) {
-            Log.d("json",gson.toJson(listPedidos));
+            Log.d("json->",gson.toJson(listPedidos));
             Class_retrofit.Objfit().create(Servicio.class).enviarPedidos(gson.toJson(listPedidos)).enqueue(new Callback<Respuesta_pedidos>() {
                 @Override
                 public void onResponse(Call<Respuesta_pedidos> call, Response<Respuesta_pedidos> response) {
                     if(response.isSuccessful()){
                         Respuesta_pedidos pedidoRespuesta = response.body();
                         pdialog.setMessage("Enviando Pedidos.... ");
-                        //new Notificaciones().Alert(cnxt,"EXITO","PEDIDOS ENVIADOS...").setCancelable(false).setPositiveButton("OK", null}).show();
                         Toast.makeText(cnxt, "PEDIDOS ENVIADOS CORRECTAMENTE", Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(cnxt, "ERROR AL ENVIAR PEDIDOS, ERROR: "+response.body(), Toast.LENGTH_SHORT).show();

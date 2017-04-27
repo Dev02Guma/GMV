@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -81,12 +82,21 @@ public class ResumenActivity extends AppCompatActivity {
         countArti = (TextView) findViewById(R.id.txtCountArti);
 
         idPedido = preferences.getString("IDPEDIDO", "");
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                mHandler.obtainMessage(1).sendToTarget();
+            }
+        }, 0, 1000);
         if (!idPedido.equals("")){
 
             Atendio.setText("LE ATENDIO: "+preferences.getString("VENDEDOR",""));
             txtidPedido.setText(idPedido);
             bandera = "1";
+            timer.cancel();
+            LinearLayout mainLayout=(LinearLayout)findViewById(R.id.clockLayout);
+            mainLayout.setVisibility(View.GONE);
         }else{
+
             int key = SQLiteHelper.getIdTemporal(ManagerURI.getDirDb(),ResumenActivity.this,"PEDIDOS");
             idPedido = "F09-" + "P"+ Clock.getIdDate()+String.valueOf(key);
             txtidPedido.setText(idPedido);
@@ -118,11 +128,7 @@ public class ResumenActivity extends AppCompatActivity {
                         }).show();
             }
         });
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                mHandler.obtainMessage(1).sendToTarget();
-            }
-        }, 0, 1000);
+
     }
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {

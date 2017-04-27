@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
@@ -77,6 +78,7 @@ public class PedidoActivity extends AppCompatActivity {
 
         String bandera = preferences.getString("BANDERA", "0");
 
+        
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
@@ -146,6 +148,7 @@ public class PedidoActivity extends AppCompatActivity {
                 }
             Refresh();
         }
+
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 mHandler.obtainMessage(1).sendToTarget();
@@ -154,7 +157,14 @@ public class PedidoActivity extends AppCompatActivity {
     }
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
-            textView.setText(Clock.getDiferencia(Clock.StringToDate(preferences.getString("iniTimer","0000-00-00 00:00:00"),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),"Timer"));
+            String IdPEDIDO = preferences.getString("IDPEDIDO", "");
+            if (IdPEDIDO!="") {
+                timer.cancel();
+                LinearLayout mainLayout=(LinearLayout)findViewById(R.id.clockLayout);
+                mainLayout.setVisibility(View.GONE);
+            }else{
+                textView.setText(Clock.getDiferencia(Clock.StringToDate(preferences.getString("iniTimer", "0000-00-00 00:00:00"), "yyyy-mm-dd HH:mm:ss"), Clock.StringToDate(Clock.getNow(), "yyyy-mm-dd HH:mm:ss"), "Timer"));
+            }
         }
     };
     public void showInputBox(AdapterView<?> parent,final List<Map<String, Object>> list2, final int index){
