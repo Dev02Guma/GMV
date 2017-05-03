@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.guma.desarrollo.core.Agenda_model;
 import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.Cobros;
@@ -95,6 +96,8 @@ public class CobroInActivity extends AppCompatActivity {
                     mCobro.add(tmp);
 
                     Cobros_model.SaveCobro(CobroInActivity.this,mCobro);
+                    editor.putString("FINAL",textView.getText().toString()).apply();
+                    Agenda_model.SaveLog(CobroInActivity.this,"COBRO","TIPO VISITA: COBRO");
                     new Notificaciones().Alert(CobroInActivity.this,"COBRO","Informacion Guardada")
                             .setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override

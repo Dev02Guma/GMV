@@ -2,8 +2,10 @@ package com.guma.desarrollo.core;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ import static android.content.ContentValues.TAG;
  */
 
 public class Agenda_model {
+    private static SharedPreferences preferences;
+    private static SharedPreferences.Editor editor;
     public static List<Visitas> getVisitas(String basedir, Context context) {
         List<Visitas> lista = new ArrayList<>();
         SQLiteDatabase myDataBase = null;
@@ -38,7 +42,7 @@ public class Agenda_model {
                     tmp.setmLogi(cursor.getString(cursor.getColumnIndex("Logi")));
                     tmp.setmLocal(cursor.getString(cursor.getColumnIndex("Local")));
                     tmp.setmObservacion(cursor.getString(cursor.getColumnIndex("Observacion")));
-                    tmp.setmAccion(cursor.getString(cursor.getColumnIndex("Accion")));
+                    tmp.setmTipo(cursor.getString(cursor.getColumnIndex("Tipo")));
                     lista.add(tmp);
                     cursor.moveToNext();
                 }
@@ -66,6 +70,7 @@ public class Agenda_model {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast()) {
                     Map<String, Object> map = new HashMap<>();
+                    map.put("IDPLAN",cursor.getString(cursor.getColumnIndex("IdPlan")));
                     map.put("LUNES",cursor.getString(cursor.getColumnIndex("Lunes")));
                     map.put("MARTES",cursor.getString(cursor.getColumnIndex("Martes")));
                     map.put("MIERCOLES",cursor.getString(cursor.getColumnIndex("Miercoles")));
@@ -198,6 +203,40 @@ public class Agenda_model {
             myDataBase.insert("VCLIENTES", null, cntDetalle );
 
 
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+    }
+
+    public static void SaveLog(Context context, String tipo,String observacion) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        editor = preferences.edit();
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+            myDbHelper = new SQLiteHelper(ManagerURI.getDirDb(), context);
+            myDataBase = myDbHelper.getWritableDatabase();
+
+            ContentValues cntDetalle = new ContentValues();
+            cntDetalle.put("IdPlan" , preferences.getString("IDPLAN","0"));
+            cntDetalle.put("IdCliente" , preferences.getString("ClsSelected","0"));
+            cntDetalle.put("Fecha" , Clock.getNow());
+            cntDetalle.put("Lati" ,preferences.getString("LATITUD","0"));
+            cntDetalle.put("Logi" , preferences.getString("LONGITUD","0"));
+            cntDetalle.put("Local" ,preferences.getString("LUGAR_VISITA","0"));
+            cntDetalle.put("Inicio" , preferences.getString("INICIO","0"));
+            cntDetalle.put("Fin" , preferences.getString("FINAL","0"));
+            cntDetalle.put("Tipo" , tipo);
+            cntDetalle.put("Observacion" , observacion);
+            cntDetalle.put("Send" , "0");
+            myDataBase.insert("VISITAS", null, cntDetalle );
         }
         catch (Exception e) {
             e.printStackTrace();

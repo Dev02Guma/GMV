@@ -87,7 +87,12 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                     if(response.isSuccessful()){
                         Respuesta_pedidos pedidoRespuesta = response.body();
                         pdialog.setMessage("Enviando Pedidos.... ");
-                        Toast.makeText(cnxt, "PEDIDOS ENVIADOS CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                        Boolean var = Boolean.valueOf(pedidoRespuesta.getResults().get(0).getmEstado());
+                        if (var){
+                            new AlertDialog.Builder(cnxt).setTitle("MENSAJE").setMessage("PEDIDOS ENVIADOS").setCancelable(false).setPositiveButton("OK",null).show();
+                        }else {
+                            new AlertDialog.Builder(cnxt).setTitle("MENSAJE").setMessage(pedidoRespuesta.getResults().get(0).getmEstado()).setCancelable(false).setPositiveButton("OK", null).show();
+                        }
                     }else{
                         Toast.makeText(cnxt, "ERROR AL ENVIAR PEDIDOS, ERROR: "+response.body(), Toast.LENGTH_SHORT).show();
                     }
@@ -102,7 +107,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
         }
 
         List<Visitas> obVisitas = Agenda_model.getVisitas(ManagerURI.getDirDb(), cnxt);
-        Log.d(TAG, "doInBackground: " + obVisitas.size());
+        Log.d(TAG, "doInBackgroundLOG: " + obVisitas.size());
         if (obVisitas.size()>0){
             Class_retrofit.Objfit().create(Servicio.class).inVisitas(new Gson().toJson(obVisitas)).enqueue(new Callback<String>() {
                 @Override
@@ -110,7 +115,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                     if (response.isSuccessful()){
                         if (Boolean.valueOf(response.body())){
                             pdialog.setMessage("Enviando Visitas.... ");
-                            Log.d(TAG, "doInBackground: Se fue");
+                            Log.d(TAG, "doInBackground: Se fue LOG");
                             SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),cnxt,"UPDATE VISITAS SET Send=1;");
                         }
                     }
