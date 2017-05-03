@@ -24,6 +24,7 @@ import android.content.DialogInterface;
 
 import android.support.v7.app.AlertDialog;
 
+import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.guma.desarrollo.core.Agenda_model;
 import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Clientes_model;
@@ -238,7 +239,15 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     }
 
     private void loadData(){
+
         List<Map<String, Object>> lista = Agenda_model.getAgenda(ManagerURI.getDirDb(), AgendaActivity.this);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
+        if (lista.size()>0) {
+            editor.putString("IDPLAN", lista.get(0).get("IDPLAN").toString()).apply();
+        }
+
         if (lista.size()>0){
             String[] strDias = getResources().getStringArray(R.array.dias);
             for (int i=0;i<strDias.length;i++){
@@ -249,7 +258,6 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                     }else{
                         for (Clientes obj : Clientes_model.getInfoCliente(ManagerURI.getDirDb(), AgendaActivity.this,mD[d])) {
                             addProduct(strDias[i],obj.getmNombre(),mD[d],onCake(obj.getmCumple()));
-
                         }
                     }
                 }

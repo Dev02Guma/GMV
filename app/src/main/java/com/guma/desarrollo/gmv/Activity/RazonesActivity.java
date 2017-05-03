@@ -3,21 +3,26 @@ package com.guma.desarrollo.gmv.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guma.desarrollo.core.Actividad;
 import com.guma.desarrollo.core.Actividades_model;
+import com.guma.desarrollo.core.Agenda_model;
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.Razon;
@@ -34,17 +39,20 @@ import com.guma.desarrollo.gmv.api.Notificaciones;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class RazonesActivity extends AppCompatActivity {
     List<Row> rows;
     List<Actividad> datos;
     private ListView listView;
     private ArrayList<CategoriaInfo> deptList = new ArrayList<>();
-
+    TextView textView,textView2;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private String CodCls,IdRazon;
     EditText etObservacion;
+    Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,7 @@ public class RazonesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_razones);
         listView = (ListView) findViewById(R.id.list);
         final RazonesAdapter listAdapter;
+        timer = new Timer();
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
@@ -59,7 +68,7 @@ public class RazonesActivity extends AppCompatActivity {
 
         CodCls =  preferences.getString("ClsSelected","");
 
-
+        textView2 = (TextView) findViewById(R.id.idTimer);
         //simpleExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListViewRazon);
         //listAdapter = new ActividadesAdapter(RazonActivity.this,deptList);
         //simpleExpandableListView.setAdapter(listAdapter);
@@ -130,7 +139,11 @@ public class RazonesActivity extends AppCompatActivity {
                                                 }
 
                                             }
+
+
+                                            editor.putString("FINAL",textView2.getText().toString()).apply();
                                             Razon_model.SaveRazon(RazonesActivity.this,ra);
+                                            Agenda_model.SaveLog(RazonesActivity.this,"RAZON","TIPO DE VISITA:RAZON");
 
                                         /*FIN GUARDAR*/
                                             startActivity(new Intent(RazonesActivity.this,AccionesActivity.class));
@@ -147,6 +160,15 @@ public class RazonesActivity extends AppCompatActivity {
 
             }
         });
-
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                mHandler.obtainMessage(1).sendToTarget();
+            }
+        }, 0, 1000);
     }
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+                textView2.setText(Clock.getDiferencia(Clock.StringToDate(preferences.getString("iniTimer", "0000-00-00 00:00:00"), "yyyy-mm-dd HH:mm:ss"), Clock.StringToDate(Clock.getNow(), "yyyy-mm-dd HH:mm:ss"), "Timer"));
+        }
+    };
 }

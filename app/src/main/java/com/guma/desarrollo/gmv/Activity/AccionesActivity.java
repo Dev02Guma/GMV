@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.gmv.R;
@@ -37,9 +38,7 @@ public class AccionesActivity extends AppCompatActivity {
         setTitle(" [ PASO 2 - Acciones ] " +  preferences.getString("NameClsSelected"," --ERROR--"));
         findViewById(R.id.btnCV).setVisibility(View.GONE);
 
-        //Toast.makeText(this, preferences.getString("NOMBRE","").toString(), Toast.LENGTH_SHORT).show();
         if (bandera.equals("1")){
-
             findViewById(R.id.btnCV).setVisibility(View.VISIBLE);
         }if (bandera.equals("2")){
             findViewById(R.id.btnRZ).setVisibility(View.GONE);
@@ -53,6 +52,7 @@ public class AccionesActivity extends AppCompatActivity {
         findViewById(R.id.btnCBR).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editor.putString("INICIO",textView.getText().toString()).apply();
                 startActivity(new Intent(AccionesActivity.this,CobroInActivity.class));
                 finish();
             }
@@ -62,6 +62,7 @@ public class AccionesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editor.putString("IDPEDIDO","").apply();
+                editor.putString("INICIO",textView.getText().toString()).apply();
                 startActivity(new Intent(AccionesActivity.this,IndicadoresClienteActivity.class));
                 //finish();
             }
@@ -69,6 +70,7 @@ public class AccionesActivity extends AppCompatActivity {
         findViewById(R.id.btnRZ).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editor.putString("INICIO",textView.getText().toString()).apply();
                 startActivity(new Intent(AccionesActivity.this,RazonesActivity.class));
                 finish();
             }
@@ -101,9 +103,9 @@ public class AccionesActivity extends AppCompatActivity {
         if(keyCode == KeyEvent.KEYCODE_BACK)
         {
             limpiarPref();
-            startActivity(new Intent(AccionesActivity.this,AgendaActivity.class));
             timer.cancel();
             finish();
+            startActivity(new Intent(AccionesActivity.this,AgendaActivity.class));
             return true;
         }
         return false;
@@ -113,6 +115,7 @@ public class AccionesActivity extends AppCompatActivity {
         editor.putString("LONGITUD", "0.0");
         editor.putString("LUGAR_VISITA", "");
         editor.putString("BANDERA","0");
+        editor.putString("INICIO","").apply();
         editor.apply();
     }
 }

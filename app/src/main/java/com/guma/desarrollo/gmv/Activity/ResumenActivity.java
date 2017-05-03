@@ -19,6 +19,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.guma.desarrollo.core.Agenda_model;
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.Pedidos;
@@ -186,6 +187,8 @@ public class ResumenActivity extends AppCompatActivity {
                 //Log.d("guardado",obj2.get("ITEMNAME").toString());
             }
             Pedidos_model.SaveDetallePedido(ResumenActivity.this, mDetallePedido);
+            editor.putString("FINAL",textView.getText().toString()).apply();
+            Agenda_model.SaveLog(ResumenActivity.this,"PEDIDO","TIPO VISITA: PEDIDO");
             editor.putString("BANDERA", "2").apply();
             startActivity(new Intent(ResumenActivity.this,AccionesActivity.class));
             timer.cancel();

@@ -5,18 +5,22 @@ package com.guma.desarrollo.core;
  */
 
 public class Visitas {
-    String mIdPlan,mIdCliente,mFecha,mLati,mLogi,mLocal,mObservacion,mAccion;
+    String mIdPlan,mIdCliente,mFecha,mLati,mLogi,mLocal,Inicio,Fin,mTipo,mObservacion,mSend;
 
-    public Visitas(String mIdPlan, String mIdCliente, String mFecha, String mLati, String mLogi, String mLocal, String mObservacion, String mAccion) {
+    public Visitas(String mIdPlan, String mIdCliente, String mFecha, String mLati, String mLogi, String mLocal, String inicio, String fin, String mTipo, String mObservacion, String mSend) {
         this.mIdPlan = mIdPlan;
         this.mIdCliente = mIdCliente;
         this.mFecha = mFecha;
         this.mLati = mLati;
         this.mLogi = mLogi;
         this.mLocal = mLocal;
+        Inicio = inicio;
+        Fin = fin;
+        this.mTipo = mTipo;
         this.mObservacion = mObservacion;
-        this.mAccion = mAccion;
+        this.mSend = mSend;
     }
+
     public Visitas(){}
 
     public String getmIdPlan() {
@@ -67,6 +71,30 @@ public class Visitas {
         this.mLocal = mLocal;
     }
 
+    public String getInicio() {
+        return Inicio;
+    }
+
+    public void setInicio(String inicio) {
+        Inicio = inicio;
+    }
+
+    public String getFin() {
+        return Fin;
+    }
+
+    public void setFin(String fin) {
+        Fin = fin;
+    }
+
+    public String getmTipo() {
+        return mTipo;
+    }
+
+    public void setmTipo(String mTipo) {
+        this.mTipo = mTipo;
+    }
+
     public String getmObservacion() {
         return mObservacion;
     }
@@ -75,11 +103,11 @@ public class Visitas {
         this.mObservacion = mObservacion;
     }
 
-    public String getmAccion() {
-        return mAccion;
+    public String getmSend() {
+        return mSend;
     }
 
-    public void setmAccion(String mAccion) {
-        this.mAccion = mAccion;
+    public void setmSend(String mSend) {
+        this.mSend = mSend;
     }
 }

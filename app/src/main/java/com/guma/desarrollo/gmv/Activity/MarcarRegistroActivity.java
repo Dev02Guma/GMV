@@ -69,6 +69,8 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
     private LocationSettingsRequest mLocationSettingsRequest;
     private Location mLastLocation;
     private TextView mLatitude,mLongitude,textView;
+
+    TextView textViewTime;
     // Activity Recognition API
     private ActivityDetectionBroadcastReceiver mBroadcastReceiver;
 
@@ -101,6 +103,7 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
         editor.putString("iniTimer", strgInit);
         timer = new Timer();
 
+        textViewTime = (TextView) findViewById(R.id.idTimer);
 
         btn_step_2.setOnClickListener(new View.OnClickListener() {
             @Override
