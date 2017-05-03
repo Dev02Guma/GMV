@@ -47,12 +47,10 @@ public class AccionesActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.idTimer);
         timer = new Timer();
 
-
-
         findViewById(R.id.btnCBR).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putString("INICIO",textView.getText().toString()).apply();
+                editor.putString("INICIO",Clock.getTime()).apply();
                 startActivity(new Intent(AccionesActivity.this,CobroInActivity.class));
                 finish();
             }
@@ -62,15 +60,15 @@ public class AccionesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editor.putString("IDPEDIDO","").apply();
-                editor.putString("INICIO",textView.getText().toString()).apply();
+                editor.putString("INICIO",Clock.getTime()).apply();
                 startActivity(new Intent(AccionesActivity.this,IndicadoresClienteActivity.class));
-                //finish();
+                finish();
             }
         });
         findViewById(R.id.btnRZ).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putString("INICIO",textView.getText().toString()).apply();
+                editor.putString("INICIO",Clock.getTime()).apply();
                 startActivity(new Intent(AccionesActivity.this,RazonesActivity.class));
                 finish();
             }
@@ -115,7 +113,8 @@ public class AccionesActivity extends AppCompatActivity {
         editor.putString("LONGITUD", "0.0");
         editor.putString("LUGAR_VISITA", "");
         editor.putString("BANDERA","0");
-        editor.putString("INICIO","").apply();
+        editor.putString("INICIO","00:00:00");
+        editor.putString("FINAL","00:00:00");
         editor.apply();
     }
 }

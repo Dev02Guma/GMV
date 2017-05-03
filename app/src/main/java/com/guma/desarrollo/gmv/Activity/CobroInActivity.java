@@ -96,7 +96,8 @@ public class CobroInActivity extends AppCompatActivity {
                     mCobro.add(tmp);
 
                     Cobros_model.SaveCobro(CobroInActivity.this,mCobro);
-                    editor.putString("FINAL",textView.getText().toString()).apply();
+                    editor.putString("FINAL",Clock.getTime()).apply();
+
                     Agenda_model.SaveLog(CobroInActivity.this,"COBRO","TIPO VISITA: COBRO");
                     new Notificaciones().Alert(CobroInActivity.this,"COBRO","Informacion Guardada")
                             .setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {

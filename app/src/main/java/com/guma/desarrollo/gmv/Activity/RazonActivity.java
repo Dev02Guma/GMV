@@ -141,31 +141,15 @@ public class RazonActivity extends AppCompatActivity {
                         {
                             rd.add(new RazonDetalle(IdRazon,tvIdAEItem.getText().toString(), tvActividadItem.getText().toString(),""));
                             ra.setRdet(rd);
-                        };
+                        }
                     }
-                    /*
-                    if (tvActividadItem !=null)
-                    {
-                        //Toast.makeText(RazonActivity.this,tvActividadItem.getText().toString(), Toast.LENGTH_LONG);
-                        strActividad=tvActividadItem.getText().toString();
-                        strIdAE=tvIdAEItem.getText().toString();
-                        strValor=cbActividad.isChecked();
-
-                    }*/
                 }
                 Razon_model.SaveRazon(RazonActivity.this,ra);
             }
-
         });
     }
     public void guardar(){
 
-            /*int key = SQLiteHelper.getId(ManagerURI.getDirDb(), RazonActivity.this, "RAZON");
-            IdRazon = preferences.getString("VENDEDOR", "00") + "P" + Clock.getIdDate() + String.valueOf(key);
-            Float nTotal = 0.0f;*/
-            /*for (Map<String, Object> obj : list) {
-                nTotal += Float.parseFloat(obj.get("ITEMVALOR").toString());
-            }*/
             for (int i=0;i<simpleExpandableListView.getCount();i++)
             {
                 tvActividadItem = (TextView) simpleExpandableListView.getChildAt(i).findViewById(R.id.ActividadItem);

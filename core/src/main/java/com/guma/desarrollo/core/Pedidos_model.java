@@ -197,4 +197,31 @@ public class Pedidos_model {
             if(myDbHelper != null) { myDbHelper.close(); }
         }
     }
+
+    public static void borrar(Context contexto,String basedir) {
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+
+            myDbHelper = new SQLiteHelper(basedir, contexto);
+            myDataBase = myDbHelper.getReadableDatabase();
+            Cursor cursor = myDataBase.query(true, "PEDIDO", null, "ESTADO"+ "=?", new String[] { "3" }, null, null, null, null);
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast()) {
+                    Pedidos tmp = new Pedidos();
+                    SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), contexto,"DELETE FROM PEDIDO WHERE IDPEDIDO= '"+cursor.getString(cursor.getColumnIndex("IDPEDIDO"))+"'");
+                    SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), contexto,"DELETE FROM PEDIDO_DETALLE WHERE IDPEDIDO= '"+cursor.getString(cursor.getColumnIndex("IDPEDIDO"))+"'");
+                    cursor.moveToNext();
+                }
+            }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+    }
 }

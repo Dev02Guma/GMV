@@ -137,15 +137,13 @@ public class RazonesActivity extends AppCompatActivity {
                                                     rd.add(new RazonDetalle(IdRazon,tvIdAE.getText().toString(),tvActividad.getText().toString(),tvCategoria.getText().toString()));
                                                     ra.setRdet(rd);
                                                 }
-
                                             }
 
-
-                                            editor.putString("FINAL",textView2.getText().toString()).apply();
+                                            editor.putString("FINAL",Clock.getTime()).apply();
                                             Razon_model.SaveRazon(RazonesActivity.this,ra);
                                             Agenda_model.SaveLog(RazonesActivity.this,"RAZON","TIPO DE VISITA:RAZON");
 
-                                        /*FIN GUARDAR*/
+                                            /*FIN GUARDAR*/
                                             startActivity(new Intent(RazonesActivity.this,AccionesActivity.class));
                                             editor.putString("BANDERA","2").apply();
                                             finish();
