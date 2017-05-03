@@ -99,7 +99,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
             @Override
             public void onClick(View v) {
 
-                final CharSequence[]items = { "MIS CLIENTES","INVENTARIO","PEDIDO", "COBRO","ENVIAR","RECIBIR","REPORTE DEL DIA","SALIR"};
+                final CharSequence[]items = { "MIS CLIENTES","INVENTARIO","PEDIDO", "COBRO","ENVIAR","RECIBIR","REPORTE DEL DIA","ACERCA DE","SALIR"};
                 new AlertDialog.Builder(v.getContext()).setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -131,12 +131,16 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                                                     startActivity(new Intent(AgendaActivity.this,RptHoyActivity.class));
                                                 } else {
                                                     if (items[which].equals(items[7])){
-                                                        checked = false;
-                                                        editor.putBoolean("pref", false).commit();
-                                                        editor.apply();
-                                                        finish();
+                                                        startActivity(new Intent(AgendaActivity.this,AcercadeActivity.class));
                                                     }else{
-                                                        Toast.makeText(AgendaActivity.this, "Se produjo un error", Toast.LENGTH_SHORT).show();
+                                                        if (items[which].equals(items[8])){
+                                                            checked = false;
+                                                            editor.putBoolean("pref", false).commit();
+                                                            editor.apply();
+                                                            finish();
+                                                        }else{
+                                                            Toast.makeText(AgendaActivity.this, "Se produjo un error", Toast.LENGTH_SHORT).show();
+                                                        }
                                                     }
 
                                                 }

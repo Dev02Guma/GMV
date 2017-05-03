@@ -24,10 +24,11 @@ public class Historial_Leads extends ArrayAdapter<Historial> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-         if (null == convertView) {
-            convertView = inflater.inflate(R.layout.list_facturas_puntos,parent,false);
-         }
+        if (null == convertView) {
+            convertView = inflater.inflate(R.layout.list_articulos_comprados,parent,false);
+        }
 
          TextView Nombre = (TextView) convertView.findViewById(R.id.lst_Nombre);
          TextView Codigo = (TextView) convertView.findViewById(R.id.lst_Codigo);

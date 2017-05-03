@@ -54,6 +54,17 @@
     <string name="title_activity_clientes">ClientesActivity</string>
     <string name="title_activity_compras">ComprasActivity</string>
 
+    <!-- Derechos -->
+    <string name="tag_derchos_1">Todos los Derechos Reservados © Unimark S.A. 2017</string>
+    <string name="tag_derchos_2">Desarrollado por Gerencia Corp. IT - (505)2278-8787, Ext.130 - 134</string>
+    <string name="tag_derchos_3">www.unimarksa.com</string>
+
+
+    <string name="intro">BIENVENIDO !</string>
+    <string name="intro2">GESTOR MOVIL DE VENTA</string>
+    <string name="version">v1.0.1</string>
+    <string name="copy">Unimark S.A © 2017 Todos los Derechos Reservados</string>
+
 </resources>
 
 

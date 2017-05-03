@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,9 +52,12 @@ public class CustomAdapter extends BaseExpandableListAdapter {
 
 
         TextView childItem = (TextView) view.findViewById(R.id.childItem);
+
         childItem.setText(detailInfo.getName().trim());
+
         if (!detailInfo.isCake()){
             view.findViewById(R.id.iCake).setVisibility(view.GONE);
+
         }
 
 
