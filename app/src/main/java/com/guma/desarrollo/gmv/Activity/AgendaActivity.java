@@ -30,6 +30,8 @@ import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Clientes_model;
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.ManagerURI;
+import com.guma.desarrollo.core.Pedidos_model;
+import com.guma.desarrollo.core.SQLiteHelper;
 import com.guma.desarrollo.gmv.ChildInfo;
 import com.guma.desarrollo.gmv.Tasks.TaskDownload;
 import com.guma.desarrollo.gmv.Tasks.TaskUnload;
@@ -99,7 +101,8 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
             @Override
             public void onClick(View v) {
 
-                final CharSequence[]items = { "MIS CLIENTES","INVENTARIO","PEDIDO", "COBRO","ENVIAR","RECIBIR","REPORTE DEL DIA","ACERCA DE","SALIR"};
+
+                final CharSequence[]items = { "MIS CLIENTES","INVENTARIO","PEDIDO", "COBRO","ENVIAR","RECIBIR","REPORTE DEL DIA","CIERRE DEL DIA","ACERCA DE","SALIR"};
                 new AlertDialog.Builder(v.getContext()).setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -126,23 +129,28 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                                                 } else {
                                                     Toast.makeText(AgendaActivity.this, "No Posee Cobertura de datos...", Toast.LENGTH_SHORT).show();
                                                 }
-                                            } else {
+                                            }else {
                                                 if (items[which].equals(items[6])){
                                                     startActivity(new Intent(AgendaActivity.this,RptHoyActivity.class));
-                                                } else {
+                                                } else{
                                                     if (items[which].equals(items[7])){
-                                                        startActivity(new Intent(AgendaActivity.this,AcercadeActivity.class));
-                                                    }else{
-                                                        if (items[which].equals(items[8])){
-                                                            checked = false;
-                                                            editor.putBoolean("pref", false).commit();
-                                                            editor.apply();
-                                                            finish();
+                                                        cerrar();
+                                                    }else {
+                                                        if (items[which].equals(items[8])) {
+
+                                                            startActivity(new Intent(AgendaActivity.this,AcercadeActivity.class));
                                                         }else{
-                                                            Toast.makeText(AgendaActivity.this, "Se produjo un error", Toast.LENGTH_SHORT).show();
+                                                            if (items[which].equals(items[9])){
+
+                                                                checked = false;
+                                                                editor.putBoolean("pref", false).commit();
+                                                                editor.apply();
+                                                                finish();
+                                                            }else{
+                                                                Toast.makeText(AgendaActivity.this, "Se produjo un error", Toast.LENGTH_SHORT).show();
+                                                            }
                                                         }
                                                     }
-
                                                 }
                                             }
                                         }
@@ -174,6 +182,11 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
             loadData();
 
         }
+    }
+    private void cerrar(){
+        Agenda_model.borrar(AgendaActivity.this);
+        Pedidos_model.borrar(AgendaActivity.this,ManagerURI.getDirDb());
+        Toast.makeText(this, "DATOS BORRADOS", Toast.LENGTH_SHORT).show();
     }
 
     private void checkConnection() {

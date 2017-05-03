@@ -5,24 +5,24 @@ package com.guma.desarrollo.core;
  */
 
 public class Visitas {
-    String mIdPlan,mIdCliente,mFecha,mLati,mLogi,mLocal,Inicio,Fin,mTipo,mObservacion,mSend;
+    String mIdPlan,mIdCliente,mFecha,mLati,mLogi,mLocal,mInicio,mFin,mTipo,mObservacion,mSend;
 
-    public Visitas(String mIdPlan, String mIdCliente, String mFecha, String mLati, String mLogi, String mLocal, String inicio, String fin, String mTipo, String mObservacion, String mSend) {
+    public Visitas(String mIdPlan, String mIdCliente, String mFecha, String mLati, String mLogi, String mLocal, String mInicio, String mFin, String mTipo, String mObservacion, String mSend) {
         this.mIdPlan = mIdPlan;
         this.mIdCliente = mIdCliente;
         this.mFecha = mFecha;
         this.mLati = mLati;
         this.mLogi = mLogi;
         this.mLocal = mLocal;
-        Inicio = inicio;
-        Fin = fin;
+        this.mInicio = mInicio;
+        this.mFin = mFin;
         this.mTipo = mTipo;
         this.mObservacion = mObservacion;
         this.mSend = mSend;
     }
+    public Visitas(){
 
-    public Visitas(){}
-
+    }
     public String getmIdPlan() {
         return mIdPlan;
     }
@@ -71,20 +71,20 @@ public class Visitas {
         this.mLocal = mLocal;
     }
 
-    public String getInicio() {
-        return Inicio;
+    public String getmInicio() {
+        return mInicio;
     }
 
-    public void setInicio(String inicio) {
-        Inicio = inicio;
+    public void setmInicio(String mInicio) {
+        this.mInicio = mInicio;
     }
 
-    public String getFin() {
-        return Fin;
+    public String getmFin() {
+        return mFin;
     }
 
-    public void setFin(String fin) {
-        Fin = fin;
+    public void setmFin(String mFin) {
+        this.mFin = mFin;
     }
 
     public String getmTipo() {

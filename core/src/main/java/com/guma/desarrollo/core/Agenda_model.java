@@ -41,6 +41,8 @@ public class Agenda_model {
                     tmp.setmLati(cursor.getString(cursor.getColumnIndex("Lati")));
                     tmp.setmLogi(cursor.getString(cursor.getColumnIndex("Logi")));
                     tmp.setmLocal(cursor.getString(cursor.getColumnIndex("Local")));
+                    tmp.setmInicio(cursor.getString(cursor.getColumnIndex("Inicio")));
+                    tmp.setmFin(cursor.getString(cursor.getColumnIndex("Fin")));
                     tmp.setmObservacion(cursor.getString(cursor.getColumnIndex("Observacion")));
                     tmp.setmTipo(cursor.getString(cursor.getColumnIndex("Tipo")));
                     lista.add(tmp);
@@ -246,5 +248,8 @@ public class Agenda_model {
             if(myDataBase != null) { myDataBase.close(); }
             if(myDbHelper != null) { myDbHelper.close(); }
         }
+    }
+    public static void borrar(Context context){
+        SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM VISITAS WHERE Send = 1");
     }
 }

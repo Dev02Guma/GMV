@@ -151,7 +151,6 @@ public class ResumenActivity extends AppCompatActivity {
                 tmpDetalle.setmPrecio(obj2.get("PRECIO").toString());
                 tmpDetalle.setmBonificado(obj2.get("BONIFICADO").toString());
                 mDetallePedido.add(tmpDetalle);
-                //Log.d("guardado",obj2.get("ITEMNAME").toString()+" "+obj2.get("PRECIO").toString());
             }
             SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),ResumenActivity.this,"UPDATE PEDIDO SET MONTO = "+total+" WHERE IDPEDIDO = '"+idPedido+"'");
             Pedidos_model.SaveDetallePedido(ResumenActivity.this, mDetallePedido);
@@ -184,10 +183,9 @@ public class ResumenActivity extends AppCompatActivity {
                 tmpDetalle.setmPrecio(obj2.get("PRECIO").toString());
                 tmpDetalle.setmBonificado(obj2.get("BONIFICADO").toString());
                 mDetallePedido.add(tmpDetalle);
-                //Log.d("guardado",obj2.get("ITEMNAME").toString());
             }
             Pedidos_model.SaveDetallePedido(ResumenActivity.this, mDetallePedido);
-            editor.putString("FINAL",textView.getText().toString()).apply();
+            editor.putString("FINAL",Clock.getTime()).apply();
             Agenda_model.SaveLog(ResumenActivity.this,"PEDIDO","TIPO VISITA: PEDIDO");
             editor.putString("BANDERA", "2").apply();
             startActivity(new Intent(ResumenActivity.this,AccionesActivity.class));

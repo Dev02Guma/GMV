@@ -108,8 +108,6 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
         btn_step_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 String latitud = mLatitude.getText().toString();
                 //if (latitud.equals("0.0")) {
                     //Toast.makeText(MarcarRegistroActivity.this, "coordenadas no encontradas", Toast.LENGTH_SHORT).show();

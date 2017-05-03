@@ -94,12 +94,12 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                             new AlertDialog.Builder(cnxt).setTitle("MENSAJE").setMessage(pedidoRespuesta.getResults().get(0).getmEstado()).setCancelable(false).setPositiveButton("OK", null).show();
                         }
                     }else{
-                        Toast.makeText(cnxt, "ERROR AL ENVIAR PEDIDOS, ERROR: "+response.body(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(cnxt, "doInBackground ERROR AL ENVIAR PEDIDOS, ERROR: "+response.body(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 @Override
                 public void onFailure(Call<Respuesta_pedidos> call, Throwable t) {
-                    Toast.makeText(cnxt, "ERROR EN ENVIO DE PEDIDOS", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(cnxt, "doInBackground ERROR EN ENVIO DE PEDIDOS", Toast.LENGTH_SHORT).show();
                 }
             });
         }else{
