@@ -130,7 +130,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                                                     startActivity(new Intent(AgendaActivity.this,RptHoyActivity.class));
                                                 } else {
                                                     if (items[which].equals(items[7])){
-                                                        startActivity(new Intent(AgendaActivity.this,RptHoyActivity.class));
+                                                        startActivity(new Intent(AgendaActivity.this,AcercadeActivity.class));
                                                     }else{
                                                         if (items[which].equals(items[8])){
                                                             checked = false;

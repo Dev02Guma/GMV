@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.Window;
 
 import com.guma.desarrollo.core.ManagerURI;
@@ -22,7 +23,16 @@ public class AcercadeActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_welcome);
+        if (getSupportActionBar() != null){ getSupportActionBar().setDisplayHomeAsUpEnabled(true); }
 
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)    {
+        int id = item.getItemId();
+        if (id == 16908332){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
