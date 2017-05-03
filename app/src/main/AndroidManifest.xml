@@ -118,6 +118,9 @@
             android:name=".Activity.ComprasActivity"
             android:label="@string/title_activity_compras"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activity.AcercadeActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

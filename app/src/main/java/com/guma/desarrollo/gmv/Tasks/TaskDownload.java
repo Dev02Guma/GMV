@@ -290,7 +290,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             pdialog.dismiss();
                         }else{
                             pdialog.dismiss();
-                            Log.d(TAG, "onResponse: noSuccessful Agenda " + response.errorBody() );
+                            Log.d(TAG, "onResponse: noSuccessful Historial " + response.errorBody() );
                         }
 
                     }
@@ -299,7 +299,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                     @Override
                     public void onFailure(Call<Respuesta_historial> call, Throwable t) {
                         pdialog.dismiss();
-                        Log.d(TAG, "onResponse: Failure Facturas " + t.getMessage() );
+                        Log.d(TAG, "onResponse: Failure Historial " + t.getMessage() );
                     }
                 });
 

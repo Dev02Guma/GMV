@@ -26,7 +26,6 @@
                 android:layout_height="fill_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:src="@drawable/ic_cake_black_24dp"
                 />
         </TableRow>
 

@@ -13,15 +13,6 @@ public class Cobros {
     String mObservacion;
     String mFecha;
 
-    public Cobros(String mIdCobro, String mCliente, String mRuta, String mImporte, String mTipo, String mObservacion, String mFecha) {
-        this.mIdCobro = mIdCobro;
-        this.mCliente = mCliente;
-        this.mRuta = mRuta;
-        this.mImporte = mImporte;
-        this.mTipo = mTipo;
-        this.mObservacion = mObservacion;
-        this.mFecha=mFecha;
-    }
     public Cobros(){}
 
     public String getmIdCobro() {
