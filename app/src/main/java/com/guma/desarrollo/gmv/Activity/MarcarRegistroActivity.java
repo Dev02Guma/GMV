@@ -120,7 +120,6 @@ public class MarcarRegistroActivity extends AppCompatActivity implements
                     RadioButton local = (RadioButton) findViewById(R.id.inLocal);
                     if (local.isChecked()) {
                         editor.putString("LUGAR_VISITA", "LOCAL");
-                        //Toast.makeText(MarcarRegistroActivity.this, "esta cheked", Toast.LENGTH_SHORT).show();
                     } else {
                         editor.putString("LUGAR_VISITA", "NOLOCAL");
                     }
