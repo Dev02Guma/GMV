@@ -180,7 +180,6 @@ public class Pedidos_model {
             myDataBase = myDbHelper.getWritableDatabase();
 
             for(int i=0;i<PEDIDOS.size();i++){
-
                 Pedidos a = PEDIDOS.get(i);
                 Log.d("guardando",a.getmIdPedido());
                 Log.d("guardando",a.getmEstado());

@@ -75,6 +75,9 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
         editor = preferences.edit();
         checked = preferences.getBoolean("menu",false);
 
+        String IdPedido = preferences.getString("IDPEDIDO", "");
+        //Toast.makeText(this, String.valueOf(checked)+" > "+IdPedido, Toast.LENGTH_SHORT).show();
+
         searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         setTitle("ARTICULOS");
         final ArrayList<String> strings = new ArrayList<>();
@@ -83,7 +86,7 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, long id) {
                 final Articulo mnotes = (Articulo) parent.getItemAtPosition(position);
                 final String[] Reglas = mnotes.getmReglas().split(",");
-
+                //Toast.makeText(ArticulosActivity.this, mnotes.getmReglas(), Toast.LENGTH_SHORT).show();
                     LayoutInflater li = LayoutInflater.from(ArticulosActivity.this);
 
                     View promptsView = li.inflate(R.layout.input_cant, null);
@@ -101,16 +104,19 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                     InputExiste = (EditText) promptsView.findViewById(R.id.txtFrmExistencia);
                     InputExiste.setText(mnotes.getmExistencia() + " [ " + mnotes.getmUnidad() + " ]");
 
-
-                    if (checked){
-                        List<String> mStrings = new ArrayList<>();
+                    List<String> mStrings = new ArrayList<>();
+                    for (int i = 0; i < Reglas.length; i++) {
+                        mStrings.add(Reglas[i]);
+                    }
+                    /*if (!checked){
+                        //List<String> mStrings = new ArrayList<>();
                         Inputcant.setVisibility(View.GONE);
                         promptsView.findViewById(R.id.txtInCant).setVisibility(View.GONE);
                         for (int i = 0; i < Reglas.length; i++) {
                             mStrings.add(Reglas[i]);
                         }
                         spinner.setAdapter(new ArrayAdapter<>(ArticulosActivity.this, android.R.layout.simple_spinner_dropdown_item, mStrings));
-                    }
+                    }*/
 
                     Inputcant.addTextChangedListener(new TextWatcher() {
                         @Override
@@ -128,11 +134,16 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                             List<String> mStrings = new ArrayList<>();
                             spinner.setAdapter(null);
                             if (s.length() != 0) {
-                                if (Reglas.length > 1) {
+                                Log.d("", "afterTextChanged: "+s.length()+" > "+Reglas.length);
+                                if (Reglas.length > 0) {
+                                    Log.d("", "afterTextChanged: entro");
                                     for (int i = 0; i < Reglas.length; i++) {
                                         String[] frag = Reglas[i].replace("+", ",").split(",");
-                                        if (Integer.parseInt(Inputcant.getText().toString()) > Integer.parseInt(frag[0])) {
-                                            mStrings.add(frag[0] + "+" + frag[1]);
+                                        Toast.makeText(ArticulosActivity.this, frag[0], Toast.LENGTH_SHORT).show();
+                                        if (Integer.parseInt(frag[0])>0) {
+                                            if (Integer.parseInt(Inputcant.getText().toString()) >= Integer.parseInt(frag[0])) {
+                                                mStrings.add(frag[0] + "+" + frag[1]);
+                                            }
                                         }
                                         spinner.setAdapter(new ArrayAdapter<>(ArticulosActivity.this, android.R.layout.simple_spinner_dropdown_item, mStrings));
                                     }
@@ -225,7 +236,7 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
     public boolean onKeyDown(int keyCode, KeyEvent event){
         if(keyCode == KeyEvent.KEYCODE_BACK)
         {
-            editor.putBoolean("menu", !checked).apply();
+            //editor.putBoolean("menu", !checked).apply();
             finish();
             return true;
         }

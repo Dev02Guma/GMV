@@ -1,5 +1,6 @@
 package com.guma.desarrollo.gmv.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.guma.desarrollo.core.Agenda_model;
 import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Clientes_model;
 import com.guma.desarrollo.core.Clock;
+import com.guma.desarrollo.core.Cobros_model;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.Pedidos_model;
 import com.guma.desarrollo.core.SQLiteHelper;
@@ -54,7 +56,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private boolean checked;
-
+    public ProgressDialog pdialog;
 
     SearchView sv;
 
@@ -159,36 +161,32 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                                     }
                                 }
                             }
-
                         }
-
-
-
                     }
                 }).create().show();
-
             }
         });
         expandAll();
-
-
        // AutoTask();
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==0 && resultCode==RESULT_OK){
-
             loadData();
-
         }
     }
+
     private void cerrar(){
-        Agenda_model.borrar(AgendaActivity.this);
+        //Agenda_model.borrar(AgendaActivity.this);
+        pdialog = ProgressDialog.show(AgendaActivity.this, "","Iniciando....", true);
+        pdialog.setMessage("Eliminando pedidos enviados.. ");
         Pedidos_model.borrar(AgendaActivity.this,ManagerURI.getDirDb());
-        Toast.makeText(this, "DATOS BORRADOS", Toast.LENGTH_SHORT).show();
+        pdialog.setMessage("Eliminando corbos enviados... ");
+        Cobros_model.borrar(AgendaActivity.this);
+        pdialog.setMessage("Cierre terminado.. ");
+        pdialog.dismiss();
     }
 
     private void checkConnection() {
@@ -229,8 +227,6 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         headerInfo.setProductList(headerInfo.getProductList());
         groupPosition = deptList.indexOf(headerInfo);
         return groupPosition;
-
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

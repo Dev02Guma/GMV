@@ -116,4 +116,18 @@ public class Cobros_model {
         }
         return lista;
     }
+    public static void borrar(Context contexto) {
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+            SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), contexto,"DELETE FROM COBROS WHERE SEND = '1'");
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+    }
 }
