@@ -45,9 +45,8 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
 
 
         listView = (ListView) findViewById(R.id.lstClientes);
-        Toast.makeText(this, "ekisdeee", Toast.LENGTH_SHORT).show();
 
-        objects = Clientes_model.getClientes(ManagerURI.getDirDb(), ClientesActivity.this);
+        objects = Clientes_model.getClientes(ManagerURI.getDirDb(), ClientesActivity.this,"NOMBRE");
         lbs = new Clientes_Leads(this, objects);
         listView.setAdapter(lbs);
         searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.guma.desarrollo.core.Facturas;
+import com.guma.desarrollo.core.Funciones;
 import com.guma.desarrollo.gmv.R;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class Facturas_Leads extends ArrayAdapter<Facturas> {
 
          Factura.setText(lead.getmFactura());
          Fecha.setText(lead.getmFecha());
-         Remanente.setText(lead.getmRemanente());
+         Remanente.setText(Funciones.NumberFormat(Float.parseFloat(lead.getmRemanente())));
          return convertView;
     }
 }

@@ -133,7 +133,9 @@ public class Clientes_model {
                 contentValues.put("SALDO" , a.getmSaldo());
                 contentValues.put("DISPONIBLE" , a.getmDisponible());
                 contentValues.put("CUMPLE" , a.getmCumple());
+                contentValues.put("Mes" , a.getmMes());
                 myDataBase.insert("CLIENTES", null, contentValues );
+
             }
         }
         catch (Exception e) {
@@ -340,7 +342,7 @@ public class Clientes_model {
         }
         return lista;
     }
-    public static List<Clientes> getClientes(String basedir, Context context) {
+    public static List<Clientes> getClientes(String basedir, Context context, String Order) {
         List<Clientes> lista = new ArrayList<>();
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
@@ -348,7 +350,7 @@ public class Clientes_model {
         {
             myDbHelper = new SQLiteHelper(basedir, context);
             myDataBase = myDbHelper.getReadableDatabase();
-            Cursor cursor = myDataBase.query(true, "CLIENTES", null, null, null, null, null, "NOMBRE", null);
+            Cursor cursor = myDataBase.query(true, "CLIENTES", null, null, null, null, null, Order, null);
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast()) {
@@ -356,6 +358,7 @@ public class Clientes_model {
                     tmp.setmCliente(cursor.getString(cursor.getColumnIndex("CLIENTE")));
                     tmp.setmNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
                     tmp.setmCumple(cursor.getString(cursor.getColumnIndex("CUMPLE")));
+                    tmp.setmMes(cursor.getInt(cursor.getColumnIndex("Mes")));
                     lista.add(tmp);
                     cursor.moveToNext();
                 }

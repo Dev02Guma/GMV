@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity  {
             }
         });
 
-        if (checked == true){
+        if (checked){
             startActivity(new Intent(LoginActivity.this,AgendaActivity.class));
             finish();
         }
