@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.guma.desarrollo.core.Funciones;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.Pedidos;
 import com.guma.desarrollo.core.Pedidos_model;
@@ -63,7 +64,7 @@ public class BandejaPedidosActivity extends AppCompatActivity {
                 mCalTotal += Float.parseFloat(obj.getmPrecio());
             }
             //Toast.makeText(this, fList.get(0).toString(), Toast.LENGTH_SHORT).show();
-            mTotal.setText("C$ " + String.valueOf(mCalTotal));
+            mTotal.setText("C$ " + Funciones.NumberFormat(mCalTotal));
             listView.setAdapter(new Pedidos_Leads(this, fList));
         }
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

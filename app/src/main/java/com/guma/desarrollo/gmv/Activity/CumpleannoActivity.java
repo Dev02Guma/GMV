@@ -38,7 +38,6 @@ public class CumpleannoActivity extends AppCompatActivity {
         loadData();
         simpleExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
         listAdapter = new CustomCumpleAdapter(CumpleannoActivity.this, deptList);
-
         simpleExpandableListView.setAdapter(listAdapter);
         expandAll();
     }
@@ -54,13 +53,11 @@ public class CumpleannoActivity extends AppCompatActivity {
         }
     }
     private void loadData(){
-        for (Clientes obj : Clientes_model.getClientes(ManagerURI.getDirDb(), CumpleannoActivity.this)) {
+        for (Clientes obj : Clientes_model.getClientes(ManagerURI.getDirDb(), CumpleannoActivity.this,"Mes")) {
             if (obj.getmCumple().equals("00-00-0000")){
-
             }else{
                 addProduct(Clock.getMonth(CumpleannoActivity.this,obj.getmCumple()),obj.getmNombre(),obj.getmCumple());
             }
-
         }
     }
     private int addProduct(String department, String product,String Cumple){

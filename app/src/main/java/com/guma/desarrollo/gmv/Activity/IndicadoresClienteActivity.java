@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.Facturas;
+import com.guma.desarrollo.core.Funciones;
 import com.guma.desarrollo.core.Indicadores;
 import com.guma.desarrollo.core.Clientes_model;
 import com.guma.desarrollo.core.ManagerURI;
@@ -77,16 +78,16 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
         setTitle(" [ PASO 3 - Pedido ] " + preferences.getString("NameClsSelected"," --ERROR--"));
         if (obj.size()>0) {
             mNombre.setText(obj.get(0).getmNombre() );
-            mpVenta.setText(obj.get(0).getmPromedioVenta3M());
-            mItemFact.setText(obj.get(0).getmCantidadItems3M());
+            mpVenta.setText(Funciones.NumberFormat(Float.parseFloat(obj.get(0).getmPromedioVenta3M())));
+            mItemFact.setText(Funciones.NumberFormat(Float.parseFloat(obj.get(0).getmCantidadItems3M())));
             Log.d("", "mMetas: " + obj.get(0).getmMetas() + " > " + obj.get(0).getmVentasActual());
         }
 
         final List<Clientes> obClientes = Clientes_model.getInfoCliente(ManagerURI.getDirDb(), IndicadoresClienteActivity.this,preferences.getString("ClsSelected","0"));
         if (obClientes.size()>0){
             //setTitle("PASO 2 [ Cobro ] - " + obClientes.get(0).getmNombre());
-            mCredito.setText("C$ " + obClientes.get(0).getmCredito());
-            mLimite.setText("C$ " + obClientes.get(0).getmDisponible());
+            mCredito.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obClientes.get(0).getmCredito())));
+            mLimite.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obClientes.get(0).getmDisponible())));
         }
 
 
@@ -119,7 +120,7 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
 
         }
 
-        mPuntos.setText(String.valueOf(TotalPuntos));
+        mPuntos.setText(String.valueOf(Funciones.NumberFormat(TotalPuntos)));
         mPuntos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -6,8 +6,13 @@ package com.guma.desarrollo.core;
 
 public class Clientes {
     String mCliente,mNombre,mDireccion,mRuc,mPuntos,mMoroso,mCredito,mSaldo,mDisponible,mCumple;
+    int mMes;
 
-    public Clientes(String mCliente, String mNombre, String mDireccion, String mRuc, String mPuntos, String mMoroso, String mCredito, String mSaldo, String mDisponible, String mCumple) {
+    public Clientes(){
+
+    }
+
+    public Clientes(String mCliente, String mNombre, String mDireccion, String mRuc, String mPuntos, String mMoroso, String mCredito, String mSaldo, String mDisponible, String mCumple, int mMes) {
         this.mCliente = mCliente;
         this.mNombre = mNombre;
         this.mDireccion = mDireccion;
@@ -18,42 +23,7 @@ public class Clientes {
         this.mSaldo = mSaldo;
         this.mDisponible = mDisponible;
         this.mCumple = mCumple;
-    }
-
-    public Clientes(){
-
-    }
-
-    public String getmCredito() {
-        return mCredito;
-    }
-
-    public String getmCumple() {
-        return mCumple;
-    }
-
-    public void setmCumple(String mCumple) {
-        this.mCumple = mCumple;
-    }
-
-    public void setmCredito(String mCredito) {
-        this.mCredito = mCredito;
-    }
-
-    public String getmSaldo() {
-        return mSaldo;
-    }
-
-    public void setmSaldo(String mSaldo) {
-        this.mSaldo = mSaldo;
-    }
-
-    public String getmDisponible() {
-        return mDisponible;
-    }
-
-    public void setmDisponible(String mDisponible) {
-        this.mDisponible = mDisponible;
+        this.mMes = mMes;
     }
 
     public String getmCliente() {
@@ -102,5 +72,45 @@ public class Clientes {
 
     public void setmMoroso(String mMoroso) {
         this.mMoroso = mMoroso;
+    }
+
+    public String getmCredito() {
+        return mCredito;
+    }
+
+    public void setmCredito(String mCredito) {
+        this.mCredito = mCredito;
+    }
+
+    public String getmSaldo() {
+        return mSaldo;
+    }
+
+    public void setmSaldo(String mSaldo) {
+        this.mSaldo = mSaldo;
+    }
+
+    public String getmDisponible() {
+        return mDisponible;
+    }
+
+    public void setmDisponible(String mDisponible) {
+        this.mDisponible = mDisponible;
+    }
+
+    public String getmCumple() {
+        return mCumple;
+    }
+
+    public void setmCumple(String mCumple) {
+        this.mCumple = mCumple;
+    }
+
+    public int getmMes() {
+        return mMes;
+    }
+
+    public void setmMes(int mMes) {
+        this.mMes = mMes;
     }
 }

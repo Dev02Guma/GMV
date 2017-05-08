@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.guma.desarrollo.core.Funciones;
 import com.guma.desarrollo.core.Pedidos;
 
 import com.guma.desarrollo.gmv.R;
@@ -42,7 +43,7 @@ public class Pedidos_Leads extends ArrayAdapter<Pedidos>{
         mFecha.setText(lead.getmFecha());
         midPedido.setText(lead.getmIdPedido());
         mCliente.setText(lead.getmCliente()+" "+lead.getmNombre());
-        mMonto.setText("C$ " + lead.getmPrecio());
+        mMonto.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(lead.getmPrecio())));
         Log.d("estado",lead.getmEstado());
         ImageView img= (ImageView)convertView.findViewById(R.id.img);
         Integer estado = Integer.valueOf(lead.getmEstado());
