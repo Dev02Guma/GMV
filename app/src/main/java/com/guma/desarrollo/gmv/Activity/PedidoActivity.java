@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.guma.desarrollo.core.Articulos_model;
 import com.guma.desarrollo.core.Clock;
+import com.guma.desarrollo.core.Funciones;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.Pedidos;
 import com.guma.desarrollo.core.Pedidos_model;
@@ -140,10 +141,10 @@ public class PedidoActivity extends AppCompatActivity {
                     Map<String, Object> map = new HashMap<>();
                     map.put("ITEMNAME", obj2.getmDescripcion());
                     map.put("ITEMCODIGO", obj2.getmArticulo());
-                    map.put("PRECIO", obj2.getmPrecio());
+                    map.put("PRECIO", Funciones.NumberFormat(Float.parseFloat(obj2.getmPrecio())));
                     map.put("ITEMCANTI", obj2.getmCantidad());
                     map.put("BONIFICADO", obj2.getmBonificado());
-                    map.put("ITEMVALOR", Float.parseFloat(obj2.getmCantidad())*Float.parseFloat(obj2.getmPrecio()));
+                    map.put("ITEMVALOR", Funciones.NumberFormat(Float.parseFloat(obj2.getmCantidad())*Float.parseFloat(obj2.getmPrecio())));
                     list.add(map);
                 }
             Refresh();
@@ -209,7 +210,7 @@ public class PedidoActivity extends AppCompatActivity {
                     if (Reglas2.length > 1) {
                         for (int i = 0; i < Reglas2.length; i++) {
                             String[] frag = Reglas2[i].replace("+", ",").split(",");
-                            if (Integer.parseInt(Inputcant.getText().toString()) > Integer.parseInt(frag[0])) {
+                            if (Integer.parseInt(Inputcant.getText().toString()) >= Integer.parseInt(frag[0])) {
                                 mStrings.add(frag[0] + "+" + frag[1]);
                             }
                         }
@@ -259,7 +260,7 @@ public class PedidoActivity extends AppCompatActivity {
             //Log.d("carajo",obj.get("ITEMNAME").toString()+ " "+ obj.get("ITEMVALOR").toString());
             vLine     += Float.parseFloat(obj.get("ITEMVALOR").toString());
         }
-        Total.setText("TOTAL C$ "+ String.valueOf(vLine));
+        Total.setText("TOTAL C$ "+ Funciones.NumberFormat(vLine));
         txtCount.setText(listView.getCount() +" Articulo");
     }
     @Override
@@ -283,11 +284,11 @@ public class PedidoActivity extends AppCompatActivity {
             map.put("ITEMNAME", data.getStringArrayListExtra("myItem").get(0));
             map.put("ITEMCODIGO", data.getStringArrayListExtra("myItem").get(1));
             map.put("ITEMCANTI",  data.getStringArrayListExtra("myItem").get(2));
-            map.put("ITEMVALOR", data.getStringArrayListExtra("myItem").get(3));
+            map.put("ITEMVALOR",  data.getStringArrayListExtra("myItem").get(3));
             map.put("ITEMSUBTOTAL", data.getStringArrayListExtra("myItem").get(4));
-            map.put("ITEMVALORTOTAL", data.getStringArrayListExtra("myItem").get(5));
+            map.put("ITEMVALORTOTAL", Funciones.NumberFormat(Float.parseFloat(data.getStringArrayListExtra("myItem").get(5))));
             map.put("BONIFICADO", data.getStringArrayListExtra("myItem").get(6));
-            map.put("PRECIO", data.getStringArrayListExtra("myItem").get(7));
+            map.put("PRECIO", Funciones.NumberFormat(Float.parseFloat(data.getStringArrayListExtra("myItem").get(7))));
 
             list.add(map);
             Refresh();

@@ -74,6 +74,8 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         editor = preferences.edit();
 
         checked = preferences.getBoolean("pref",false);
+
+
         setTitle("Ultm. Actualizacion: " + preferences.getString("lstDownload","00/00/0000"));
         simpleExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -191,8 +193,6 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
 
     private void checkConnection() {
         boolean isConnected = ConnectivityReceiver.isConnected();
-
-        Log.d("", "checkConnection: " + isConnected);
         showSnack(isConnected);
     }
     private void showSnack(boolean isConnected) {
@@ -204,7 +204,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         super.onResume();
         setTitle("Ultm. Actualizacion: " + preferences.getString("lstDownload","00/00/0000"));
         expandAll();
-       // AutoTask();
+        AutoTask(preferences.getBoolean("ntData",false));
         MyApplication.getInstance().setConnectivityListener(this);
     }
     @Override
@@ -318,14 +318,26 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         groupPosition = deptList.indexOf(headerInfo);
         return groupPosition;
     }
-    private void AutoTask(){
-        if (Integer.parseInt(Clock.getDiferencia(Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(preferences.getString("lstDownload","00/00/0000"),"yyyy-mm-dd HH:mm:ss"),"Hrs")) >= 6){
+    private void AutoTask(boolean bln){
+
+        if (bln){
+            if (Integer.parseInt(Clock.getDiferencia(Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(preferences.getString("lstDownload","00/00/0000"),"yyyy-mm-dd HH:mm:ss"),"Hrs")) >= 6){
+                new TaskDownload(AgendaActivity.this).execute(0);
+            }
+            if (Integer.parseInt(Clock.getDiferencia(Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(preferences.getString("lstUnload","00/00/0000"),"yyyy-mm-dd HH:mm:ss"),"Hrs")) >= 3){
+
+                new TaskUnload(AgendaActivity.this).execute(0);
+            }
+        }else{
             new TaskDownload(AgendaActivity.this).execute(0);
-        }
-
-        if (Integer.parseInt(Clock.getDiferencia(Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(preferences.getString("lstUnload","00/00/0000"),"yyyy-mm-dd HH:mm:ss"),"Hrs")) >= 3){
-
             new TaskUnload(AgendaActivity.this).execute(0);
+
+            editor.putBoolean("ntData", true);
+            editor.apply();
         }
+
+
+
+
     }
 }

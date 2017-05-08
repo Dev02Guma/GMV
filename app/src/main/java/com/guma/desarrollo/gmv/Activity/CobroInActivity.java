@@ -23,6 +23,7 @@ import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.Cobros;
 import com.guma.desarrollo.core.Cobros_model;
+import com.guma.desarrollo.core.Funciones;
 import com.guma.desarrollo.core.Mora;
 import com.guma.desarrollo.core.Clientes_model;
 import com.guma.desarrollo.core.ManagerURI;
@@ -116,18 +117,18 @@ public class CobroInActivity extends AppCompatActivity {
         List<Clientes> obClientes = Clientes_model.getInfoCliente(ManagerURI.getDirDb(), CobroInActivity.this,preferences.getString("ClsSelected","0"));
         if (obClientes.size()>0){
             setTitle("[  PASO 3 - Cobro ]  " + obClientes.get(0).getmNombre());
-            mSaldo.setText("C$ " + obClientes.get(0).getmSaldo());
-            mLimite.setText("C$ " + obClientes.get(0).getmCredito());
+            mSaldo.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obClientes.get(0).getmSaldo())));
+            mLimite.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obClientes.get(0).getmCredito())));
         }
         List<Mora> obj = Clientes_model.getMora(ManagerURI.getDirDb(), CobroInActivity.this,preferences.getString("ClsSelected","0"));
         if (obj.size()>0){
-            m30.setText("C$ " + obj.get(0).getmD30());
-            m60.setText("C$ " + obj.get(0).getmD60());
-            m90.setText("C$ " + obj.get(0).getmD90());
-            m120.setText("C$ " + obj.get(0).getmD120());
-            md120.setText("C$ " + obj.get(0).getmMd120());
+            m30.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obj.get(0).getmD30())));
+            m60.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obj.get(0).getmD60())));
+            m90.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obj.get(0).getmD90())));
+            m120.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obj.get(0).getmD120())));
+            md120.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obj.get(0).getmMd120())));
             String Final= String.valueOf(Float.parseFloat(obj.get(0).getmD30()) + Float.parseFloat(obj.get(0).getmD60()) + Float.parseFloat(obj.get(0).getmD90()) + Float.parseFloat(obj.get(0).getmD120())+Float.parseFloat(obj.get(0).getmMd120()));
-            mTotal.setText("C$ " + Final);
+            mTotal.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(Final)));
         }
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {

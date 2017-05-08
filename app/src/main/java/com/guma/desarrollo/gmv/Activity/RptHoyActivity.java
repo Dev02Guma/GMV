@@ -12,6 +12,7 @@ import com.guma.desarrollo.core.Actividades_model;
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.Cobros;
 import com.guma.desarrollo.core.Cobros_model;
+import com.guma.desarrollo.core.Funciones;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.Pedidos;
 import com.guma.desarrollo.core.Pedidos_model;
@@ -57,16 +58,16 @@ public class RptHoyActivity extends AppCompatActivity {
         mOtros = (TextView)findViewById(R.id.txtRptOtros);
         mCobro =(TextView) findViewById(R.id.txtRptCobro);
 
-        mCobro.setText(String.valueOf(countCobro));
+        mCobro.setText(Funciones.NumberFormat(countCobro));
         mTotalCobro =(TextView) findViewById(R.id.txtRptCobroMonto);
-        mTotalCobro.setText("Equivalente a C$" + String.valueOf(mCobroTotal));
+        mTotalCobro.setText("Equivalente a C$" + Funciones.NumberFormat(mCobroTotal));
 
         mPedido =(TextView) findViewById(R.id.txtRptPedido);
-        mPedido.setText(String.valueOf(countPedido));
+        mPedido.setText(String.valueOf(Funciones.NumberFormat(countPedido)));
         mTotalPedido =(TextView) findViewById(R.id.txtRptPedidoMonto);
-        mTotalPedido.setText("Equivalente a C$" + String.valueOf(mPedidoTotal));
+        mTotalPedido.setText("Equivalente a C$" + Funciones.NumberFormat(mPedidoTotal));
 
-        mOtros.setText(String.valueOf(countOtros));
+        mOtros.setText(Funciones.NumberFormat(countOtros));
     }
     public boolean onOptionsItemSelected(MenuItem item)    {
         int id = item.getItemId();
