@@ -233,7 +233,6 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             pdialog.setMessage("Cargado Puntos.... ");
                             Respuesta_puntos clpuntos = response.body();
                             Clientes_model.SaveFacturas(cnxt,clpuntos.getResults());
-
                         }else{
                             pdialog.dismiss();
                             Log.d(TAG, "onResponse: noSuccessful Facturas " + response.errorBody() );
