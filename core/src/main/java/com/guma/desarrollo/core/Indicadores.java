@@ -5,15 +5,9 @@ package com.guma.desarrollo.core;
  */
 
 public class Indicadores {
-    String mCliente;
-    String mVendedor;
-    String mMetas;
-    String mVentasActual;
-    String mPromedioVenta3M;
-    String mCantidadItems3M;
-    String mNombre;
+    String mCliente, mVendedor, mMetas, mVentasActual, mPromedioVenta3M, mCantidadItems3M, mNombre, mCumplimiento;
 
-    public Indicadores(String mCliente, String mVendedor, String mMetas, String mVentasActual, String mPromedioVenta3M, String mCantidadItems3M,String mNombre) {
+    public Indicadores(String mCliente, String mVendedor, String mMetas, String mVentasActual, String mPromedioVenta3M, String mCantidadItems3M, String mNombre, String mCumplimiento) {
         this.mCliente = mCliente;
         this.mVendedor = mVendedor;
         this.mMetas = mMetas;
@@ -21,7 +15,9 @@ public class Indicadores {
         this.mPromedioVenta3M = mPromedioVenta3M;
         this.mCantidadItems3M = mCantidadItems3M;
         this.mNombre = mNombre;
+        this.mCumplimiento = mCumplimiento;
     }
+
     public Indicadores(){
 
     }
@@ -80,5 +76,13 @@ public class Indicadores {
 
     public void setmNombre(String mNombre) {
         this.mNombre = mNombre;
+    }
+
+    public String getmCumplimiento() {
+        return mCumplimiento;
+    }
+
+    public void setmCumplimiento(String mCumplimiento) {
+        this.mCumplimiento = mCumplimiento;
     }
 }

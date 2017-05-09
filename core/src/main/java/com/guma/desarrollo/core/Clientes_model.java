@@ -99,9 +99,9 @@ public class Clientes_model {
                 contentValues.put("VENTAACTUAL" , a.getmVentasActual());
                 contentValues.put("VENTAS3M" , a.getmPromedioVenta3M());
                 contentValues.put("ITEM3M" , a.getmCantidadItems3M());
+                contentValues.put("CUMPLIMIENTO" , a.getmCumplimiento());
                 myDataBase.insert("CLIENTES_INDICADORES", null, contentValues );
             }
-
         }
         catch (Exception e) {
             e.printStackTrace();

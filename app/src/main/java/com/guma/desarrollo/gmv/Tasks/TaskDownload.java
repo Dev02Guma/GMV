@@ -184,10 +184,10 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                         if(response.isSuccessful()){
                             pdialog.setMessage("Informacion de Clientes.... ");
                             Respuesta_indicadores IndicadorRespuesta = response.body();
-                            Log.d(TAG, "onResponse: Indicadores " + IndicadorRespuesta.getCount() );
+                            Log.d(TAG, "onResponse: Indicadores " + response.body().getResults().get(0).getmCumplimiento() );
+                            Log.d(TAG, "onResponse: Indicadores " + IndicadorRespuesta.getCount());
                             Clientes_model.SaveIndicadores(cnxt,IndicadorRespuesta.getResults());
                         }else{
-                            //pdialog.dismiss();
                             Log.d(TAG, "onResponse: noSuccessful Indicadores " + response.errorBody() );
                         }
                     }
