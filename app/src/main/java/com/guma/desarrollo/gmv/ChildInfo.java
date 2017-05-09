@@ -8,15 +8,17 @@ public class ChildInfo {
     private String name = "";
     private String Codigo="";
     private String Cumple="";
-    private boolean Cake;
 
-    public boolean isCake() {
-        return Cake;
+    private int icon;
+
+    public int getIcon() {
+        return icon;
     }
 
-    public void setCake(boolean cake) {
-        Cake = cake;
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
+
 
     public String getCodigo() {
         return Codigo;

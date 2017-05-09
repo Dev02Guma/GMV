@@ -263,10 +263,16 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                 String[] mD = lista.get(0).get(strDias[i]).toString().split("-");
                 for (int d=0;d<mD.length;d++){
                     if (mD[d].equals("")){
-                        addProduct(strDias[i],"VACIO","",true);
+                        addProduct(0,strDias[i],"VACIO","");
                     }else{
                         for (Clientes obj : Clientes_model.getInfoCliente(ManagerURI.getDirDb(), AgendaActivity.this,mD[d])) {
-                            addProduct(strDias[i],obj.getmNombre(),mD[d],onCake(obj.getmCumple()));
+                            if (onCake(obj.getmCumple())){
+                                addProduct(R.drawable.ic_cake_black_24dp,strDias[i],obj.getmNombre(),mD[d]);
+                            }else{
+                                addProduct(0,strDias[i],obj.getmNombre(),mD[d]);
+                            }
+
+
                         }
                     }
                 }
@@ -281,17 +287,21 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         }else{
             Date dte = new Date();
             String nowMes = Clock.getMes(dte,"M");
+
             String cumMes = String.valueOf(Integer.parseInt(Fecha_cumple.substring(3,5)));
+
             if (nowMes.equals(cumMes)){
+
                 isVisible = true;
             }
         }
         return isVisible;
     }
 
-    private int addProduct(String department, String product,String Codigo,boolean Cumple){
+    private int addProduct(int icon,String department, String product,String Codigo){
         int groupPosition = 0;
         GroupInfo headerInfo = subjects.get(department);
+
 
         if(headerInfo == null){
             headerInfo = new GroupInfo();
@@ -307,7 +317,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         detailInfo.setSequence(String.valueOf(listSize));
         detailInfo.setName(product);
         detailInfo.setCodigo(Codigo);
-        detailInfo.setCake(Cumple);
+        detailInfo.setIcon(icon);
         productList.add(detailInfo);
 
         headerInfo.setProductList(productList);
@@ -327,7 +337,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         }else{
             new TaskDownload(AgendaActivity.this).execute(0);
             new TaskUnload(AgendaActivity.this).execute(0);
-
+            loadData();
             editor.putBoolean("ntData", true);
             editor.apply();
         }

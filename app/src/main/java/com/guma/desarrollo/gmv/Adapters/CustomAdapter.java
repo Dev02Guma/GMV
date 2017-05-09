@@ -1,6 +1,9 @@
 package com.guma.desarrollo.gmv.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.guma.desarrollo.core.Funciones;
 import com.guma.desarrollo.gmv.ChildInfo;
 import com.guma.desarrollo.gmv.GroupInfo;
 import com.guma.desarrollo.gmv.R;
@@ -52,13 +56,11 @@ public class CustomAdapter extends BaseExpandableListAdapter {
 
 
         TextView childItem = (TextView) view.findViewById(R.id.childItem);
-
+        ImageView img = (ImageView) view.findViewById(R.id.iCake);
+        img.setImageResource(detailInfo.getIcon());
         childItem.setText(detailInfo.getName().trim());
 
-        if (!detailInfo.isCake()){
-            view.findViewById(R.id.iCake).setVisibility(view.GONE);
 
-        }
 
 
         return view;
