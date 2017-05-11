@@ -58,7 +58,7 @@ public class CustomAdapter extends BaseExpandableListAdapter {
         TextView childItem = (TextView) view.findViewById(R.id.childItem);
         ImageView img = (ImageView) view.findViewById(R.id.iCake);
         img.setImageResource(detailInfo.getIcon());
-        childItem.setText(detailInfo.getName().trim());
+        childItem.setText(detailInfo.getCodigo().concat(" - ").concat(detailInfo.getName()));
 
 
 

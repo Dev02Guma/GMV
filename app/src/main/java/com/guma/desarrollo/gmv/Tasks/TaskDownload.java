@@ -104,12 +104,9 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             Respuesta_actividades actividadRespuesta = response.body();
                             Log.d(TAG, "onResponse: Actividades " + actividadRespuesta.getCount());
                             Actividades_model.SaveActividades(cnxt,actividadRespuesta.getResults());
-
-
                         }else{
                             pdialog.dismiss();
                             Log.d(TAG, "onResponse: noSuccessful Actividades" + response.errorBody() );
-                            //Toast.makeText(cnxt, "xxx"+response.errorBody(), Toast.LENGTH_LONG).show();
                         }
                     }
                     @Override
@@ -145,7 +142,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
 
 
        List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt,false);
-        Log.d(TAG, "alder: "+listPedidos.size());
+
         Gson gson = new Gson();
        if (listPedidos.size()>0) {
             Class_retrofit.Objfit()
@@ -159,18 +156,15 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                                 Log.d("alder",response.body().toString());
                                 Pedidos Obj = new Pedidos();
                                 Respuesta_pedidos pedidosRespuesta = response.body();
-
                                 Pedidos_model.actualizarPedidos(cnxt, pedidosRespuesta.getResults());
-                                //Log.d(TAG, "respuesta->: "+pedidosRespuesta.getpedido().getmIdPedido());
-                                //Log.d(TAG, "respuesta->: "+pedidosRespuesta.getpedido().getmEstado());
                             } else {
-                                Log.d("alder", "onResponse: noSuccessful PEDIDOS " + response.errorBody());
+                                Log.d("", "onResponse: noSuccessful PEDIDOS " + response.errorBody());
                             }
                         }
 
                         @Override
                         public void onFailure(Call<Respuesta_pedidos> call, Throwable t) {
-                            Log.d("alder", "onResponse: Failure pedidos: " + t.getMessage());
+                            Log.d("", "onResponse: Failure pedidos: " + t.getMessage());
                         }
                     });
         }
@@ -217,7 +211,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
 
                     @Override
                     public void onFailure(Call<Respuesta_clientes> call, Throwable t) {
-                        //pdialog.dismiss();
+                        pdialog.dismiss();
                         Log.d(TAG, "onResponse: Failure Clientes " + t.getMessage() );
 
                     }
@@ -243,7 +237,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
 
                     @Override
                     public void onFailure(Call<Respuesta_puntos> call, Throwable t) {
-                        //pdialog.dismiss();
+                        pdialog.dismiss();
                         Log.d(TAG, "onResponse: Failure Facturas " + t.getMessage() );
                     }
                 });

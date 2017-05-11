@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.guma.desarrollo.core.Articulo;
 import com.guma.desarrollo.core.Clientes;
+import com.guma.desarrollo.core.Funciones;
 import com.guma.desarrollo.gmv.R;
 
 import java.util.List;
@@ -35,9 +36,18 @@ public class Clientes_Leads extends ArrayAdapter<Clientes> {
 
         Clientes lead = getItem(position);
 
-        nombre.setText(lead.getmNombre());
-        precio.setText(lead.getmCliente());
-        codigo.setText(lead.getmMoroso());
+
+        if (lead.getmMoroso().equals("S")){
+            nombre.setText(lead.getmCliente().concat(" - ").concat(lead.getmNombre().concat(" [Moroso]")));
+            nombre.setTextColor(convertView.getResources().getColor(R.color.button_danger));
+        }else{
+            nombre.setText(lead.getmCliente().concat(" - ").concat(lead.getmNombre()));
+            nombre.setTextColor(convertView.getResources().getColor(R.color.black));
+        }
+        String str = "Limite: " + Funciones.NumberFormat(Float.parseFloat(lead.getmCredito())).concat(" Saldo: ").concat(Funciones.NumberFormat(Float.parseFloat(lead.getmSaldo()))).concat(" Disponible: ").concat(Funciones.NumberFormat(Float.parseFloat(lead.getmDisponible())));
+
+        precio.setText(str);
+        codigo.setText(lead.getmDireccion());
 
 
         return convertView;

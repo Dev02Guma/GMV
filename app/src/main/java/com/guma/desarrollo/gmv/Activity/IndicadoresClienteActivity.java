@@ -38,7 +38,7 @@ import java.util.TimerTask;
 
 public class IndicadoresClienteActivity extends AppCompatActivity {
 
-    private float[] yData = {90f, 10f};
+    private float[] yData={90f, 10f};
     private String[] xData = {"Mitch", "Mohammad" };
 
     private SharedPreferences preferences;
@@ -76,11 +76,19 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
 
         List<Indicadores> obj = Clientes_model.getIndicadores(ManagerURI.getDirDb(), IndicadoresClienteActivity.this,preferences.getString("ClsSelected"," --ERROR--"));
         setTitle(" [ PASO 3 - Pedido ] " + preferences.getString("NameClsSelected"," --ERROR--"));
+
         if (obj.size()>0) {
             mNombre.setText(obj.get(0).getmNombre() );
             mpVenta.setText(Funciones.NumberFormat(Float.parseFloat(obj.get(0).getmPromedioVenta3M())));
             mItemFact.setText(Funciones.NumberFormat(Float.parseFloat(obj.get(0).getmCantidadItems3M())));
-            Log.d("", "mMetas: " + obj.get(0).getmMetas() + " > " + obj.get(0).getmVentasActual());
+            Log.d("", "mCumplimiento: " + obj.get(0).getmCumplimiento());
+            pieChart = (PieChart) findViewById(R.id.chart);
+            pieChart.getDescription().setEnabled(false);
+            pieChart.setHoleRadius(25f);
+            pieChart.setTransparentCircleAlpha(0);
+            pieChart.setDrawEntryLabels(true);
+            addDataSet(Float.parseFloat(obj.get(0).getmCumplimiento()));
+
         }
 
         final List<Clientes> obClientes = Clientes_model.getInfoCliente(ManagerURI.getDirDb(), IndicadoresClienteActivity.this,preferences.getString("ClsSelected","0"));
@@ -88,6 +96,8 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
             //setTitle("PASO 2 [ Cobro ] - " + obClientes.get(0).getmNombre());
             mCredito.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obClientes.get(0).getmCredito())));
             mLimite.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obClientes.get(0).getmDisponible())));
+
+
         }
 
 
@@ -107,12 +117,7 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
             }
         });
 
-        pieChart = (PieChart) findViewById(R.id.chart);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.setHoleRadius(25f);
-        pieChart.setTransparentCircleAlpha(0);
-        pieChart.setDrawEntryLabels(true);
-        addDataSet();
+
 
 
         for(Facturas objFactura: Clientes_model.getFacturas(ManagerURI.getDirDb(),IndicadoresClienteActivity.this,preferences.getString("ClsSelected"," --ERROR--"))){
@@ -147,20 +152,26 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
             textView.setText(Clock.getDiferencia(Clock.StringToDate(preferences.getString("iniTimer","0000-00-00 00:00:00"),"yyyy-mm-dd HH:mm:ss"),Clock.StringToDate(Clock.getNow(),"yyyy-mm-dd HH:mm:ss"),"Timer"));
         }
     };
-    private void addDataSet() {
+    private void addDataSet(float Cumplimiento ) {
+
         ArrayList<PieEntry> yEntrys = new ArrayList<>();
         ArrayList<String> xEntrys = new ArrayList<>();
-        for(int i = 0; i < yData.length; i++){
-            yEntrys.add(new PieEntry(yData[i] , i));
+
+        float faltante = 100 - Cumplimiento;
+        if (faltante<=0){
+            yEntrys.add(new PieEntry(Cumplimiento , 1));
+        }else{
+            yEntrys.add(new PieEntry(faltante , 0));
+            yEntrys.add(new PieEntry(Cumplimiento , 1));
         }
-        for(int i = 1; i < xData.length; i++){
-            xEntrys.add(xData[i]);
-        }
+
+        xEntrys.add("X");
+
         PieDataSet pieDataSet = new PieDataSet(yEntrys, "");
         ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(Color.parseColor("#"+Integer.toHexString(getResources().getColor(R.color.grfGris))));
-        colors.add(Color.parseColor("#"+Integer.toHexString(getResources().getColor(R.color.grfCeleste))));
-        colors.add(Color.parseColor("#"+Integer.toHexString(getResources().getColor(R.color.grfNaranja))));
+        colors.add(Color.parseColor("#"+Integer.toHexString(getResources().getColor(R.color.button_danger))));
+        colors.add(Color.parseColor("#"+Integer.toHexString(getResources().getColor(R.color.button_primary_disabled_edge))));
+
         pieDataSet.setColors(colors);
         Legend legend = pieChart.getLegend();
         legend.setEnabled(false);

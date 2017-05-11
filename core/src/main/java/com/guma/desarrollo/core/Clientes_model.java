@@ -292,6 +292,7 @@ public class Clientes_model {
                     tmp.setmVentasActual(cursor.getString(cursor.getColumnIndex("VENTAACTUAL")));
                     tmp.setmPromedioVenta3M(cursor.getString(cursor.getColumnIndex("VENTAS3M")));
                     tmp.setmCantidadItems3M(cursor.getString(cursor.getColumnIndex("ITEM3M")));
+                    tmp.setmCumplimiento(cursor.getString(cursor.getColumnIndex("CUMPLIMIENTO")));
                     lista.add(tmp);
                     cursor.moveToNext();
                 }
@@ -357,8 +358,17 @@ public class Clientes_model {
                     Clientes tmp = new Clientes();
                     tmp.setmCliente(cursor.getString(cursor.getColumnIndex("CLIENTE")));
                     tmp.setmNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
+                    tmp.setmDireccion(cursor.getString(cursor.getColumnIndex("DIRECCION")));
                     tmp.setmCumple(cursor.getString(cursor.getColumnIndex("CUMPLE")));
+                    tmp.setmMoroso(cursor.getString(cursor.getColumnIndex("MOROSO")));
                     tmp.setmMes(cursor.getInt(cursor.getColumnIndex("Mes")));
+
+                    tmp.setmCredito(cursor.getString(cursor.getColumnIndex("CREDITO")));
+                    tmp.setmSaldo(cursor.getString(cursor.getColumnIndex("SALDO")));
+                    tmp.setmDisponible(cursor.getString(cursor.getColumnIndex("DISPONIBLE")));
+
+
+
                     lista.add(tmp);
                     cursor.moveToNext();
                 }

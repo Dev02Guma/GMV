@@ -23,10 +23,10 @@
             <TextView
                 android:id="@+id/lst_nombre"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ARTICULO"
+                android:layout_height="fill_parent"
+
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                tools:text="ARTICULO" />
+                />
 
 
         </TableRow>
@@ -38,7 +38,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="CODIGO"
+
                 android:id="@+id/lst_codigo" />
         </TableRow>
         <TableRow
@@ -48,9 +48,8 @@
                 android:id="@+id/lst_precio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PRECIO"
                 android:textAppearance="?attr/textAppearanceListItem"
-                tools:text="PRECIO" />
+                />
         </TableRow>
 </TableLayout>
 </RelativeLayout>

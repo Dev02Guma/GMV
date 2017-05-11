@@ -50,7 +50,7 @@ public class CustomCumpleAdapter extends BaseExpandableListAdapter {
 
 
         TextView childItem = (TextView) view.findViewById(R.id.childItem);
-        childItem.setText(detailInfo.getName().trim());
+        childItem.setText(detailInfo.getCodigo().concat(" - ").concat(detailInfo.getName()));
 
         TextView chldCumple = (TextView) view.findViewById(R.id.chldFecha);
         chldCumple.setText(detailInfo.getCumple().trim());
