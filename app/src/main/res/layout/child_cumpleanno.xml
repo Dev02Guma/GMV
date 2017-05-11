@@ -22,6 +22,7 @@
                 android:layout_alignParentTop="true"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
             <TextView
+                android:textAlignment="center"
                 android:id="@+id/chldFecha"
                 android:text="00-00-0000"
                 android:layout_height="fill_parent"

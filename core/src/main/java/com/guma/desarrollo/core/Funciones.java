@@ -14,7 +14,6 @@ public class Funciones {
         Log.d("", "NumberFormat: " + Number);
 
         DecimalFormat formatter = new DecimalFormat("#,###.##");
-        Log.d("", "NumberFormat: " + formatter.format(Number));
         return  formatter.format(Number);
     }
 }

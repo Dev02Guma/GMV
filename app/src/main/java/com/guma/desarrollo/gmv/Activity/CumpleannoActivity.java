@@ -33,7 +33,7 @@ public class CumpleannoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cumpleanno);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Cumpleaños");
+        setTitle("FECHAS DE CUMPLEAÑOS DE CLIENTES");
         if (getSupportActionBar() != null){ getSupportActionBar().setDisplayHomeAsUpEnabled(true); }
         loadData();
         simpleExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
@@ -56,11 +56,11 @@ public class CumpleannoActivity extends AppCompatActivity {
         for (Clientes obj : Clientes_model.getClientes(ManagerURI.getDirDb(), CumpleannoActivity.this,"Mes")) {
             if (obj.getmCumple().equals("00-00-0000")){
             }else{
-                addProduct(Clock.getMonth(CumpleannoActivity.this,obj.getmCumple()),obj.getmNombre(),obj.getmCumple());
+                addProduct(Clock.getMonth(CumpleannoActivity.this,obj.getmCumple()),obj.getmNombre(),obj.getmCumple(),obj.getmCliente());
             }
         }
     }
-    private int addProduct(String department, String product,String Cumple){
+    private int addProduct(String department, String product,String Cumple,String Codigo){
 
         int groupPosition = 0;
 
@@ -78,6 +78,7 @@ public class CumpleannoActivity extends AppCompatActivity {
         ChildInfo detailInfo = new ChildInfo();
         detailInfo.setSequence(String.valueOf(listSize));
         detailInfo.setName(product);
+        detailInfo.setCodigo(Codigo);
         detailInfo.setCumple(Cumple);
 
         productList.add(detailInfo);

@@ -40,12 +40,9 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){ getSupportActionBar().setDisplayHomeAsUpEnabled(true); }
-        setTitle("Clientes");
+        setTitle("CARTERA DE CLIENTES");
         ReferenciasContexto.setContextArticulo(this);
-
-
         listView = (ListView) findViewById(R.id.lstClientes);
-
         objects = Clientes_model.getClientes(ManagerURI.getDirDb(), ClientesActivity.this,"NOMBRE");
         lbs = new Clientes_Leads(this, objects);
         listView.setAdapter(lbs);
@@ -54,12 +51,12 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final Clientes mCLientes = (Clientes) adapterView.getItemAtPosition(i);
+                /*final Clientes mCLientes = (Clientes) adapterView.getItemAtPosition(i);
                 strings.add(getIntent().getStringExtra("DIA"));
                 strings.add(mCLientes.getmNombre());
                 strings.add(mCLientes.getmCliente());
                 getIntent().putStringArrayListExtra("myCliente", strings);
-                setResult(RESULT_OK, getIntent());
+                setResult(RESULT_OK, getIntent());*/
                 finish();
             }
         });
