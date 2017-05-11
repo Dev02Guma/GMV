@@ -139,7 +139,7 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                                     Log.d("", "afterTextChanged: entro");
                                     for (int i = 0; i < Reglas.length; i++) {
                                         String[] frag = Reglas[i].replace("+", ",").split(",");
-                                        Toast.makeText(ArticulosActivity.this, frag[0], Toast.LENGTH_SHORT).show();
+
                                         if (Integer.parseInt(frag[0])>0) {
                                             if (Integer.parseInt(Inputcant.getText().toString()) >= Integer.parseInt(frag[0])) {
                                                 mStrings.add(frag[0] + "+" + frag[1]);

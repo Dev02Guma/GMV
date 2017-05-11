@@ -99,7 +99,7 @@ public class CobroInActivity extends AppCompatActivity {
                     Cobros_model.SaveCobro(CobroInActivity.this,mCobro);
                     editor.putString("FINAL",Clock.getTime()).apply();
 
-                    Agenda_model.SaveLog(CobroInActivity.this,"COBRO","TIPO VISITA: COBRO");
+                    Agenda_model.SaveLog(CobroInActivity.this,"COBRO","TIPO VISITA: COBRO: "+idCobro);
                     new Notificaciones().Alert(CobroInActivity.this,"COBRO","Informacion Guardada")
                             .setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override

@@ -104,7 +104,7 @@ public class ResumenActivity extends AppCompatActivity {
             Atendio.setText("LE ATENDIO: "+preferences.getString("VENDEDOR",""));
         }
         for (Map<String, Object> obj : list){
-            vLine     += Float.parseFloat(obj.get("ITEMVALOR").toString());
+            vLine     += Float.parseFloat(obj.get("ITEMVALOR").toString().replace(",",""));
         }
         Total.setText("TOTAL C$ "+ String.valueOf(vLine));
         countArti.setText(listView.getCount() +" Articulo");
@@ -186,7 +186,7 @@ public class ResumenActivity extends AppCompatActivity {
             }
             Pedidos_model.SaveDetallePedido(ResumenActivity.this, mDetallePedido);
             editor.putString("FINAL",Clock.getTime()).apply();
-            Agenda_model.SaveLog(ResumenActivity.this,"PEDIDO","TIPO VISITA: PEDIDO");
+            Agenda_model.SaveLog(ResumenActivity.this,"PEDIDO","TIPO VISITA: PEDIDO: "+idPedido);
             editor.putString("BANDERA", "2").apply();
             startActivity(new Intent(ResumenActivity.this,AccionesActivity.class));
             timer.cancel();
