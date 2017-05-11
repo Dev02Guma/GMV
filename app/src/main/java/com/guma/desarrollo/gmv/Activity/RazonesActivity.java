@@ -141,7 +141,7 @@ public class RazonesActivity extends AppCompatActivity {
 
                                             editor.putString("FINAL",Clock.getTime()).apply();
                                             Razon_model.SaveRazon(RazonesActivity.this,ra);
-                                            Agenda_model.SaveLog(RazonesActivity.this,"RAZON","TIPO DE VISITA:RAZON");
+                                            Agenda_model.SaveLog(RazonesActivity.this,"RAZON","TIPO DE VISITA: RAZON: "+IdRazon);
 
                                             /*FIN GUARDAR*/
                                             startActivity(new Intent(RazonesActivity.this,AccionesActivity.class));

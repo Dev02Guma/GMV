@@ -73,12 +73,13 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 public void onFailure(Call<String> call, Throwable t) {}
             });
         }else {
-            Log.d(TAG, "doInBackground: ERROR EN ENVIO DE COBROS");
+            Log.d(TAG, "doInBackground: NO HAY COBROS");
         }
 
 
         List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt,false);
         Gson gson = new Gson();
+        Log.d(TAG, "alderr: "+gson.toJson(listPedidos));
         if (listPedidos.size()>0) {
             Log.d("json->",gson.toJson(listPedidos));
             Class_retrofit.Objfit().create(Servicio.class).enviarPedidos(gson.toJson(listPedidos)).enqueue(new Callback<Respuesta_pedidos>() {
@@ -103,11 +104,11 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 }
             });
         }else{
-            Log.d(TAG, "doInBackground: ERROR EN ENVIO DE PEDIDOS");
+            Log.d(TAG, "doInBackground: NO HAY PEDIDOS");
         }
 
         List<Visitas> obVisitas = Agenda_model.getVisitas(ManagerURI.getDirDb(), cnxt);
-        Log.d(TAG, "doInBackgroundLOG: " + obVisitas.size());
+        Log.d(TAG, "doInBackground: visitas " + obVisitas.size());
         if (obVisitas.size()>0){
             Class_retrofit.Objfit().create(Servicio.class).inVisitas(new Gson().toJson(obVisitas)).enqueue(new Callback<String>() {
                 @Override
@@ -117,6 +118,8 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                             pdialog.setMessage("Enviando Visitas.... ");
                             Log.d(TAG, "doInBackground: Se fue LOG");
                             SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),cnxt,"UPDATE VISITAS SET Send=1;");
+                        }else{
+                            Log.d(TAG, "doInBackground: no se fue LOG");
                         }
                     }
                 }

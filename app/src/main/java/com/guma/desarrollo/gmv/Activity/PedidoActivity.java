@@ -141,10 +141,13 @@ public class PedidoActivity extends AppCompatActivity {
                     Map<String, Object> map = new HashMap<>();
                     map.put("ITEMNAME", obj2.getmDescripcion());
                     map.put("ITEMCODIGO", obj2.getmArticulo());
-                    map.put("PRECIO", Funciones.NumberFormat(Float.parseFloat(obj2.getmPrecio())));
+                    map.put("PRECIO", Funciones.NumberFormat(Float.parseFloat(obj2.getmPrecio().replace(",",""))));
+                    //map.put("PRECIO", obj2.getmPrecio());
                     map.put("ITEMCANTI", obj2.getmCantidad());
                     map.put("BONIFICADO", obj2.getmBonificado());
-                    map.put("ITEMVALOR", Funciones.NumberFormat(Float.parseFloat(obj2.getmCantidad())*Float.parseFloat(obj2.getmPrecio())));
+                    //map.put("ITEMVALOR", Funciones.NumberFormat(Float.parseFloat(obj2.getmCantidad())*Float.parseFloat(obj2.getmPrecio())));
+                    map.put("ITEMVALOR", Funciones.NumberFormat(Float.parseFloat(obj2.getmCantidad())*Float.parseFloat(obj2.getmPrecio().replace(",",""))));
+                    //map.put("ITEMVALOR", obj2.getmCantidad());
                     list.add(map);
                 }
             Refresh();
@@ -258,7 +261,7 @@ public class PedidoActivity extends AppCompatActivity {
 
         for (Map<String, Object> obj : list){
             //Log.d("carajo",obj.get("ITEMNAME").toString()+ " "+ obj.get("ITEMVALOR").toString());
-            vLine     += Float.parseFloat(obj.get("ITEMVALOR").toString());
+            vLine     += Float.parseFloat(obj.get("ITEMVALOR").toString().replace(",",""));
         }
         Total.setText("TOTAL C$ "+ Funciones.NumberFormat(vLine));
         txtCount.setText(listView.getCount() +" Articulo");
