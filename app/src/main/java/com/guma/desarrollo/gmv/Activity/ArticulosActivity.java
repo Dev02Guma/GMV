@@ -108,15 +108,15 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                     for (int i = 0; i < Reglas.length; i++) {
                         mStrings.add(Reglas[i]);
                     }
-                    /*if (!checked){
+                    if (checked){
                         //List<String> mStrings = new ArrayList<>();
                         Inputcant.setVisibility(View.GONE);
                         promptsView.findViewById(R.id.txtInCant).setVisibility(View.GONE);
-                        for (int i = 0; i < Reglas.length; i++) {
+                        /*for (int i = 0; i < Reglas.length; i++) {
                             mStrings.add(Reglas[i]);
                         }
-                        spinner.setAdapter(new ArrayAdapter<>(ArticulosActivity.this, android.R.layout.simple_spinner_dropdown_item, mStrings));
-                    }*/
+                        spinner.setAdapter(new ArrayAdapter<>(ArticulosActivity.this, android.R.layout.simple_spinner_dropdown_item, mStrings));*/
+                    }
 
                     Inputcant.addTextChangedListener(new TextWatcher() {
                         @Override
@@ -191,6 +191,7 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                                                             strings.add(InputPrecio.getText().toString());
                                                             getIntent().putStringArrayListExtra("myItem", strings);
                                                             setResult(RESULT_OK, getIntent());
+                                                            editor.putBoolean("menu", false).apply();
                                                             finish();
                                                         }else{
                                                             new Notificaciones().Alert(ArticulosActivity.this,"ERROR","LA EXISTENCIA ACTUAL ES: "+Exist.toString())
@@ -236,7 +237,7 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
     public boolean onKeyDown(int keyCode, KeyEvent event){
         if(keyCode == KeyEvent.KEYCODE_BACK)
         {
-            //editor.putBoolean("menu", !checked).apply();
+            editor.putBoolean("menu", false).apply();
             finish();
             return true;
         }
@@ -258,7 +259,7 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
     public boolean onOptionsItemSelected(MenuItem item)    {
         int id = item.getItemId();
         if (id == 16908332){
-            editor.putBoolean("menu", !checked).apply();
+            editor.putBoolean("menu", false).apply();
             finish();
         }
         return super.onOptionsItemSelected(item);

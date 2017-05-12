@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.guma.desarrollo.core.Agenda_model;
 import com.guma.desarrollo.core.Clientes;
@@ -53,13 +54,11 @@ public class CobroInActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
-        Usuario = preferences.getString("USUARIO","0");
+        Usuario = preferences.getString("VENDEDOR","0");
         mCliente= preferences.getString("ClsSelected","0");
 
         textView = (TextView) findViewById(R.id.idTimer);
         timer = new Timer();
-
-
         
         mImporte = (EditText) findViewById(R.id.crbImporte);
         mObservacion = (EditText) findViewById(R.id.crbObservacion);
