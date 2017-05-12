@@ -81,7 +81,6 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                         }else{
                             pdialog.dismiss();
                             Log.d(TAG, "onResponse: noSuccessful Articulos" + response.errorBody() );
-                            Toast.makeText(cnxt, ""+response.errorBody(), Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
