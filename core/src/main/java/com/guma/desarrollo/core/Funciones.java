@@ -11,8 +11,6 @@ import java.text.DecimalFormat;
 
 public class Funciones {
     public static String NumberFormat(float Number){
-        Log.d("", "NumberFormat: " + Number);
-
         DecimalFormat formatter = new DecimalFormat("#,###.##");
         return  formatter.format(Number);
     }
