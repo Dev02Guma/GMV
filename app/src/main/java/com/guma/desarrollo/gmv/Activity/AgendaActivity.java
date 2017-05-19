@@ -116,6 +116,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                         }else{
                             if (items[which].equals(items[1])){
                                 startActivity(new Intent(AgendaActivity.this,ArticulosActivity.class));
+                                editor.putBoolean("mostrar", false).apply();
                                 editor.putBoolean("menu", true).apply();
                             }else{
                                 if (items[which].equals(items[2])){

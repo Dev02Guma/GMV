@@ -117,7 +117,7 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:text="123" />
+                    android:text="NR8183" />
 
 
 

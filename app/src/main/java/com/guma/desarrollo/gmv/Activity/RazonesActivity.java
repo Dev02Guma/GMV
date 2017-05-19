@@ -61,7 +61,7 @@ public class RazonesActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list);
         final RazonesAdapter listAdapter;
         timer = new Timer();
-
+        Toast.makeText(this, "aqui es", Toast.LENGTH_SHORT).show();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         setTitle(preferences.getString("NameClsSelected"," --ERROR--"));

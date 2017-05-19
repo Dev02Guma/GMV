@@ -61,6 +61,7 @@ public class AccionesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 editor.putString("IDPEDIDO","").apply();
                 editor.putString("INICIO",Clock.getTime()).apply();
+                editor.putBoolean("mostrar",true).apply();
                 startActivity(new Intent(AccionesActivity.this,IndicadoresClienteActivity.class));
                 finish();
             }

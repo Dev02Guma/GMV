@@ -14,8 +14,9 @@ public class Articulo {
     private String mPrecio;
     private String mPuntos;
     private String mReglas;
+    private String mUnidadMedida;
 
-    public Articulo(String mCodigo, String mName, String mExistencia, String mUnidad, String mPrecio, String mPuntos, String mReglas) {
+    public Articulo(String mCodigo, String mName, String mExistencia, String mUnidad, String mPrecio, String mPuntos, String mReglas, String mUnidadMedida) {
         this.mCodigo = mCodigo;
         this.mName = mName;
         this.mExistencia = mExistencia;
@@ -23,6 +24,7 @@ public class Articulo {
         this.mPrecio = mPrecio;
         this.mPuntos = mPuntos;
         this.mReglas = mReglas;
+        this.mUnidadMedida = mUnidadMedida;
     }
     public Articulo(){
 
@@ -82,5 +84,13 @@ public class Articulo {
 
     public void setmReglas(String mReglas) {
         this.mReglas = mReglas;
+    }
+
+    public String getmUnidadMedida() {
+        return mUnidadMedida;
+    }
+
+    public void setmUnidadMedida(String mUnidadMedida) {
+        this.mUnidadMedida = mUnidadMedida;
     }
 }
