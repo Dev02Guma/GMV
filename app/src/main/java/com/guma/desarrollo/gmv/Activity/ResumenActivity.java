@@ -27,6 +27,8 @@ import com.guma.desarrollo.core.Pedidos_model;
 import com.guma.desarrollo.core.SQLiteHelper;
 import com.guma.desarrollo.gmv.R;
 
+import org.w3c.dom.Text;
+
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,14 +39,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ResumenActivity extends AppCompatActivity {
-    TextView lblNombreClliente,lblNombreVendedor,countArti,SubTotal,ivaTotal,Total,Atendio,txtidPedido;
+    TextView lblNombreClliente,lblNombreVendedor,countArti,SubTotal,ivaTotal,Total,Atendio,txtidPedido,txtObservacion;
     private static ListView listView;
     float vLine = 0;
     ArrayList<Pedidos> mPedido = new ArrayList<>();
     ArrayList<Pedidos> mDetallePedido = new ArrayList<>();
     public SharedPreferences preferences;
     public SharedPreferences.Editor editor;
-    String CodCls,idPedido,bandera = "0";
+    String CodCls,idPedido,bandera = "0",comentario;
 
     TextView textView;
     Timer timer;
@@ -68,9 +70,15 @@ public class ResumenActivity extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         CodCls =  preferences.getString("ClsSelected","");
+        comentario =  preferences.getString("COMENTARIO","");
+
+        txtObservacion = (TextView)findViewById(R.id.txtObservacion);
+        txtObservacion.setEnabled(false);
+        txtObservacion.setText(comentario);
 
         timer = new Timer();
         textView = (TextView) findViewById(R.id.idTimer);
+
 
         Total = (TextView) findViewById(R.id.Total);
         Atendio = (TextView) findViewById(R.id.NombreVendedor);
@@ -153,7 +161,9 @@ public class ResumenActivity extends AppCompatActivity {
                 mDetallePedido.add(tmpDetalle);
             }
             SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),ResumenActivity.this,"UPDATE PEDIDO SET MONTO = "+total+" WHERE IDPEDIDO = '"+idPedido+"'");
+            SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),ResumenActivity.this,"UPDATE PEDIDO SET DESCRIPCION = '"+comentario+"' WHERE IDPEDIDO = '"+idPedido+"'");
             Pedidos_model.SaveDetallePedido(ResumenActivity.this, mDetallePedido);
+
             startActivity(new Intent(ResumenActivity.this,BandejaPedidosActivity.class));
             finish();
         }else{
@@ -171,6 +181,7 @@ public class ResumenActivity extends AppCompatActivity {
             tmp.setmFecha(Clock.getNow());
             tmp.setmPrecio(String.valueOf(nTotal));
             tmp.setmEstado("0");
+            tmp.setmComentario(comentario);
             mPedido.add(tmp);
 
             Pedidos_model.SavePedido(ResumenActivity.this, mPedido);
@@ -196,6 +207,7 @@ public class ResumenActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            startActivity(new Intent(ResumenActivity.this,AgendaActivity.class));
             finish();
             return true;
         }

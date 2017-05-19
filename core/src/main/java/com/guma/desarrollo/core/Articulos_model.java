@@ -29,6 +29,7 @@ public class Articulos_model {
                 contentValues.put("DESCRIPCION" , a.getmName());
                 contentValues.put("EXISTENCIA" , a.getmExistencia());
                 contentValues.put("UNIDAD" , a.getmUnidad());
+                contentValues.put("UNIDAD_MEDIDA" , a.getmUnidadMedida());
                 contentValues.put("PRECIO" , a.getmPrecio());
                 contentValues.put("PUNTOS" , a.getmPuntos());
                 contentValues.put("REGLAS" , a.getmReglas());
@@ -66,6 +67,7 @@ public class Articulos_model {
                     tmp.setmPrecio(cursor.getString(cursor.getColumnIndex("PRECIO")));
                     tmp.setmPuntos(cursor.getString(cursor.getColumnIndex("PUNTOS")));
                     tmp.setmReglas(cursor.getString(cursor.getColumnIndex("REGLAS")));
+                    tmp.setmUnidadMedida(cursor.getString(cursor.getColumnIndex("UNIDAD_MEDIDA")));
                     lista.add(tmp);
                     cursor.moveToNext();
                 }

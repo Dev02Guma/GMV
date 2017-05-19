@@ -49,7 +49,7 @@ import java.util.TimerTask;
 public class PedidoActivity extends AppCompatActivity {
     private ListView listView;
     List<Map<String, Object>> list;
-    TextView Total,txtCount,txtItemName,txtItemCant,txtItemCod,txtItemValor,txtBonificado,txtPrecio;
+    TextView Total,txtCount,txtItemName,txtItemCant,txtItemCod,txtItemValor,txtBonificado,txtPrecio,txtComent;
     EditText Inputcant,Exist;
     ArrayList<Pedidos> fList;
     private SharedPreferences preferences;
@@ -68,7 +68,7 @@ public class PedidoActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listViewSettingConnect);
         list = new ArrayList<>();
-
+        
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         setTitle(preferences.getString("NameClsSelected"," --ERROR--"));
@@ -76,10 +76,10 @@ public class PedidoActivity extends AppCompatActivity {
         txtCount= (TextView) findViewById(R.id.txtCountArti);
         timer = new Timer();
         textView = (TextView) findViewById(R.id.idTimer);
-
+        txtComent = (TextView)findViewById(R.id.txtObservacion);
         String bandera = preferences.getString("BANDERA", "0");
 
-        
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
@@ -100,8 +100,9 @@ public class PedidoActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(final AdapterView<?> parent, View view, int position, long id) {
-                showInputBox(parent,list,position);
-                return true;
+                /*showInputBox(parent,list,position);
+                return true;*/
+                return  false;
             }
         });
         findViewById(R.id.txtSendPedido).setOnClickListener(new View.OnClickListener() {
@@ -114,10 +115,11 @@ public class PedidoActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int id) {
                                     Intent send = new Intent(PedidoActivity.this,ResumenActivity.class);
                                     send.putExtra("LIST", (Serializable) list);
+                                    editor.putString("COMENTARIO", txtComent.getText().toString()).apply();
                                     //send.putExtra("NombreCliente",getIntent().getStringExtra("NombreCliente"));
                                     startActivity(send);
                                     timer.cancel();
-                                    finish();                                    
+                                    finish();
                                 }
                             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -150,6 +152,11 @@ public class PedidoActivity extends AppCompatActivity {
                     //map.put("ITEMVALOR", obj2.getmCantidad());
                     list.add(map);
                 }
+                /*Agregar comentario*/
+            List<Pedidos> comen = Pedidos_model.getComentario(ManagerURI.getDirDb(), PedidoActivity.this,IdPedido);
+            for(Pedidos obj2 : comen) {
+                txtComent.setText(obj2.getmComentario());
+            }
             Refresh();
         }
 
@@ -165,7 +172,7 @@ public class PedidoActivity extends AppCompatActivity {
             if (IdPEDIDO!="") {
                 timer.cancel();
                 LinearLayout mainLayout=(LinearLayout)findViewById(R.id.clockLayout);
-                mainLayout.setVisibility(View.GONE);
+                //mainLayout.setV   isibility(View.GONE);
             }else{
                 textView.setText(Clock.getDiferencia(Clock.StringToDate(preferences.getString("iniTimer", "0000-00-00 00:00:00"), "yyyy-mm-dd HH:mm:ss"), Clock.StringToDate(Clock.getNow(), "yyyy-mm-dd HH:mm:ss"), "Timer"));
             }
@@ -177,9 +184,7 @@ public class PedidoActivity extends AppCompatActivity {
         TextView textView = (TextView) dialogo.findViewById(android.R.id.title);
         textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
-
         dialogo.setContentView(R.layout.input_box);
-
 
         Inputcant = (EditText) dialogo.findViewById(R.id.txtFrmCantidad);
         Exist = (EditText) dialogo.findViewById(R.id.txtFrmExistencia);

@@ -21,18 +21,17 @@
 
     </android.support.design.widget.AppBarLayout>
     <include layout="@layout/content_pedido" />
+
     <LinearLayout
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="bottom|end">
 
-        <LinearLayout
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -41,101 +40,95 @@
                     android:id="@+id/txtCountArti"
                     android:text="0 Articulos"
                     android:gravity="start"
-
                     android:textStyle="bold"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="match_parent"
-                    />
-                <!--<TextView
-                    android:id="@+id/SubTotal"
-                    android:text="C$ 0.00"
-                    android:gravity="end"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:layout_height="match_parent"/>
 
-                    android:layout_height="match_parent"
-                    />-->
-            </LinearLayout>
-            <!--<LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-                />
-                <TextView
-                    android:id="@+id/ivaTotal"
-                    android:text="C$ 0.00"
-                    android:gravity="end"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    />
-            </LinearLayout>-->
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                />
                 <TextView
                     android:id="@+id/Total"
                     android:text="C$ 0.00"
                     android:gravity="end"
                     android:textStyle="bold"
                     android:textSize="18sp"
+                    android:textColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:layout_marginRight="8dp"
                     android:layout_height="match_parent"
                     />
             </LinearLayout>
 
-        </LinearLayout>
+            <TableRow>
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent"
+                    android:background="@color/thumbnail_background"
+                    card_view:cardCornerRadius="5dp"
+                    card_view:cardElevation="4dp"
+                    card_view:cardUseCompatPadding="true">
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal">
+                        <EditText
+                            android:textColorLink="#000"
+                            android:gravity="start"
+                            android:id="@+id/txtObservacion"
+                            android:layout_height="120dp"
+                            android:layout_width="0dp"
+                            android:textColor="#000"
+                            android:hint="Observaciones"
+                            android:inputType="textMultiLine"
 
+                            />
+                    </TableLayout>
+                </android.support.v7.widget.CardView>
+            </TableRow>
 
-        <LinearLayout
-            android:background="@color/colorPrimary"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="45dp">
-            <ImageView
-                android:id="@+id/txtSendPedido"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_send_white_24dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/clockLayout"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:background="@drawable/button_danger_rounded">
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
-                <TableRow
+            <TableRow
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:id="@+id/txtSendPedido"
+                    android:layout_gravity="center"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:layout_margin="10dp">
-                    <TextView
-                        android:id="@+id/idTimer"
-                        android:textColor="@color/white"
-                        android:textAlignment="center"
+                    android:src="@drawable/ic_send_white_24dp"/>
+            </TableRow>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="vertical"
+                android:layout_gravity="bottom|end"
+                android:background="@color/button_danger">
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+                    <TableRow
+                        android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"/>
-
-                </TableRow>
-            </TableLayout>
-
-        </LinearLayout>
-
+                        android:layout_margin="10dp">
+                        <TextView
+                            android:id="@+id/idTimer"
+                            android:textColor="@color/white"
+                            android:textAlignment="center"
+                            android:layout_height="fill_parent"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"/>
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+        </TableLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

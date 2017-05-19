@@ -83,7 +83,7 @@ public class BandejaPedidosActivity extends AppCompatActivity {
                 editor.apply();
                 if (ESTADO.equals("0")) {
                     startActivity(new Intent(BandejaPedidosActivity.this, PedidoActivity.class));
-                    //finish();
+                    finish();
                 }
             }
         });

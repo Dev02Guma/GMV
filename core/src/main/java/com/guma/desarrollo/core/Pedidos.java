@@ -12,13 +12,13 @@ import java.util.Map;
  */
 
 public class Pedidos {
-    String mIdPedido,mVendedor,mCliente,mNombre,mFecha,mArticulo,mDescripcion,mCantidad,mPrecio,mBonificado,mEstado;
+    String mIdPedido,mVendedor,mCliente,mNombre,mFecha,mArticulo,mDescripcion,mCantidad,mPrecio,mBonificado,mEstado,mComentario;
 
     JSONObject detalles = new JSONObject();
     ArrayList<HashMap<String, String>> contactList = null;
 
 
-    public Pedidos(String mIdPedido, String mVendedor, String mCliente, String mNombre, String mFecha, String mArticulo, String mDescripcion, String mCantidad, String mPrecio, String mBonificado, String mEstado, JSONObject detalles, ArrayList<HashMap<String, String>> contactList) {
+    public Pedidos(String mIdPedido, String mVendedor, String mCliente, String mNombre, String mFecha, String mArticulo, String mDescripcion, String mCantidad, String mPrecio, String mBonificado, String mEstado, String mComentario, JSONObject detalles, ArrayList<HashMap<String, String>> contactList) {
         this.mIdPedido = mIdPedido;
         this.mVendedor = mVendedor;
         this.mCliente = mCliente;
@@ -30,6 +30,7 @@ public class Pedidos {
         this.mPrecio = mPrecio;
         this.mBonificado = mBonificado;
         this.mEstado = mEstado;
+        this.mComentario = mComentario;
         this.detalles = detalles;
         this.contactList = contactList;
     }
@@ -100,7 +101,9 @@ public class Pedidos {
         this.mCantidad = mCantidad;
     }
 
-    public String getmPrecio() {return mPrecio;}
+    public String getmPrecio() {
+        return mPrecio;
+    }
 
     public void setmPrecio(String mPrecio) {
         this.mPrecio = mPrecio;
@@ -122,11 +125,27 @@ public class Pedidos {
         this.mEstado = mEstado;
     }
 
+    public String getmComentario() {
+        return mComentario;
+    }
+
+    public void setmComentario(String mComentario) {
+        this.mComentario = mComentario;
+    }
+
     public JSONObject getDetalles() {
         return detalles;
     }
 
     public void setDetalles(JSONObject detalles) {
         this.detalles = detalles;
+    }
+
+    public ArrayList<HashMap<String, String>> getContactList() {
+        return contactList;
+    }
+
+    public void setContactList(ArrayList<HashMap<String, String>> contactList) {
+        this.contactList = contactList;
     }
 }

@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity  {
                         startActivity(new Intent(LoginActivity.this,AgendaActivity.class));
                         finish();
                     }else{
-                        new Notificaciones().Alert(LoginActivity.this,"ERROR","ERROR AL AUTENTIARSE, INTENTELO MAS TARDE ekisde")
+                        new Notificaciones().Alert(LoginActivity.this,"ERROR","ERROR AL AUTENTIARSE, INTENTELO MAS TARDE")
                                 .setCancelable(false).setPositiveButton("OK", null).show();
                         pdialog.dismiss();
                     }

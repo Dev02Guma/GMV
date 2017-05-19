@@ -38,6 +38,7 @@ public class Pedidos_model {
                 contentValues.put("FECHA_CREADA" , a.getmFecha());
                 contentValues.put("MONTO" , a.getmPrecio());
                 contentValues.put("ESTADO" , a.getmEstado());
+                contentValues.put("DESCRIPCION" , a.getmComentario());
 
                 myDataBase.insert("PEDIDO", null, contentValues );
             }
@@ -110,6 +111,7 @@ public class Pedidos_model {
                     tmp.setmPrecio(cursor.getString(cursor.getColumnIndex("MONTO")));
                     tmp.setmFecha(cursor.getString(cursor.getColumnIndex("FECHA_CREADA")));
                     tmp.setmEstado(cursor.getString(cursor.getColumnIndex("ESTADO")));
+                    tmp.setmComentario(cursor.getString(cursor.getColumnIndex("DESCRIPCION")));
                     Cursor cursor2 = myDataBase.query(true, "PEDIDO_DETALLE", null, "IDPEDIDO"+ "=?", new String[] { cursor.getString(cursor.getColumnIndex("IDPEDIDO")) }, null, null, null, null);
                     cursor2.moveToFirst();
 
@@ -170,7 +172,33 @@ public class Pedidos_model {
         }
         return lista;
     }
-
+    public static List<Pedidos> getComentario(String basedir, Context context,String mIdPedido) {
+        List<Pedidos> lista = new ArrayList<>();
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+            myDbHelper = new SQLiteHelper(basedir, context);
+            myDataBase = myDbHelper.getReadableDatabase();
+            Cursor cursor = myDataBase.query(true, "PEDIDO", null, "IDPEDIDO"+ "=?", new String[] { mIdPedido }, null, null, null, null);
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast()) {
+                    Pedidos tmp = new Pedidos();
+                    tmp.setmComentario(cursor.getString(cursor.getColumnIndex("DESCRIPCION")));
+                    lista.add(tmp);
+                    cursor.moveToNext();
+                }
+            }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+        return lista;
+    }
     public static void  actualizarPedidos(Context context, ArrayList<Pedidos> PEDIDOS){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
