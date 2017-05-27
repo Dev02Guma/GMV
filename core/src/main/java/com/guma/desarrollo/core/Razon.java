@@ -21,6 +21,7 @@ public class Razon {
     String mNombre;
     String mFecha;
     String mObservacion;
+    String mSend;
     ArrayList<RazonDetalle> rdet;
 
     JSONObject detalles = new JSONObject();
@@ -38,12 +39,17 @@ public class Razon {
 
     public Razon(){}
 
-    public Razon(String IdRazon, String Vendedor, String Cliente, String Fecha, String Observacion){
-        mIdRazon=IdRazon;
-        mVendedor=Vendedor;
-        mCliente=Cliente;
-        mFecha=Fecha;
-        mObservacion=Observacion;
+    public Razon(String mIdRazon, String mVendedor, String mCliente, String mNombre, String mFecha, String mObservacion, String mSend, ArrayList<RazonDetalle> rdet, JSONObject detalles, ArrayList<HashMap<String, String>> contactList) {
+        this.mIdRazon = mIdRazon;
+        this.mVendedor = mVendedor;
+        this.mCliente = mCliente;
+        this.mNombre = mNombre;
+        this.mFecha = mFecha;
+        this.mObservacion = mObservacion;
+        this.mSend = mSend;
+        this.rdet = rdet;
+        this.detalles = detalles;
+        this.contactList = contactList;
     }
 
     public String getmIdRazon() {
@@ -100,5 +106,13 @@ public class Razon {
 
     public void setDetalles(JSONObject detalles){
         this.detalles=detalles;
+    }
+
+    public String getmSend() {
+        return mSend;
+    }
+
+    public void setmSend(String mSend) {
+        this.mSend = mSend;
     }
 }

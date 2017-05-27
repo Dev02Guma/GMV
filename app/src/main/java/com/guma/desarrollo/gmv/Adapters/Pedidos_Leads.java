@@ -53,8 +53,10 @@ public class Pedidos_Leads extends ArrayAdapter<Pedidos>{
             img.setImageResource(R.drawable.uno1);
         }else if (estado.equals(2)){
             img.setImageResource(R.drawable.doble2);
-        }else{
+        }else if (estado.equals(3)){
             img.setImageResource(R.drawable.doble1);
+        }else{
+            img.setImageResource(R.drawable.icono_anulado_1);
         }
         //img.setImageResource(R.drawable.uno2);
         //mEstado.setText("ESTADO:  " + lead.getmEstado());

@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -100,9 +101,9 @@ public class PedidoActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(final AdapterView<?> parent, View view, int position, long id) {
-                /*showInputBox(parent,list,position);
-                return true;*/
-                return  false;
+                showInputBox(parent,list,position);
+                return true;
+                //return  false;
             }
         });
         findViewById(R.id.txtSendPedido).setOnClickListener(new View.OnClickListener() {
@@ -188,7 +189,7 @@ public class PedidoActivity extends AppCompatActivity {
 
         Inputcant = (EditText) dialogo.findViewById(R.id.txtFrmCantidad);
         Exist = (EditText) dialogo.findViewById(R.id.txtFrmExistencia);
-        Inputcant.setText(list2.get(index).get("ITEMCANTI").toString());
+        Inputcant.setText(list2.get(index).get("ITEMCANTI").toString().replace(".0",""));
         spinner = (Spinner) dialogo.findViewById(R.id.sp_boni);
         Button bt = (Button)dialogo.findViewById(R.id.btnDone);
         final Map<String, Object> map = new HashMap<>();
@@ -214,16 +215,24 @@ public class PedidoActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 List<String> mStrings = new ArrayList<>();
                 spinner.setAdapter(null);
+
                 if (s.length() != 0) {
-                    if (Reglas2.length > 1) {
-                        for (int i = 0; i < Reglas2.length; i++) {
-                            String[] frag = Reglas2[i].replace("+", ",").split(",");
-                            if (Integer.parseInt(Inputcant.getText().toString()) >= Integer.parseInt(frag[0])) {
-                                mStrings.add(frag[0] + "+" + frag[1]);
+                    Log.d("", "alder: "+Reglas2[0]);
+                    if (Reglas2.length >= 1) {
+                        if (!Reglas2[0].equals("0")){
+                            for (int i = 0; i < Reglas2.length; i++) {
+                                String[] frag = Reglas2[i].replace("+", ",").split(",");
+                                if (Integer.parseInt(Inputcant.getText().toString().replace(".","")) >= Integer.parseInt(frag[0])) {
+                                    mStrings.add(frag[0] + "+" + frag[1]);
+                                }
                             }
                         }
                     }else{
                         mStrings.add("0");
+                    }
+                    if (mStrings.size()==0){
+                        mStrings.add("0");
+                        spinner.setAdapter(null);
                     }
                     spinner.setAdapter(new ArrayAdapter<>(PedidoActivity.this, android.R.layout.simple_spinner_dropdown_item, mStrings));
                 }
@@ -235,13 +244,17 @@ public class PedidoActivity extends AppCompatActivity {
                 String cadena = Inputcant.getText().toString();
 
                 if (cadena.equals("")) {
-                    Toast.makeText(PedidoActivity.this, "VALOR MINIMO ES 1", Toast.LENGTH_SHORT).show();
+                    new Notificaciones().Alert(PedidoActivity.this,"AVISO","VALOR MINIMO ES 1").show();
                 }else{
-                    Integer numero = Integer.valueOf(Inputcant.getText().toString());
+                    Float numero = Float.valueOf(Inputcant.getText().toString());
+                    Float precio = Float.valueOf(list2.get(index).get("PRECIO").toString().replace(",","."));
                     if (numero>0) {
-                        map.put("BONIFICADO", list2.get(index).get("BONIFICADO").toString());
+                        //map.put("BONIFICADO", list2.get(index).get("BONIFICADO").toString());
                         map.put("ITEMCANTI", Inputcant.getText().toString());
-                        map.put("ITEMVALOR", Float.parseFloat(list2.get(index).get("PRECIO").toString()) * Float.parseFloat(Inputcant.getText().toString()));
+                        map.put("BONIFICADO", spinner.getSelectedItem().toString());
+
+                        //map.put("ITEMVALOR", Float.parseFloat(list2.get(index).get("PRECIO").toString()) * numero);
+                        map.put("ITEMVALOR", precio * numero);
                         list.add(index, map);
                         list.remove(index + 1);
                         Refresh();
@@ -305,7 +318,7 @@ public class PedidoActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            startActivity(new Intent(PedidoActivity.this,AgendaActivity.class));
+            //startActivity(new Intent(PedidoActivity.this,AgendaActivity.class));
             finish();
             return true;
         }

@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.guma.desarrollo.core.Articulo;
@@ -73,7 +74,7 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
         checked2 = preferences.getBoolean("mostrar", false);
 
         String IdPedido = preferences.getString("IDPEDIDO", "");
-        Toast.makeText(this, String.valueOf(checked2), Toast.LENGTH_SHORT).show();
+
         searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         setTitle("ARTICULOS");
         final ArrayList<String> strings = new ArrayList<>();
@@ -113,6 +114,8 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                         //List<String> mStrings = new ArrayList<>();
                         Inputcant.setVisibility(View.GONE);
                         promptsView.findViewById(R.id.txtInCant).setVisibility(View.GONE);
+                        TableRow tr = (TableRow)promptsView.findViewById(R.id.row2);
+                        tr.setVisibility(View.GONE);
                         /*for (int i = 0; i < Reglas.length; i++) {
                             mStrings.add(Reglas[i]);
                         }

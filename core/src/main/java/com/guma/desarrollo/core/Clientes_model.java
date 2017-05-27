@@ -9,6 +9,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by maryan.espinoza on 02/03/2017.
  */
@@ -314,11 +316,14 @@ public class Clientes_model {
         {
             myDbHelper = new SQLiteHelper(basedir, context);
             myDataBase = myDbHelper.getReadableDatabase();
+
             Cursor cursor = myDataBase.query(true, "CLIENTES", null, "CLIENTE"+ "=?", new String[] { IdCliente }, null, null, null, null);
+            Log.d(TAG, "getAgenda: "+ IdCliente + " " +cursor.getCount());
             if(cursor.getCount() > 0) {
 
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast()) {
+
                     Clientes tmp = new Clientes();
                     tmp.setmCliente(cursor.getString(cursor.getColumnIndex("CLIENTE")));
                     tmp.setmNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
@@ -330,6 +335,7 @@ public class Clientes_model {
                     tmp.setmSaldo(cursor.getString(cursor.getColumnIndex("SALDO")));
                     tmp.setmDisponible(cursor.getString(cursor.getColumnIndex("DISPONIBLE")));
                     tmp.setmCumple(cursor.getString(cursor.getColumnIndex("CUMPLE")));
+                    Log.d("", "alderPrubea: "+cursor.getString(cursor.getColumnIndex("CUMPLE")));
                     lista.add(tmp);
                     cursor.moveToNext();
                 }

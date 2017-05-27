@@ -242,7 +242,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                 });
 
 
-
+        Log.d(TAG, "onResponse: Agenda el usuario " + Usuario);
         Class_retrofit.Objfit().create(Servicio.class)
                 .Agenda(Usuario)
                 .enqueue(new Callback<Respuesta_agenda>() {
@@ -252,6 +252,8 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                             pdialog.setMessage("Cargado Puntos.... ");
                             Respuesta_agenda clpuntos = response.body();
                             Log.d(TAG, "onResponse: Agenda " + clpuntos.getCount());
+                            Log.d(TAG, "onResponse Alder: "+response.body().getResults().get(0).getmLunes());
+                            /*Log.d(TAG, "onResponse: Agenda " + clpuntos.getCount());*/
                             Agenda_model.Save_Agenda(cnxt,clpuntos.getResults());
                         }else{
                             pdialog.dismiss();
@@ -259,12 +261,10 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                         }
 
                     }
-
-
                     @Override
                     public void onFailure(Call<Respuesta_agenda> call, Throwable t) {
                         pdialog.dismiss();
-                        Log.d(TAG, "onResponse: Failure Facturas " + t.getMessage() );
+                        Log.d(TAG, "onResponse: Failure Agenda " + t.getMessage() );
                     }
                 });
 

@@ -1,31 +1,19 @@
 package com.guma.desarrollo.gmv.Activity;
 
-import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import android.content.DialogInterface;
-
-import android.support.v7.app.AlertDialog;
-
-import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.guma.desarrollo.core.Agenda_model;
 import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Clientes_model;
@@ -33,15 +21,22 @@ import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.Cobros_model;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.Pedidos_model;
-import com.guma.desarrollo.core.SQLiteHelper;
-import com.guma.desarrollo.gmv.ChildInfo;
-import com.guma.desarrollo.gmv.Tasks.TaskDownload;
-import com.guma.desarrollo.gmv.Tasks.TaskUnload;
-import com.guma.desarrollo.gmv.api.ConnectivityReceiver;
+import com.guma.desarrollo.core.Razon_model;
 import com.guma.desarrollo.gmv.Adapters.CustomAdapter;
+import com.guma.desarrollo.gmv.ChildInfo;
 import com.guma.desarrollo.gmv.GroupInfo;
 import com.guma.desarrollo.gmv.MyApplication;
 import com.guma.desarrollo.gmv.R;
+import com.guma.desarrollo.gmv.Tasks.TaskDownload;
+import com.guma.desarrollo.gmv.Tasks.TaskUnload;
+import com.guma.desarrollo.gmv.api.ConnectivityReceiver;
+import com.guma.desarrollo.gmv.api.Notificaciones;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AgendaActivity extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener {
 
@@ -56,7 +51,8 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private boolean checked;
-    public ProgressDialog pdialog;
+
+
 
     SearchView sv;
 
@@ -113,10 +109,11 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
 
                         if (items[which].equals(items[0])){
                             startActivityForResult(new Intent(AgendaActivity.this,ClientesActivity.class),0);
+                            finish();
                         }else{
                             if (items[which].equals(items[1])){
                                 startActivity(new Intent(AgendaActivity.this,ArticulosActivity.class));
-                                editor.putBoolean("mostrar", false).apply();
+                                editor.putBoolean("mostrar", true).apply();
                                 editor.putBoolean("menu", true).apply();
                             }else{
                                 if (items[which].equals(items[2])){
@@ -139,7 +136,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                                                     startActivity(new Intent(AgendaActivity.this,RptHoyActivity.class));
                                                 } else{
                                                     if (items[which].equals(items[7])){
-                                                        cerrar();
+                                                       cerrar();
                                                     }else {
                                                         if (items[which].equals(items[8])) {
 
@@ -181,13 +178,10 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
 
     private void cerrar(){
         //Agenda_model.borrar(AgendaActivity.this);
-        pdialog = ProgressDialog.show(AgendaActivity.this, "","Iniciando....", true);
-        pdialog.setMessage("Eliminando pedidos enviados.. ");
         Pedidos_model.borrar(AgendaActivity.this,ManagerURI.getDirDb());
-        pdialog.setMessage("Eliminando corbos enviados... ");
         Cobros_model.borrar(AgendaActivity.this);
-        pdialog.setMessage("Cierre terminado.. ");
-        pdialog.dismiss();
+        Razon_model.borrar(AgendaActivity.this);
+        new Notificaciones().Alert(AgendaActivity.this,"AVISO","CIERRE DEL DIA COMPLETO...").setCancelable(false).setPositiveButton("OK", null).show();
     }
 
     private void checkConnection() {
@@ -259,27 +253,29 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
         }
 
         if (lista.size()>0){
+
             String[] strDias = getResources().getStringArray(R.array.dias);
             for (int i=0;i<strDias.length;i++){
+
                 String[] mD = lista.get(0).get(strDias[i]).toString().split("-");
                 for (int d=0;d<mD.length;d++){
                     if (mD[d].equals("")){
                         addProduct(0,strDias[i],"VACIO","");
                     }else{
                         for (Clientes obj : Clientes_model.getInfoCliente(ManagerURI.getDirDb(), AgendaActivity.this,mD[d])) {
+
                             if (onCake(obj.getmCumple())){
+
                                 addProduct(R.drawable.ic_cake_black_24dp,strDias[i],obj.getmNombre(),mD[d]);
                             }else{
+
                                 addProduct(0,strDias[i],obj.getmNombre(),mD[d]);
                             }
-
-
                         }
                     }
                 }
             }
         }
-
     }
     private  boolean onCake(String Fecha_cumple){
         boolean isVisible= false;
@@ -342,9 +338,5 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
             editor.putBoolean("ntData", true);
             editor.apply();
         }
-
-
-
-
     }
 }
