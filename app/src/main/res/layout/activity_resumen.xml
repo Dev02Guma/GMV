@@ -106,7 +106,7 @@
         <LinearLayout
             android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="50dp">
             <Button
                 android:textColor="@color/white"
                 android:background="@drawable/button_primary_rounded"

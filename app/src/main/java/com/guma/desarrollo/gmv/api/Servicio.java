@@ -11,6 +11,7 @@ import com.guma.desarrollo.gmv.models.Respuesta_indicadores;
 import com.guma.desarrollo.gmv.models.Respuesta_mora;
 
 import com.guma.desarrollo.gmv.models.Respuesta_pedidos;
+import com.guma.desarrollo.gmv.models.Respuesta_razones;
 import com.guma.desarrollo.gmv.models.Respuesta_usuario;
 
 import com.guma.desarrollo.gmv.models.Respuesta_puntos;
@@ -57,6 +58,10 @@ public interface Servicio {
     @FormUrlEncoded
     @POST("url_pedidos")
     Call<Respuesta_pedidos> enviarPedidos(@Field("PEDIDOS") String pedidos);
+
+    @FormUrlEncoded
+    @POST("insertRazones")
+    Call<Respuesta_razones> enviarRazones(@Field("RAZONES") String razones);
 
     @FormUrlEncoded
     @POST("updatePedidos")

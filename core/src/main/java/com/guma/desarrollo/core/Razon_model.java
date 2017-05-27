@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,6 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by luis.perez on 28/03/2017.
  */
@@ -39,6 +43,7 @@ public class Razon_model {
                 contentValues.put("Nombre",r.getmNombre());
                 contentValues.put("Fecha",r.getmFecha());
                 contentValues.put("Observacion",r.getmObservacion());
+                contentValues.put("SEND",r.getmSend());
                 /*Guradar el Encabezado del Registro*/
                 myDataBase.insert("RAZON",null,contentValues);
                 /*Guardar el Detalle del Registro*/
@@ -85,18 +90,26 @@ public class Razon_model {
         }
     }
 
-    public static List<Razon> getInfoRazon(String basedir, Context context){
+    public static List<Razon> getInfoRazon(String basedir, Context context,boolean all){
         List<Razon> lista = new ArrayList<>();
 
         Integer i = 0;
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
+        Cursor cursor;
         try
         {
             myDbHelper = new SQLiteHelper(basedir, context);
             myDataBase = myDbHelper.getReadableDatabase();
-            Cursor cursor = myDataBase.query(true,"RAZON", null, null, null, null, null, null, null);
+            Log.d(TAG, "doInBackgroundRazones: "+all);
+            if (all){
+                cursor = myDataBase.query(true,"RAZON", null, null, null, null, null, null, null);
+            }else{
+                cursor = myDataBase.query(true, "RAZON", null, "SEND NOT IN (" + TextUtils.join(",", new String[]{"1"}) + ")", null, null, null, null, null);
+            }
+            Log.d(TAG, "doInBackgroundRazones: "+cursor.getCount());
             if (cursor.getCount()>0){
+                Log.d(TAG, "doInBackgroundRazones: Razones ENTROOOOO");
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()){
                     Razon tmp = new Razon();
@@ -105,17 +118,17 @@ public class Razon_model {
                     tmp.setmCliente(cursor.getString(cursor.getColumnIndex("Cliente")));
                     tmp.setmFecha(cursor.getString(cursor.getColumnIndex("Fecha")));
                     tmp.setmObservacion(cursor.getString(cursor.getColumnIndex("Observacion")));
-                    /*Cursor cursor2 = myDataBase.query(true, "RAZON_DETALLE", null, "IdRazon"+ "=?", new String[] { cursor.getString(cursor.getColumnIndex("IdRazon")) }, null, null, null, null);
+                    Cursor cursor2 = myDataBase.query(true, "RAZON_DETALLE", null, "IdRazon"+ "=?", new String[] { cursor.getString(cursor.getColumnIndex("IdRazon")) }, null, null, null, null);
                     cursor2.moveToFirst();
+
                     while (!cursor2.isAfterLast()){
                         tmp.getDetalles().put("IdRazon"+i,cursor2.getString(cursor2.getColumnIndex("IdRazon")));
                         tmp.getDetalles().put("IdAE"+i,cursor2.getString(cursor2.getColumnIndex("IdAE")));
                         tmp.getDetalles().put("Actividad"+i,cursor2.getString(cursor2.getColumnIndex("Actividad")));
                         tmp.getDetalles().put("Categoria"+i,cursor2.getString(cursor2.getColumnIndex("Categoria")));
                         i++;
-                        lista.add(tmp);
                         cursor2.moveToNext();
-                    }*/
+                    }
                     lista.add(tmp);
                     cursor.moveToNext();
                 }
@@ -156,6 +169,21 @@ public class Razon_model {
             if (myDBHelper != null) { myDBHelper.close(); }
         }
         return lista;
+    }
+
+    public static void borrar(Context contexto) {
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+            SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), contexto,"DELETE FROM RAZON WHERE SEND = '1'");
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
     }
 
 }

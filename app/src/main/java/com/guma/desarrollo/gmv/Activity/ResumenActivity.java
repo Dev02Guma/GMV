@@ -124,7 +124,6 @@ public class ResumenActivity extends AppCompatActivity {
                         .setMessage("¿DESEA GUARDAR EL PEDIDO?")
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (CodCls!="") {
@@ -133,6 +132,11 @@ public class ResumenActivity extends AppCompatActivity {
                                 }else {
                                     Toast.makeText(ResumenActivity.this, "ERROR AL GUARDAR PEDIDO, INTENTELO MAS TARDE", Toast.LENGTH_SHORT).show();
                                 }
+                            }
+                        }).setNegativeButton("NO",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
                             }
                         }).show();
             }
@@ -164,7 +168,7 @@ public class ResumenActivity extends AppCompatActivity {
             SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),ResumenActivity.this,"UPDATE PEDIDO SET DESCRIPCION = '"+comentario+"' WHERE IDPEDIDO = '"+idPedido+"'");
             Pedidos_model.SaveDetallePedido(ResumenActivity.this, mDetallePedido);
 
-            startActivity(new Intent(ResumenActivity.this,BandejaPedidosActivity.class));
+            startActivity(new Intent(ResumenActivity.this,BandejaPedidosActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             finish();
         }else{
             int key = SQLiteHelper.getId(ManagerURI.getDirDb(), ResumenActivity.this, "PEDIDOS");
@@ -175,7 +179,7 @@ public class ResumenActivity extends AppCompatActivity {
             }
             Pedidos tmp = new Pedidos();
             tmp.setmIdPedido(idPedido);
-            tmp.setmVendedor("F09");
+            tmp.setmVendedor(preferences.getString("VENDEDOR", "00"));
             tmp.setmCliente(CodCls);
             tmp.setmNombre(preferences.getString("NameClsSelected", " CLIENTE NO ENCONTRADO"));
             tmp.setmFecha(Clock.getNow());

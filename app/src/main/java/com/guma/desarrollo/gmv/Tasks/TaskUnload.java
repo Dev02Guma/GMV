@@ -19,6 +19,8 @@ import com.guma.desarrollo.core.Cobros_model;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.Pedidos;
 import com.guma.desarrollo.core.Pedidos_model;
+import com.guma.desarrollo.core.Razon;
+import com.guma.desarrollo.core.Razon_model;
 import com.guma.desarrollo.core.SQLiteHelper;
 import com.guma.desarrollo.core.Visitas;
 
@@ -26,6 +28,7 @@ import com.guma.desarrollo.gmv.api.Class_retrofit;
 import com.guma.desarrollo.gmv.api.Notificaciones;
 import com.guma.desarrollo.gmv.api.Servicio;
 import com.guma.desarrollo.gmv.models.Respuesta_pedidos;
+import com.guma.desarrollo.gmv.models.Respuesta_razones;
 
 import java.util.List;
 
@@ -90,7 +93,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                         pdialog.setMessage("Enviando Pedidos.... ");
                         Boolean var = Boolean.valueOf(pedidoRespuesta.getResults().get(0).getmEstado());
                         if (var){
-                            new AlertDialog.Builder(cnxt).setTitle("MENSAJE").setMessage("PEDIDOS ENVIADOS").setCancelable(false).setPositiveButton("OK",null).show();
+                            new AlertDialog.Builder(cnxt).setTitle("MENSAJE").setMessage("PEDIDOS ENVIADOS, ACTUALICE SU EQUIPO..").setCancelable(false).setPositiveButton("OK",null).show();
                         }else {
                             new AlertDialog.Builder(cnxt).setTitle("MENSAJE").setMessage(pedidoRespuesta.getResults().get(0).getmEstado()).setCancelable(false).setPositiveButton("OK", null).show();
                         }
@@ -114,6 +117,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.isSuccessful()){
+
                         if (Boolean.valueOf(response.body())){
                             pdialog.setMessage("Enviando Visitas.... ");
                             Log.d(TAG, "doInBackground: Se fue LOG");
@@ -126,6 +130,28 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                     Log.d(TAG, "doInBackground: No se fue VISITAS");
+                }
+            });
+        }
+
+        List<Razon> objRazones = Razon_model.getInfoRazon(ManagerURI.getDirDb(), cnxt,false);
+        Log.d(TAG, "doInBackgroundRazones: Razones " + objRazones.size());
+        Log.d(TAG, "doInBackgroundRazones: Razones " + new Gson().toJson(objRazones));
+
+        if (objRazones.size()>0){
+
+            Class_retrofit.Objfit().create(Servicio.class).enviarRazones(new Gson().toJson(objRazones)).enqueue(new Callback<Respuesta_razones>() {
+                @Override
+                public void onResponse(Call<Respuesta_razones> call, Response<Respuesta_razones> response) {
+                    if (response.isSuccessful()){
+                        Respuesta_razones razonesRespuesta = response.body();
+                        SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),cnxt,"UPDATE RAZON SET SEND = 1;");
+                        Log.d(TAG, "doInBackground: SE ENVIOOO ");
+                    }
+                }
+                @Override
+                public void onFailure(Call<Respuesta_razones> call, Throwable t) {
+                    Log.d(TAG, "doInBackgroundRazones: No se fue RAZONES");
                 }
             });
         }

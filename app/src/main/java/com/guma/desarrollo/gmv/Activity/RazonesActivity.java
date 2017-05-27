@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -61,7 +62,7 @@ public class RazonesActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list);
         final RazonesAdapter listAdapter;
         timer = new Timer();
-        Toast.makeText(this, "aqui es", Toast.LENGTH_SHORT).show();
+
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         setTitle(preferences.getString("NameClsSelected"," --ERROR--"));
@@ -124,6 +125,7 @@ public class RazonesActivity extends AppCompatActivity {
                                             ra.setmNombre(preferences.getString("NameClsSelected"," --ERROR--"));
                                             ra.setmFecha(Clock.getNow());
                                             ra.setmObservacion(etObservacion.getText().toString());
+                                            ra.setmSend("0");
 
                                             for (int i = 0; i < lv.getAdapter().getCount(); i++)
                                             {
@@ -149,7 +151,12 @@ public class RazonesActivity extends AppCompatActivity {
                                             finish();
                                         }
                                     }
-                            ).create().show();
+                            ).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).create().show();
                 }
                 else
                 {
@@ -169,4 +176,13 @@ public class RazonesActivity extends AppCompatActivity {
                 textView2.setText(Clock.getDiferencia(Clock.StringToDate(preferences.getString("iniTimer", "0000-00-00 00:00:00"), "yyyy-mm-dd HH:mm:ss"), Clock.StringToDate(Clock.getNow(), "yyyy-mm-dd HH:mm:ss"), "Timer"));
         }
     };
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            startActivity(new Intent(RazonesActivity.this,AgendaActivity.class));
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

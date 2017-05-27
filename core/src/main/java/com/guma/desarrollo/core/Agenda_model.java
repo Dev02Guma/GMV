@@ -69,9 +69,11 @@ public class Agenda_model {
             myDataBase = myDbHelper.getReadableDatabase();
             Cursor cursor = myDataBase.query(true, "VCLIENTES", null, null, null, null, null, null, null);
             if(cursor.getCount() > 0) {
+                //Log.d(TAG, "getAgenda: "+cursor.getCount());
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast()) {
                     Map<String, Object> map = new HashMap<>();
+
                     map.put("IDPLAN",cursor.getString(cursor.getColumnIndex("IdPlan")));
                     map.put("LUNES",cursor.getString(cursor.getColumnIndex("Lunes")));
                     map.put("MARTES",cursor.getString(cursor.getColumnIndex("Martes")));
@@ -140,9 +142,11 @@ public class Agenda_model {
             myDbHelper = new SQLiteHelper(ManagerURI.getDirDb(), context);
             myDataBase = myDbHelper.getWritableDatabase();
             SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM FACTURAS_PUNTOS");
+            SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM AGENDA");
+            SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM VCLIENTES");
             for(int i=0;i<Indica.size();i++){
                 Agenda a = Indica.get(i);
-                SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM AGENDA");
+                //SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM AGENDA");
                 ContentValues cntTop = new ContentValues();
                 cntTop.put("IdPlan" , a.mIdPlan);
                 cntTop.put("Vendedor" , a.mVendedor);
@@ -152,7 +156,7 @@ public class Agenda_model {
                 cntTop.put("Zona" , a.mZona);
                 myDataBase.insert("AGENDA", null, cntTop );
 
-                SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM VCLIENTES");
+                //SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(), context,"DELETE FROM VCLIENTES");
                 ContentValues cntDetalle = new ContentValues();
                 cntDetalle.put("IdPlan" , a.mIdPlan);
                 cntDetalle.put("Lunes" , a.mLunes);

@@ -49,7 +49,7 @@ public class RptHoyActivity extends AppCompatActivity {
             mPedidoTotal += Float.parseFloat(obj.getmPrecio());
             countPedido++;
         }
-        for(Razon obj : Razon_model.getInfoRazon(ManagerURI.getDirDb(), RptHoyActivity.this)) {
+        for(Razon obj : Razon_model.getInfoRazon(ManagerURI.getDirDb(), RptHoyActivity.this,true)) {
             countOtros++;
         }
 
