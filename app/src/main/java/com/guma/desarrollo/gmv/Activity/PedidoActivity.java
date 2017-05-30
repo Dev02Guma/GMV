@@ -31,6 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guma.desarrollo.core.Articulos_model;
+import com.guma.desarrollo.core.Clientes;
+import com.guma.desarrollo.core.Clientes_model;
 import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.Funciones;
 import com.guma.desarrollo.core.ManagerURI;
@@ -103,14 +105,22 @@ public class PedidoActivity extends AppCompatActivity {
             public boolean onItemLongClick(final AdapterView<?> parent, View view, int position, long id) {
                 showInputBox(parent,list,position);
                 return true;
-                //return  false;
+                //return  0false;
             }
         });
         findViewById(R.id.txtSendPedido).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (list.size()!=0){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(PedidoActivity.this);
+                Double Credito = null;
+                Double Totall = Double.valueOf(Total.getText().toString().replace("TOTAL C$ ","").replace(",",""));
+                List<Clientes> Limite = Clientes_model.getCredito(ManagerURI.getDirDb(), PedidoActivity.this,preferences.getString("ClsSelected", ""));
+                for(Clientes obj2 : Limite) {
+                    Credito = Double.valueOf(obj2.getmCredito());
+                }
+                if (Totall>Credito){
+                    new Notificaciones().Alert(PedidoActivity.this,"AVISO","LIMITE DE CLIENTE EXCEDIDO ("+Credito+")").setCancelable(false).setPositiveButton("OK", null).show();
+                }else if (list.size()!=0){
+                   AlertDialog.Builder builder = new AlertDialog.Builder(PedidoActivity.this);
                     builder.setMessage("¿Confirma la transaccion?")
                             .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
@@ -173,7 +183,7 @@ public class PedidoActivity extends AppCompatActivity {
             if (IdPEDIDO!="") {
                 timer.cancel();
                 LinearLayout mainLayout=(LinearLayout)findViewById(R.id.clockLayout);
-                //mainLayout.setV   isibility(View.GONE);
+
             }else{
                 textView.setText(Clock.getDiferencia(Clock.StringToDate(preferences.getString("iniTimer", "0000-00-00 00:00:00"), "yyyy-mm-dd HH:mm:ss"), Clock.StringToDate(Clock.getNow(), "yyyy-mm-dd HH:mm:ss"), "Timer"));
             }
@@ -206,7 +216,6 @@ public class PedidoActivity extends AppCompatActivity {
         Inputcant.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //Toast.makeText(PedidoActivity.this, "adadas", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -215,7 +224,6 @@ public class PedidoActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 List<String> mStrings = new ArrayList<>();
                 spinner.setAdapter(null);
-
                 if (s.length() != 0) {
                     Log.d("", "alder: "+Reglas2[0]);
                     if (Reglas2.length >= 1) {
@@ -242,17 +250,19 @@ public class PedidoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String cadena = Inputcant.getText().toString();
-
+                String Existe = Exist.getText().toString().replace(".00","");
                 if (cadena.equals("")) {
                     new Notificaciones().Alert(PedidoActivity.this,"AVISO","VALOR MINIMO ES 1").show();
-                }else{
+                }if ((Integer.valueOf(cadena)>(Integer.valueOf(Existe)))){
+                    new Notificaciones().Alert(PedidoActivity.this,"AVISO","EXISTENCIA INSUFICIENTE...("+Existe+")").setCancelable(false).setPositiveButton("OK", null).show();
+                }
+                else{
                     Float numero = Float.valueOf(Inputcant.getText().toString());
                     Float precio = Float.valueOf(list2.get(index).get("PRECIO").toString().replace(",","."));
                     if (numero>0) {
                         //map.put("BONIFICADO", list2.get(index).get("BONIFICADO").toString());
                         map.put("ITEMCANTI", Inputcant.getText().toString());
                         map.put("BONIFICADO", spinner.getSelectedItem().toString());
-
                         //map.put("ITEMVALOR", Float.parseFloat(list2.get(index).get("PRECIO").toString()) * numero);
                         map.put("ITEMVALOR", precio * numero);
                         list.add(index, map);
@@ -310,7 +320,6 @@ public class PedidoActivity extends AppCompatActivity {
             map.put("ITEMVALORTOTAL", Funciones.NumberFormat(Float.parseFloat(data.getStringArrayListExtra("myItem").get(5))));
             map.put("BONIFICADO", data.getStringArrayListExtra("myItem").get(6));
             map.put("PRECIO", Funciones.NumberFormat(Float.parseFloat(data.getStringArrayListExtra("myItem").get(7))));
-
             list.add(map);
             Refresh();
         }

@@ -108,8 +108,10 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
                 if (obClientes.get(0).getmMoroso().equals("S")){
                     btnOK.setText("CLIENTE MOROSO");
                     btnOK.setBackgroundResource(R.drawable.button_danger_rounded);
+                }else if (obClientes.get(0).getmDisponible().equals("0.00")){
+                    btnOK.setText("CLIENTE SIN CREDITO");
+                    btnOK.setBackgroundResource(R.drawable.button_danger_rounded);
                 }else{
-
                     startActivity(new Intent(IndicadoresClienteActivity.this,PedidoActivity.class));
                     timer.cancel();
                     finish();
