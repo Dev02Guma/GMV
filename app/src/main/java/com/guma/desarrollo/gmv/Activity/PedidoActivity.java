@@ -251,16 +251,18 @@ public class PedidoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String cadena = Inputcant.getText().toString();
                 String Existe = Exist.getText().toString().replace(".00","");
+
+
+
                 if (cadena.equals("")) {
                     new Notificaciones().Alert(PedidoActivity.this,"AVISO","VALOR MINIMO ES 1").show();
-                }if ((Integer.valueOf(cadena)>(Integer.valueOf(Existe)))){
+                }else if ((Integer.valueOf(cadena))>(Float.parseFloat(Existe))){
                     new Notificaciones().Alert(PedidoActivity.this,"AVISO","EXISTENCIA INSUFICIENTE...("+Existe+")").setCancelable(false).setPositiveButton("OK", null).show();
                 }
                 else{
                     Float numero = Float.valueOf(Inputcant.getText().toString());
                     Float precio = Float.valueOf(list2.get(index).get("PRECIO").toString().replace(",","."));
                     if (numero>0) {
-                        //map.put("BONIFICADO", list2.get(index).get("BONIFICADO").toString());
                         map.put("ITEMCANTI", Inputcant.getText().toString());
                         map.put("BONIFICADO", spinner.getSelectedItem().toString());
                         //map.put("ITEMVALOR", Float.parseFloat(list2.get(index).get("PRECIO").toString()) * numero);
@@ -269,6 +271,7 @@ public class PedidoActivity extends AppCompatActivity {
                         list.remove(index + 1);
                         Refresh();
                         dialogo.dismiss();
+
                     }
                 }
             }
@@ -327,7 +330,7 @@ public class PedidoActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            //startActivity(new Intent(PedidoActivity.this,AgendaActivity.class));
+            startActivity(new Intent(PedidoActivity.this,AgendaActivity.class));
             finish();
             return true;
         }

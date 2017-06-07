@@ -20,7 +20,11 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-    <include layout="@layout/content_pedido" />
+    <include layout="@layout/content_pedido"
+        android:layout_height="680dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="35dp"
+        />
 
     <LinearLayout
         android:background="@color/colorPrimary"
@@ -88,7 +92,7 @@
                             android:textColor="#000"
                             android:hint="Observaciones"
                             android:inputType="textMultiLine"
-
+                            android:scrollbars = "vertical"
                             />
                     </TableLayout>
                 </android.support.v7.widget.CardView>

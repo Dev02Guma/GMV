@@ -12,13 +12,13 @@ import java.util.Map;
  */
 
 public class Pedidos {
-    String mIdPedido,mVendedor,mCliente,mNombre,mFecha,mArticulo,mDescripcion,mCantidad,mPrecio,mBonificado,mEstado,mComentario;
+    String mIdPedido,mVendedor,mCliente,mNombre,mFecha,mArticulo,mDescripcion,mCantidad,mPrecio,mBonificado,mEstado,mComentario,mAnulacion;
 
     JSONObject detalles = new JSONObject();
     ArrayList<HashMap<String, String>> contactList = null;
 
 
-    public Pedidos(String mIdPedido, String mVendedor, String mCliente, String mNombre, String mFecha, String mArticulo, String mDescripcion, String mCantidad, String mPrecio, String mBonificado, String mEstado, String mComentario, JSONObject detalles, ArrayList<HashMap<String, String>> contactList) {
+    public Pedidos(String mIdPedido, String mVendedor, String mCliente, String mNombre, String mFecha, String mArticulo, String mDescripcion, String mCantidad, String mPrecio, String mBonificado, String mEstado, String mComentario, String mAnulacion, JSONObject detalles, ArrayList<HashMap<String, String>> contactList) {
         this.mIdPedido = mIdPedido;
         this.mVendedor = mVendedor;
         this.mCliente = mCliente;
@@ -31,6 +31,7 @@ public class Pedidos {
         this.mBonificado = mBonificado;
         this.mEstado = mEstado;
         this.mComentario = mComentario;
+        this.mAnulacion = mAnulacion;
         this.detalles = detalles;
         this.contactList = contactList;
     }
@@ -147,5 +148,13 @@ public class Pedidos {
 
     public void setContactList(ArrayList<HashMap<String, String>> contactList) {
         this.contactList = contactList;
+    }
+
+    public String getmAnulacion() {
+        return mAnulacion;
+    }
+
+    public void setmAnulacion(String mAnulacion) {
+        this.mAnulacion = mAnulacion;
     }
 }

@@ -103,9 +103,9 @@ public class Razon_model {
             myDataBase = myDbHelper.getReadableDatabase();
             Log.d(TAG, "doInBackgroundRazones: "+all);
             if (all){
-                cursor = myDataBase.query(true,"RAZON", null, null, null, null, null, null, null);
+                cursor = myDataBase.query(false,"RAZON", null, null, null, null, null, null, null);
             }else{
-                cursor = myDataBase.query(true, "RAZON", null, "SEND NOT IN (" + TextUtils.join(",", new String[]{"1"}) + ")", null, null, null, null, null);
+                cursor = myDataBase.query(false, "RAZON", null, "SEND NOT IN (" + TextUtils.join(",", new String[]{"1"}) + ")", null, null, null, null, null);
             }
             Log.d(TAG, "doInBackgroundRazones: "+cursor.getCount());
             if (cursor.getCount()>0){

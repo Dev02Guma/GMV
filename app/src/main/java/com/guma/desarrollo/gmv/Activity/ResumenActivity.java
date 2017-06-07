@@ -136,7 +136,7 @@ public class ResumenActivity extends AppCompatActivity {
                         }).setNegativeButton("NO",new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                finish();
+
                             }
                         }).show();
             }
