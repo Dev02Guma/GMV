@@ -261,7 +261,8 @@ public class Pedidos_model {
 
             myDbHelper = new SQLiteHelper(basedir, contexto);
             myDataBase = myDbHelper.getReadableDatabase();
-            Cursor cursor = myDataBase.query(false, "PEDIDO", null, "ESTADO"+ "=?", new String[] { "3" }, null, null, null, null);
+            Cursor cursor = myDataBase.query(false, "PEDIDO", null, "ESTADO IN (" + TextUtils.join(",", new String[]{ "3", "4"}) + ")", null, null, null, null, null);
+            //Cursor cursor = myDataBase.query(false, "PEDIDO", null, "ESTADO"+ "=?", new String[] { "3" }, null, null, null, null);
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast()) {

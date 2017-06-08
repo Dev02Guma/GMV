@@ -52,6 +52,7 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
     private Articulo_Leads lbs;
     private Lotes_Leads lbl;
     private List<Articulo> objects;
+    private List<Articulo> objects2;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private boolean checked,checked2;
@@ -111,8 +112,8 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
 
                     /*****************LISTADO DE LOTES***************/
                     listViewLotes2 = (ListView) promptsView.findViewById(R.id.listViewLotes);
-                    objects = Articulos_model.getLotes(ManagerURI.getDirDb(), ReferenciasContexto.getContextArticulo(),mnotes.getmCodigo());
-                    lbl = new Lotes_Leads(ArticulosActivity.this, objects);
+                    objects2 = Articulos_model.getLotes(ManagerURI.getDirDb(), ReferenciasContexto.getContextArticulo(),mnotes.getmCodigo());
+                    lbl = new Lotes_Leads(ArticulosActivity.this, objects2);
                     listViewLotes2.setAdapter(lbl);
 
                     List<String> mStrings = new ArrayList<>();
@@ -248,6 +249,7 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                             .setNegativeButton("Cancel",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
+                                            dialog.dismiss();
                                             dialog.cancel();
                                         }
                                     }).create().show();
@@ -307,17 +309,20 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
     }
     public void filterData(String query) {
         query = query.toLowerCase(Locale.getDefault());
-
+        ArrayList<Articulo> newList = new ArrayList<>();
         if (query.isEmpty()){
-            //lbs.addAll(objects);
+            for(Articulo articulo:objects){
+                    newList.add(articulo);
+            }
         }else{
-            ArrayList<Articulo> newList = new ArrayList<>();
+            //ArrayList<Articulo> newList = new ArrayList<>();
             for(Articulo articulo:objects){
                 if (articulo.getmName().toLowerCase().contains(query)){
                     newList.add(articulo);
                 }
             }
-            listView.setAdapter(new Articulo_Leads(this, newList));
+            //listView.setAdapter(new Articulo_Leads(this, newList));
         }
+        listView.setAdapter(new Articulo_Leads(this, newList));
     }
 }

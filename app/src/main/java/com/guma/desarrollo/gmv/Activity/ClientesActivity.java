@@ -79,11 +79,6 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
                 finish();
             }
         });
-
-
-
-
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item)    {
