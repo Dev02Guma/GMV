@@ -90,6 +90,30 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
                     }
                 });
 
+        Class_retrofit.Objfit()
+                .create(Servicio.class)
+                .obtenerLotes()
+                .enqueue(new Callback<Respuesta_articulos>() {
+                    @Override
+                    public void onResponse(Call<Respuesta_articulos> call, Response<Respuesta_articulos> response) {
+                        if(response.isSuccessful()){
+                            pdialog.setMessage("Lotes.... ");
+                            Respuesta_articulos articulolote = response.body();
+                            Log.d(TAG, "onResponse: Lotes " + articulolote.getCount());
+                            Log.d(TAG, "onResponse: Lotes " + response.body().getResults().get(0).getmCodigo());
+                            Articulos_model.SaveLotes(cnxt,articulolote.getResults());
+                        }else{
+                            pdialog.dismiss();
+                            Log.d(TAG, "onResponse: noSuccessful Lotes" + response.errorBody() );
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Respuesta_articulos> call, Throwable t) {
+                        Log.d(TAG, "onResponse: Failure Lotes" + t.getMessage() );
+                        pdialog.dismiss();
+                    }
+                });
+
         /*Actividades*/
         //Toast.makeText(cnxt, "Antes de ...", Toast.LENGTH_LONG).show();
         Class_retrofit.Objfit()

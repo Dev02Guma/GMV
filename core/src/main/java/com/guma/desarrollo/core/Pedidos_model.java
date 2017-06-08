@@ -112,7 +112,7 @@ public class Pedidos_model {
                     tmp.setmFecha(cursor.getString(cursor.getColumnIndex("FECHA_CREADA")));
                     tmp.setmEstado(cursor.getString(cursor.getColumnIndex("ESTADO")));
                     tmp.setmComentario(cursor.getString(cursor.getColumnIndex("DESCRIPCION")));
-                    Cursor cursor2 = myDataBase.query(true, "PEDIDO_DETALLE", null, "IDPEDIDO"+ "=?", new String[] { cursor.getString(cursor.getColumnIndex("IDPEDIDO")) }, null, null, null, null);
+                    Cursor cursor2 = myDataBase.query(false, "PEDIDO_DETALLE", null, "IDPEDIDO"+ "=?", new String[] { cursor.getString(cursor.getColumnIndex("IDPEDIDO")) }, null, null, null, null);
                     cursor2.moveToFirst();
 
                     while(!cursor2.isAfterLast()) {
@@ -147,7 +147,7 @@ public class Pedidos_model {
 
             myDbHelper = new SQLiteHelper(basedir, context);
             myDataBase = myDbHelper.getReadableDatabase();
-            Cursor cursor = myDataBase.query(true, "PEDIDO_DETALLE", null, "IDPEDIDO"+ "=?", new String[] { mIdPedido }, null, null, null, null);
+            Cursor cursor = myDataBase.query(false, "PEDIDO_DETALLE", null, "IDPEDIDO"+ "=?", new String[] { mIdPedido }, null, null, null, null);
             if(cursor.getCount() > 0) {
 
                 cursor.moveToFirst();
@@ -200,6 +200,33 @@ public class Pedidos_model {
         return lista;
     }
 
+    public static List<Pedidos> getAnulacion(String basedir, Context context,String mIdPedido) {
+        List<Pedidos> lista = new ArrayList<>();
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+            myDbHelper = new SQLiteHelper(basedir, context);
+            myDataBase = myDbHelper.getReadableDatabase();
+            Cursor cursor = myDataBase.query(true, "PEDIDO", null, "IDPEDIDO"+ "=?", new String[] { mIdPedido }, null, null, null, null);
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast()) {
+                    Pedidos tmp = new Pedidos();
+                    tmp.setmAnulacion(cursor.getString(cursor.getColumnIndex("ANULACION")));
+                    lista.add(tmp);
+                    cursor.moveToNext();
+                }
+            }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+        return lista;
+    }
     public static void  actualizarPedidos(Context context, ArrayList<Pedidos> PEDIDOS){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
@@ -212,7 +239,7 @@ public class Pedidos_model {
                 Pedidos a = PEDIDOS.get(i);
                 Log.d("guardando",a.getmIdPedido());
                 Log.d("guardando",a.getmEstado());
-                SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),context,"UPDATE PEDIDO SET ESTADO = '"+a.getmEstado()+"' WHERE IDPEDIDO = '"+a.getmIdPedido()+"'");
+                SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),context,"UPDATE PEDIDO SET ESTADO = '"+a.getmEstado()+"', ANULACION = '"+a.getmAnulacion()+"' WHERE IDPEDIDO = '"+a.getmIdPedido()+"'");
             }
 
         }
@@ -234,7 +261,7 @@ public class Pedidos_model {
 
             myDbHelper = new SQLiteHelper(basedir, contexto);
             myDataBase = myDbHelper.getReadableDatabase();
-            Cursor cursor = myDataBase.query(true, "PEDIDO", null, "ESTADO"+ "=?", new String[] { "3" }, null, null, null, null);
+            Cursor cursor = myDataBase.query(false, "PEDIDO", null, "ESTADO"+ "=?", new String[] { "3" }, null, null, null, null);
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast()) {

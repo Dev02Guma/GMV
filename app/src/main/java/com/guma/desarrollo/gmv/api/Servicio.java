@@ -39,6 +39,9 @@ public interface Servicio {
     @GET("ARTICULOS")
     Call<Respuesta_articulos> obtenerListaArticulos();
 
+    @GET("LOTES")
+    Call<Respuesta_articulos> obtenerLotes();
+
     @FormUrlEncoded
     @POST("Clientes")
     Call<Respuesta_clientes> obtenerListaClientes(@Field("mVendedor") String mVendedor);
@@ -54,6 +57,10 @@ public interface Servicio {
     @FormUrlEncoded
     @POST("Login")
     Call<Respuesta_usuario> obtenerListaUsuario(@Field("usuario") String apiKey, @Field("pass") String apiKey2);
+
+    @FormUrlEncoded
+    @POST("CONSECUTIVO")
+    Call<Respuesta_usuario> obtenerConsecutivo(@Field("usuario") String apiKey);
 
     @FormUrlEncoded
     @POST("url_pedidos")

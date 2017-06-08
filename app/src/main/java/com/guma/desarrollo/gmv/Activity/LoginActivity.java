@@ -88,9 +88,11 @@ public class LoginActivity extends AppCompatActivity  {
                         startActivity(new Intent(LoginActivity.this,AgendaActivity.class));
                         finish();
                     }else{
+
+                        //pdialog = ProgressDialog.show(LoginActivity.this, "", "Usuario no encontrado. Buscando en el servidor...", true);
+                        //pdialog.dismiss();
                         new TaskLogin().execute();
                     }
-
                 }
             }
         });
@@ -109,6 +111,10 @@ public class LoginActivity extends AppCompatActivity  {
                 @Override
                 public void onResponse(Call<Respuesta_usuario> call, Response<Respuesta_usuario> response) {
                     if(response.isSuccessful()){
+
+                        /*TaskConsecutivos task = new TaskConsecutivos();
+                        task.execute();*/
+
                         Respuesta_usuario usuarioRespuesta = response.body();
                         editor.putString("VENDEDOR",usuarioRespuesta.getResults().get(0).getmUsuario());
                         editor.putString("NOMBRE",usuarioRespuesta.getResults().get(0).getmNombre());
@@ -122,6 +128,9 @@ public class LoginActivity extends AppCompatActivity  {
                         tmpUser.setmNombre(usuarioRespuesta.getResults().get(0).getmNombre());
                         tmpUser.setmPass(usuarioRespuesta.getResults().get(0).getmPass());
                         tmpUser.setmRol(usuarioRespuesta.getResults().get(0).getmRol());
+                        tmpUser.setmPedido(usuarioRespuesta.getResults().get(0).getmPedido());
+                        tmpUser.setmCobro(usuarioRespuesta.getResults().get(0).getmCobro());
+                        tmpUser.setmRazon(usuarioRespuesta.getResults().get(0).getmRazon());
                         mDetalleUser.add(tmpUser);
                         Usuario_model.SaveUsuario(LoginActivity.this, mDetalleUser);
 
@@ -130,8 +139,42 @@ public class LoginActivity extends AppCompatActivity  {
                         startActivity(new Intent(LoginActivity.this,AgendaActivity.class));
                         finish();
                     }else{
-                        new Notificaciones().Alert(LoginActivity.this,"ERROR","ERROR AL AUTENTIARSE, INTENTELO MAS TARDE")
+                        //pdialog.dismiss();
+                        new Notificaciones().Alert(LoginActivity.this,"ERROR","ERROR AL AUTENTICARSE, INTENTELO DE NUEVO")
                                 .setCancelable(false).setPositiveButton("OK", null).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<Respuesta_usuario> call, Throwable t) {
+                    new Notificaciones().Alert(LoginActivity.this,"ERROR",t.getMessage())
+                            .setCancelable(false).setPositiveButton("OK", null).show();
+                    pdialog.dismiss();
+                }
+            });
+            return null;
+        }
+    }
+    private class TaskConsecutivos extends AsyncTask<String,String,String>{
+        @Override
+        protected String doInBackground(String... params) {
+            Class_retrofit.Objfit().create(Servicio.class).obtenerConsecutivo(useri).enqueue(new Callback<Respuesta_usuario>() {
+                @Override
+                public void onResponse(Call<Respuesta_usuario> call, Response<Respuesta_usuario> response) {
+                    if(response.isSuccessful()){
+                        Respuesta_usuario usuarioRespuesta = response.body();
+                        pdialog = ProgressDialog.show(LoginActivity.this, "", "Cargando consecutivos de pedidos, cobros y razon...", true);
+                        Usuario tmpUser = new Usuario();
+                        tmpUser.setmPedido(usuarioRespuesta.getResults().get(0).getmPedido());
+                        tmpUser.setmCobro(usuarioRespuesta.getResults().get(0).getmCobro());
+                        tmpUser.setmRazon(usuarioRespuesta.getResults().get(0).getmRazon());
+
+
+                        mDetalleUser.add(tmpUser);
+                        Usuario_model.SaveConsecutivo(LoginActivity.this, mDetalleUser);
+                        pdialog = ProgressDialog.show(LoginActivity.this, "", "Consecutivos Guardados!...", true);
+                    }else{
+                        startActivity(new Intent(LoginActivity.this,LoginActivity.class));
+                        finish();
                         pdialog.dismiss();
                     }
                 }

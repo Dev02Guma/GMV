@@ -118,12 +118,13 @@ public class RazonActivity extends AppCompatActivity {
             private boolean strValor=false;
             @Override
             public void onClick(View v) {
+
                 Razon ra = new Razon();
                 ArrayList<RazonDetalle> rd = new ArrayList<RazonDetalle>();
                 int key = SQLiteHelper.getId(ManagerURI.getDirDb(), RazonActivity.this, "RAZON");
                 IdRazon = preferences.getString("VENDEDOR", "00") + "P" + Clock.getIdDate() + String.valueOf(key);
                 ra.setmIdRazon(IdRazon);
-                ra.setmVendedor("F09");
+                ra.setmVendedor(preferences.getString("VENDEDOR",""));
                 ra.setmCliente(preferences.getString("ClsSelected",""));
                 ra.setmNombre(preferences.getString("NameClsSelected"," --ERROR--"));
                 ra.setmFecha(Clock.getNow());

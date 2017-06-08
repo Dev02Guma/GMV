@@ -32,6 +32,7 @@ import com.guma.desarrollo.core.Articulo;
 import com.guma.desarrollo.core.Articulos_model;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.gmv.Adapters.Articulo_Leads;
+import com.guma.desarrollo.gmv.Adapters.Lotes_Leads;
 import com.guma.desarrollo.gmv.R;
 import com.guma.desarrollo.gmv.api.Notificaciones;
 
@@ -40,7 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class ArticulosActivity extends AppCompatActivity implements SearchView.OnQueryTextListener,SearchView.OnCloseListener {
-    private ListView listView;
+    private ListView listView,listViewLotes2;
     EditText Inputcant,InputExiste,InputPrecio;
     RadioButton radioButton;
     Spinner spinner;
@@ -49,6 +50,7 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
     private MenuItem searchItem;
     private SearchManager searchManager;
     private Articulo_Leads lbs;
+    private Lotes_Leads lbl;
     private List<Articulo> objects;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -60,6 +62,8 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         listView = (ListView) findViewById(R.id.listView);
+
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -84,7 +88,7 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                 public void onItemClick(final AdapterView<?> parent, final View view, final int position, long id) {
                     final Articulo mnotes = (Articulo) parent.getItemAtPosition(position);
                     final String[] Reglas = mnotes.getmReglas().split(",");
-                    //Toast.makeText(ArticulosActivity.this, mnotes.getmUnidadMedida(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ArticulosActivity.this, mnotes.getmCodigo(), Toast.LENGTH_SHORT).show();
 
                     LayoutInflater li = LayoutInflater.from(ArticulosActivity.this);
 
@@ -97,7 +101,6 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
 
                     alertDialogBuilder.setView(promptsView);
 
-
                     Inputcant = (EditText) promptsView.findViewById(R.id.txtFrmCantidad);
                     InputPrecio = (EditText) promptsView.findViewById(R.id.txtFrmPrecio);
                     InputPrecio.setText(mnotes.getmPrecio());
@@ -105,6 +108,12 @@ public class ArticulosActivity extends AppCompatActivity implements SearchView.O
                     //spinner.setAdapter(new ArrayAdapter<>(ArticulosActivity.this, android.R.layout.simple_spinner_dropdown_item,  Reglas));
                     InputExiste = (EditText) promptsView.findViewById(R.id.txtFrmExistencia);
                     InputExiste.setText(mnotes.getmExistencia() + " [ " + mnotes.getmUnidad() + " ]");
+
+                    /*****************LISTADO DE LOTES***************/
+                    listViewLotes2 = (ListView) promptsView.findViewById(R.id.listViewLotes);
+                    objects = Articulos_model.getLotes(ManagerURI.getDirDb(), ReferenciasContexto.getContextArticulo(),mnotes.getmCodigo());
+                    lbl = new Lotes_Leads(ArticulosActivity.this, objects);
+                    listViewLotes2.setAdapter(lbl);
 
                     List<String> mStrings = new ArrayList<>();
                     for (int i = 0; i < Reglas.length; i++) {

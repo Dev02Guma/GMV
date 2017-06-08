@@ -112,7 +112,7 @@ public class RazonesActivity extends AppCompatActivity {
                                         public void onClick(DialogInterface dialog, int which) {
                                         /*INICIO GUARDAR*/
                                             ListView lv = (ListView)findViewById(R.id.list);
-                                            int count = lv.getAdapter().getCount();
+                                            //int count = lv.getAdapter().getCount();
                                             etObservacion = (EditText) findViewById(R.id.etObservacion);
 
                                             Razon ra = new Razon();
@@ -120,7 +120,7 @@ public class RazonesActivity extends AppCompatActivity {
                                             int key = SQLiteHelper.getId(ManagerURI.getDirDb(), RazonesActivity.this, "RAZON");
                                             IdRazon = preferences.getString("VENDEDOR", "00") + "R" + Clock.getIdDate() + String.valueOf(key);
                                             ra.setmIdRazon(IdRazon);
-                                            ra.setmVendedor("F09");
+                                            ra.setmVendedor(preferences.getString("VENDEDOR",""));
                                             ra.setmCliente(preferences.getString("ClsSelected",""));
                                             ra.setmNombre(preferences.getString("NameClsSelected"," --ERROR--"));
                                             ra.setmFecha(Clock.getNow());

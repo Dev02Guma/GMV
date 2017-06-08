@@ -135,7 +135,8 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
         }
 
         List<Razon> objRazones = Razon_model.getInfoRazon(ManagerURI.getDirDb(), cnxt,false);
-        Log.d(TAG, "doInBackgroundRazones: Razones " + objRazones.size());
+        //List<Razon> objRazones = Razon_model.getInfoRazon(ManagerURI.getDirDb(), cnxt,true);
+        //Log.d(TAG, "doInBackgroundRazones: Razones " + objRazones.size());
         Log.d(TAG, "doInBackgroundRazones: Razones " + new Gson().toJson(objRazones));
 
         if (objRazones.size()>0){
@@ -146,7 +147,7 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
                     if (response.isSuccessful()){
                         Respuesta_razones razonesRespuesta = response.body();
                         SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),cnxt,"UPDATE RAZON SET SEND = 1;");
-                        Log.d(TAG, "doInBackground: SE ENVIOOO ");
+                        //Log.d(TAG, "doInBackground: SE ENVIOOO ");
                     }
                 }
                 @Override

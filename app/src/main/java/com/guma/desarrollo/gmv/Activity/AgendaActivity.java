@@ -143,7 +143,6 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
                                                             startActivity(new Intent(AgendaActivity.this,AcercadeActivity.class));
                                                         }else{
                                                             if (items[which].equals(items[9])){
-
                                                                 checked = false;
                                                                 editor.putBoolean("pref", false).commit();
                                                                 editor.apply();
@@ -165,7 +164,7 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
             }
         });
         expandAll();
-       // AutoTask();
+        //AutoTask();
     }
 
     @Override

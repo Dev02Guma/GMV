@@ -15,7 +15,7 @@
     <LinearLayout
         android:id="@+id/idViewTicket"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="610dp"
         android:orientation="vertical">
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -119,7 +119,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ListView
-
                 android:id="@+id/ListView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
