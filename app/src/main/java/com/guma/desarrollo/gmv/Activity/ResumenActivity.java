@@ -175,7 +175,7 @@ public class ResumenActivity extends AppCompatActivity {
             idPedido = preferences.getString("VENDEDOR", "00") + "P" + Clock.getIdDate() + String.valueOf(key);
             Float nTotal = 0.0f;
             for (Map<String, Object> obj : list) {
-                nTotal += Float.parseFloat(obj.get("ITEMVALOR").toString());
+                nTotal += Float.parseFloat(obj.get("ITEMVALOR").toString().replace(",",""));
             }
             Pedidos tmp = new Pedidos();
             tmp.setmIdPedido(idPedido);
