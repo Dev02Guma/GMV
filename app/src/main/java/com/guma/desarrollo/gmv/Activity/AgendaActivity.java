@@ -14,6 +14,7 @@ import android.widget.ExpandableListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.guma.desarrollo.core.Agenda;
 import com.guma.desarrollo.core.Agenda_model;
 import com.guma.desarrollo.core.Clientes;
 import com.guma.desarrollo.core.Clientes_model;
@@ -176,11 +177,22 @@ public class AgendaActivity extends AppCompatActivity  implements ConnectivityRe
     }
 
     private void cerrar(){
-        //Agenda_model.borrar(AgendaActivity.this);
-        Pedidos_model.borrar(AgendaActivity.this,ManagerURI.getDirDb());
-        Cobros_model.borrar(AgendaActivity.this);
-        Razon_model.borrar(AgendaActivity.this);
-        new Notificaciones().Alert(AgendaActivity.this,"AVISO","CIERRE DEL DIA COMPLETO...").setCancelable(false).setPositiveButton("OK", null).show();
+        new Notificaciones().Alert(AgendaActivity.this,"ADVERTENCIA","SE ELIMINARA LA SIGUIENTE INFORMACION DE SU DISPOSITIVO:\n \n - PEDIDOS PROCESADOS Y ANULADOS. \n - COBROS Y RAZONES ENVIADAS. \n\n(LA INFORMACION SE BORRARA UNICAMENTE EN SU DISPOSITIVO, ESTO NO AFECTA LA INFORMACION RECIBIDA POR SAC)")
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Pedidos_model.borrar(AgendaActivity.this,ManagerURI.getDirDb());
+                Cobros_model.borrar(AgendaActivity.this);
+                Razon_model.borrar(AgendaActivity.this);
+                new Notificaciones().Alert(AgendaActivity.this,"AVISO","CIERRE DEL DIA COMPLETO").show();
+            }
+        }).show();
     }
 
     private void checkConnection() {

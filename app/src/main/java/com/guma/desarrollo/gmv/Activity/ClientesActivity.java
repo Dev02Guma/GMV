@@ -79,16 +79,14 @@ public class ClientesActivity extends AppCompatActivity implements SearchView.On
                 finish();
             }
         });
-
-
-
-
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item)    {
         int id = item.getItemId();
-        if (id == 16908332){ finish(); }
+        if (id == 16908332){
+            startActivity(new Intent(ClientesActivity.this,AgendaActivity.class));
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 

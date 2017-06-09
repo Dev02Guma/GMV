@@ -114,32 +114,38 @@ public class LoginActivity extends AppCompatActivity  {
 
                         /*TaskConsecutivos task = new TaskConsecutivos();
                         task.execute();*/
+                        Log.d("", "alderlogin: "+response.body().getResults().get(0).getmIdUser());
+                        if (response.body().getResults().get(0).getmIdUser().isEmpty()){
+                            pdialog.dismiss();
+                            new Notificaciones().Alert(LoginActivity.this,"ERROR","USUARIO O CONTRASEÑA INCORRECTOS")
+                                    .setCancelable(false).setPositiveButton("OK", null).show();
+                        }else {
+                            Respuesta_usuario usuarioRespuesta = response.body();
+                            editor.putString("VENDEDOR", usuarioRespuesta.getResults().get(0).getmUsuario());
+                            editor.putString("NOMBRE", usuarioRespuesta.getResults().get(0).getmNombre());
+                            editor.putString("USUARIO", usuarioRespuesta.getResults().get(0).getmIdUser());
+                            editor.putString("ROL", usuarioRespuesta.getResults().get(0).getmRol());
+                            editor.putBoolean("pref", !checked);
 
-                        Respuesta_usuario usuarioRespuesta = response.body();
-                        editor.putString("VENDEDOR",usuarioRespuesta.getResults().get(0).getmUsuario());
-                        editor.putString("NOMBRE",usuarioRespuesta.getResults().get(0).getmNombre());
-                        editor.putString("USUARIO",usuarioRespuesta.getResults().get(0).getmIdUser());
-                        editor.putString("ROL",usuarioRespuesta.getResults().get(0).getmRol());
-                        editor.putBoolean("pref", !checked);
+                            Usuario tmpUser = new Usuario();
+                            tmpUser.setmIdUser(usuarioRespuesta.getResults().get(0).getmIdUser());
+                            tmpUser.setmUsuario(usuarioRespuesta.getResults().get(0).getmUsuario());
+                            tmpUser.setmNombre(usuarioRespuesta.getResults().get(0).getmNombre());
+                            tmpUser.setmPass(usuarioRespuesta.getResults().get(0).getmPass());
+                            tmpUser.setmRol(usuarioRespuesta.getResults().get(0).getmRol());
+                            tmpUser.setmPedido(usuarioRespuesta.getResults().get(0).getmPedido());
+                            tmpUser.setmCobro(usuarioRespuesta.getResults().get(0).getmCobro());
+                            tmpUser.setmRazon(usuarioRespuesta.getResults().get(0).getmRazon());
+                            mDetalleUser.add(tmpUser);
+                            Usuario_model.SaveUsuario(LoginActivity.this, mDetalleUser);
 
-                        Usuario tmpUser = new Usuario();
-                        tmpUser.setmIdUser(usuarioRespuesta.getResults().get(0).getmIdUser());
-                        tmpUser.setmUsuario(usuarioRespuesta.getResults().get(0).getmUsuario());
-                        tmpUser.setmNombre(usuarioRespuesta.getResults().get(0).getmNombre());
-                        tmpUser.setmPass(usuarioRespuesta.getResults().get(0).getmPass());
-                        tmpUser.setmRol(usuarioRespuesta.getResults().get(0).getmRol());
-                        tmpUser.setmPedido(usuarioRespuesta.getResults().get(0).getmPedido());
-                        tmpUser.setmCobro(usuarioRespuesta.getResults().get(0).getmCobro());
-                        tmpUser.setmRazon(usuarioRespuesta.getResults().get(0).getmRazon());
-                        mDetalleUser.add(tmpUser);
-                        Usuario_model.SaveUsuario(LoginActivity.this, mDetalleUser);
-
-                        editor.apply();
-                        pdialog.dismiss();
-                        startActivity(new Intent(LoginActivity.this,AgendaActivity.class));
-                        finish();
+                            editor.apply();
+                            pdialog.dismiss();
+                            startActivity(new Intent(LoginActivity.this, AgendaActivity.class));
+                            finish();
+                        }
                     }else{
-                        //pdialog.dismiss();
+                        pdialog.dismiss();
                         new Notificaciones().Alert(LoginActivity.this,"ERROR","ERROR AL AUTENTICARSE, INTENTELO DE NUEVO")
                                 .setCancelable(false).setPositiveButton("OK", null).show();
                     }

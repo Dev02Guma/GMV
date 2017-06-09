@@ -62,7 +62,7 @@ public class Articulos_model {
                 contentValues.put("LOTE" , a.getmLote());
                 contentValues.put("CANTIDAD" , a.getmUnidad());
                 contentValues.put("FECHA" , a.getmFecha());
-                myDataBase.insert("ARTICULOS", null, contentValues );
+                myDataBase.insert("LOTES", null, contentValues );
             }
 
         }

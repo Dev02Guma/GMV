@@ -227,6 +227,33 @@ public class Pedidos_model {
         }
         return lista;
     }
+    public static List<Pedidos> getConfirmacion(String basedir, Context context,String mIdPedido) {
+        List<Pedidos> lista = new ArrayList<>();
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+            myDbHelper = new SQLiteHelper(basedir, context);
+            myDataBase = myDbHelper.getReadableDatabase();
+            Cursor cursor = myDataBase.query(true, "PEDIDO", null, "IDPEDIDO"+ "=?", new String[] { mIdPedido }, null, null, null, null);
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast()) {
+                    Pedidos tmp = new Pedidos();
+                    tmp.setmConfirmacion(cursor.getString(cursor.getColumnIndex("CONFIRMACION")));
+                    lista.add(tmp);
+                    cursor.moveToNext();
+                }
+            }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+        return lista;
+    }
     public static void  actualizarPedidos(Context context, ArrayList<Pedidos> PEDIDOS){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
@@ -239,9 +266,9 @@ public class Pedidos_model {
                 Pedidos a = PEDIDOS.get(i);
                 Log.d("guardando",a.getmIdPedido());
                 Log.d("guardando",a.getmEstado());
-                SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),context,"UPDATE PEDIDO SET ESTADO = '"+a.getmEstado()+"', ANULACION = '"+a.getmAnulacion()+"' WHERE IDPEDIDO = '"+a.getmIdPedido()+"'");
+                Log.d("guardando","UPDATE PEDIDO SET ESTADO = '"+a.getmEstado()+"', ANULACION = '"+a.getmAnulacion()+"', CONFIRMACION = '"+a.getmConfirmacion()+"'  WHERE IDPEDIDO = '"+a.getmIdPedido()+"'");
+                SQLiteHelper.ExecuteSQL(ManagerURI.getDirDb(),context,"UPDATE PEDIDO SET ESTADO = '"+a.getmEstado()+"', ANULACION = '"+a.getmAnulacion()+"', CONFIRMACION = '"+a.getmConfirmacion()+"'  WHERE IDPEDIDO = '"+a.getmIdPedido()+"'");
             }
-
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -261,7 +288,8 @@ public class Pedidos_model {
 
             myDbHelper = new SQLiteHelper(basedir, contexto);
             myDataBase = myDbHelper.getReadableDatabase();
-            Cursor cursor = myDataBase.query(false, "PEDIDO", null, "ESTADO"+ "=?", new String[] { "3" }, null, null, null, null);
+            Cursor cursor = myDataBase.query(false, "PEDIDO", null, "ESTADO IN (" + TextUtils.join(",", new String[]{ "3", "4"}) + ")", null, null, null, null, null);
+            //Cursor cursor = myDataBase.query(false, "PEDIDO", null, "ESTADO"+ "=?", new String[] { "3" }, null, null, null, null);
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast()) {

@@ -112,32 +112,34 @@ public class PedidoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Double Credito = null;
-                Double Totall = Double.valueOf(Total.getText().toString().replace("TOTAL C$ ","").replace(",",""));
+
                 List<Clientes> Limite = Clientes_model.getCredito(ManagerURI.getDirDb(), PedidoActivity.this,preferences.getString("ClsSelected", ""));
                 for(Clientes obj2 : Limite) {
                     Credito = Double.valueOf(obj2.getmCredito());
                 }
-                if (Totall>Credito){
-                    new Notificaciones().Alert(PedidoActivity.this,"AVISO","LIMITE DE CLIENTE EXCEDIDO ("+Credito+")").setCancelable(false).setPositiveButton("OK", null).show();
-                }else if (list.size()!=0){
-                   AlertDialog.Builder builder = new AlertDialog.Builder(PedidoActivity.this);
-                    builder.setMessage("¿Confirma la transaccion?")
-                            .setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    Intent send = new Intent(PedidoActivity.this,ResumenActivity.class);
-                                    send.putExtra("LIST", (Serializable) list);
-                                    editor.putString("COMENTARIO", txtComent.getText().toString()).apply();
-                                    //send.putExtra("NombreCliente",getIntent().getStringExtra("NombreCliente"));
-                                    startActivity(send);
-                                    timer.cancel();
-                                    finish();
-                                }
-                            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
+                if (list.size()!=0){
+                    Double Totall = Double.valueOf(Total.getText().toString().replace("TOTAL C$ ","").replace(",",""));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PedidoActivity.this);
+                    if (Totall>Credito){
+                        new Notificaciones().Alert(PedidoActivity.this,"AVISO","LIMITE DE CLIENTE EXCEDIDO ("+Credito+")").setCancelable(false).setPositiveButton("OK", null).show();
+                    }else {
+                        builder.setMessage("¿Confirma la transaccion?")
+                                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Intent send = new Intent(PedidoActivity.this, ResumenActivity.class);
+                                        send.putExtra("LIST", (Serializable) list);
+                                        editor.putString("COMENTARIO", txtComent.getText().toString()).apply();
+                                        //send.putExtra("NombreCliente",getIntent().getStringExtra("NombreCliente"));
+                                        startActivity(send);
+                                        timer.cancel();
+                                        finish();
+                                    }
+                                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
 
-                        }
-                    }).create().show();
-
+                            }
+                        }).create().show();
+                    }
                 }else{
                     new Notificaciones().Alert(PedidoActivity.this,"PEDIDO VACIO","INGRESE ARTICULOS AL PEDIDO...").setCancelable(false).setPositiveButton("OK", null).show();
                 }
@@ -335,5 +337,10 @@ public class PedidoActivity extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+
     }
 }

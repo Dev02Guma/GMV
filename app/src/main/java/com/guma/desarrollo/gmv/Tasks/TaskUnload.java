@@ -135,7 +135,6 @@ public class TaskUnload extends AsyncTask<Integer,Integer,String> {
         }
 
         List<Razon> objRazones = Razon_model.getInfoRazon(ManagerURI.getDirDb(), cnxt,false);
-        //List<Razon> objRazones = Razon_model.getInfoRazon(ManagerURI.getDirDb(), cnxt,true);
         //Log.d(TAG, "doInBackgroundRazones: Razones " + objRazones.size());
         Log.d(TAG, "doInBackgroundRazones: Razones " + new Gson().toJson(objRazones));
 
