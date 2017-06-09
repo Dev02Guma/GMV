@@ -8,11 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.guma.desarrollo.core.Funciones;
 import com.guma.desarrollo.core.Pedidos;
-
 import com.guma.desarrollo.gmv.R;
 
 import java.util.List;
@@ -56,10 +54,10 @@ public class Pedidos_Leads extends ArrayAdapter<Pedidos>{
         }else if (estado.equals(3)){
             img.setImageResource(R.drawable.doble1);
         }else{
+            midPedido.setText(midPedido.getText().toString().concat(" (ANULADO)"));
+            midPedido.setTextColor(convertView.getResources().getColor(R.color.button_danger));
             img.setImageResource(R.drawable.icono_anulado_1);
         }
-        //img.setImageResource(R.drawable.uno2);
-        //mEstado.setText("ESTADO:  " + lead.getmEstado());
         return convertView;
     }
 }

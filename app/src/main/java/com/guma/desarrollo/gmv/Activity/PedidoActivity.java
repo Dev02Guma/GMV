@@ -128,7 +128,7 @@ public class PedidoActivity extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int id) {
                                         Intent send = new Intent(PedidoActivity.this, ResumenActivity.class);
                                         send.putExtra("LIST", (Serializable) list);
-                                        editor.putString("COMENTARIO", txtComent.getText().toString()).apply();
+                                        editor.putString("COMENTARIO", txtComent.getText().toString()+" ("+txtCount.getText()+")").apply();
                                         //send.putExtra("NombreCliente",getIntent().getStringExtra("NombreCliente"));
                                         startActivity(send);
                                         timer.cancel();
@@ -262,13 +262,16 @@ public class PedidoActivity extends AppCompatActivity {
                     new Notificaciones().Alert(PedidoActivity.this,"AVISO","EXISTENCIA INSUFICIENTE...("+Existe+")").setCancelable(false).setPositiveButton("OK", null).show();
                 }
                 else{
+                    /*************************************/
                     Float numero = Float.valueOf(Inputcant.getText().toString());
-                    Float precio = Float.valueOf(list2.get(index).get("PRECIO").toString().replace(",","."));
+                    //Float precio = Float.valueOf(list2.get(index).get("PRECIO").toString().replace(",","."));
+                    Float precio = Float.valueOf(list2.get(index).get("PRECIO").toString().replace(",",""));
                     if (numero>0) {
                         map.put("ITEMCANTI", Inputcant.getText().toString());
                         map.put("BONIFICADO", spinner.getSelectedItem().toString());
                         //map.put("ITEMVALOR", Float.parseFloat(list2.get(index).get("PRECIO").toString()) * numero);
-                        map.put("ITEMVALOR", precio * numero);
+                        map.put("ITEMVALOR", Funciones.NumberFormat(precio * numero));
+                        Log.d("", "sumaa: "+precio);
                         list.add(index, map);
                         list.remove(index + 1);
                         Refresh();
