@@ -167,6 +167,7 @@ public class TaskDownload extends AsyncTask<Integer,Integer,String> {
        List<Pedidos> listPedidos = Pedidos_model.getInfoPedidos(ManagerURI.getDirDb(),cnxt,false);
 
         Gson gson = new Gson();
+        Log.d("", "alderekisde: "+ gson.toJson(listPedidos));
        if (listPedidos.size()>0) {
             Class_retrofit.Objfit()
                     .create(Servicio.class)

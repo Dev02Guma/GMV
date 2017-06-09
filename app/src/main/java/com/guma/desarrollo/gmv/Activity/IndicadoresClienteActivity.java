@@ -96,8 +96,6 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
             //setTitle("PASO 2 [ Cobro ] - " + obClientes.get(0).getmNombre());
             mCredito.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obClientes.get(0).getmCredito())));
             mLimite.setText("C$ " + Funciones.NumberFormat(Float.parseFloat(obClientes.get(0).getmDisponible())));
-
-
         }
 
 
@@ -105,10 +103,11 @@ public class IndicadoresClienteActivity extends AppCompatActivity {
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Float disponible = Float.valueOf(obClientes.get(0).getmDisponible());
                 if (obClientes.get(0).getmMoroso().equals("S")){
                     btnOK.setText("CLIENTE MOROSO");
                     btnOK.setBackgroundResource(R.drawable.button_danger_rounded);
-                }else if (obClientes.get(0).getmDisponible().equals("0.00")){
+                }else if (disponible <=0 ){
                     btnOK.setText("CLIENTE SIN CREDITO");
                     btnOK.setBackgroundResource(R.drawable.button_danger_rounded);
                 }else{
